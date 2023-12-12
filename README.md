@@ -4,6 +4,7 @@
 **The objective is to cover all the sprints addressed during my Data Analyst training. For more information, please visit my LinkedIn or the training organization's website**
 
 www.linkedin.com/in/guillaume-brethes
+
 https://datascientest.com/formation-data-analyst
 
 ## Context 

@@ -3,6 +3,9 @@
 
 **The objective is to cover all the sprints addressed during my Data Analyst training. For more information, please visit my LinkedIn or the training organization's website**
 
+www.linkedin.com/in/guillaume-brethes
+https://datascientest.com/formation-data-analyst
+
 ## Context 
 This project focuses on analyzing marketing data in a service-oriented context. 
 It involves **visually and statistically** exploring factors influencing whether a bank client subscribes to a 'term deposit.' 

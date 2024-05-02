@@ -26,7 +26,7 @@ st.write(
     "L'objectif est de prédire quels clients sont les plus susceptibles de souscrire au dépôt à terme."
     )
 
-st.image("/Users/gub/Documents/Privé/Formations/DataScientest/Data_projet/Oct_cda_bankmarketing/Streamlit/Banque.jpg", 
+st.image("Banque.jpg", 
          width=500, 
          use_column_width='always', 
          output_format='auto')

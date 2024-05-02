@@ -1,3 +1,4 @@
+import streamlit as st
 import numpy as np
 #%matplotlib inline
 import pandas as pd
@@ -12,7 +13,6 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import scipy.stats as stats
 from scipy.stats import chi2_contingency
-import streamlit as st
 
 # Chargement du fichier de données
 df = pd.read_csv("bank.csv")

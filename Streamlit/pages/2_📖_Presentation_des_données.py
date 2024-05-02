@@ -3,7 +3,7 @@ import pandas as pd
 import time
 
 # Variables 
-# df = pd.read_csv("bank.csv")
+df = pd.DataFrame("bank.csv")
 
 # Page
 st.set_page_config(

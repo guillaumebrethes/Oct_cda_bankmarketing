@@ -22,18 +22,21 @@ if st.button("◀️\u2003📖 Présentation - Exploration"):
     st.switch_page("pages/2_📖_Presentation_-_Exploration.py")
 st.write("---")
 
-st.markdown("Dans ce chapitre nous allons etudier plus en profondeur notre jeux de données.\n\n Nous allons aborder l'étude selon 2 axes principaux :")
+st.markdown("""
+Dans ce chapitre nous allons étudier plus en profondeur notre jeu de données.
 
-st.write(
-    "- **La visualisation** à l'aide de graphique pertinant\n\n"
-    "- **L'étude statistique** pour cohoborer notre exploration et visualisation"
-    )
+Nous allons aborder l'étude selon 2 axes principaux :
+
+- **La visualisation** à l'aide de graphiques pertinents\n\n
+- **L'étude statistique** pour corroborer notre exploration et visualisation
+""")
+
 
 #--------------------------------------------------------------------------------------------
 # Affichage de la repartition de la variable Deposit en camembert 
 #--------------------------------------------------------------------------------------------
 st.write("---")
-st.write("### Visualisations de la variable cible ###")
+st.write("### Visualisation de la variable cible ###")
 
 a = df.groupby(['deposit'],
         as_index= False)['age'].count().rename(columns= {'age':'Count'})
@@ -62,12 +65,13 @@ st.write("### Caractéristiques socio-démographiques des clients ###")
 
 # Selection du graphique à afficher
 st.write("   ")
-graph_choisi = st.selectbox(label="Sélectionner les variables que vous voulez etudier", 
+graph_choisi = st.selectbox(label="Sélectionner les variables à étudier", 
                             options=["Age en fonction de Deposit",
                                      "Job en fonction de Deposit",
                                      "Marital en fonction de Deposit",
                                      "Education en fonction de Deposit"],
-                            index=None)
+                            index=None, 
+                            placeholder=". . .")
 
 #---------------------------------------
 # Age 
@@ -170,90 +174,102 @@ elif graph_choisi == 'Job en fonction de Deposit':
 #---------------------------------------
 # Marital
 elif graph_choisi == 'Marital en fonction de Deposit' :
-    col1,col2=st.columns(2)
     
     # Graphique
-    with col1:
-        c = df.groupby(['marital','deposit'],
-                       as_index= False)['age'].count().rename(columns={'age':'Count'})
-        c['percent'] = round(c['Count'] * 100 / c.groupby('marital')['Count'].transform('sum'), 1)
-        c['percent'] = c['percent'].apply(lambda x: '{}%'.format(x))
+    c = df.groupby(['marital','deposit'],
+                   as_index= False)['age'].count().rename(columns={'age':'Count'})
+    c['percent'] = round(c['Count'] * 100 / c.groupby('marital')['Count'].transform('sum'), 1)
+    c['percent'] = c['percent'].apply(lambda x: '{}%'.format(x))
+    
+    st.markdown("#### 📊 Visualisation")
+
+    figmarital = px.bar(c,
+                        x= 'marital',
+                        y= 'Count',
+                        text= 'percent',
+                        color= 'deposit',
+                        barmode= 'group',
+                        color_discrete_sequence= ['lightcoral','lightblue'],
+                        width= 600, 
+                        height= 450)
+    figmarital.update_traces(marker=dict(line=dict(color='#000000', width=1)),textposition = "outside")
         
-        figmarital = px.bar(c,
-                            x= 'marital',
-                            y= 'Count',
-                            text= 'percent',
-                            color= 'deposit',
-                            barmode= 'group',
-                            color_discrete_sequence= ['lightcoral','lightblue'],
-                            width= 600, 
-                            height= 450)
-        figmarital.update_traces(marker=dict(line=dict(color='#000000', width=1)),textposition = "outside")
-        
-        figmarital.update_layout(title_x=0.5,
-                                 showlegend=True,
-                                 title_text='<b style="color:black; font-size:110%;">Distribution de marital en fonction de deposit</b>',
-                                 font_family="Arial",
-                                 title_font_family="Arial")
-        st.plotly_chart(figmarital)
+    figmarital.update_layout(showlegend=True,
+                             title_text='<b style="color:black; font-size:90%;">Distribution de marital en fonction de deposit</b>',
+                             font_family="Arial",
+                             title_font_family="Arial")
+    st.plotly_chart(figmarital)
     
     # Statistique
-    with col2:
-                ctDM = pd.crosstab(df['deposit'], df['marital'])
-                resultats_chi2DM = chi2_contingency(ctDM)
-                st.write("Test KI-deux :")
-                st.write("Résultat statistique :",resultats_chi2DM[0])
-                st.write("Résultat p_valeur :",resultats_chi2DM[1]) 
-                st.write("   ")
-                st.write("Le test nous montre qu'il y a une relation entre les deux variables")
-                st.write("   ")
-                st.write("   ")
-                st.markdown("Plus de la moitié des clients de notre jeu de données sont **mariés (56.9%)** et **(56.9%)** d'entre eux ne souscrivent pas au dépôt.")
-                st.markdown("Les **célibataires** ont proportionnellement plus souscrit au dépôt à terme que les clients **mariés**.")     
-        #---------------------------------------
+    st.markdown("#### 📈 Statistique") 
+
+    ctDM = pd.crosstab(df['deposit'], df['marital'])
+    resultats_chi2DM = chi2_contingency(ctDM)
+    st.markdown("""
+    **- Test KI-deux** :
+    
+    Résultat statistique : `{}`
+    
+    Résultat p_valeur : `{}`
+
+    #### 💬 Interprétation 
+
+    Le test nous montre qu'il y a une relation entre les deux variables, car la valeur de la p-valeur est inférieur à 0,05.
+
+    Plus de la moitié des clients de notre jeu de données sont **mariés** et **(56.9%)** d'entre eux ne souscrivent pas au dépôt.
+    
+    Les **célibataires** ont proportionnellement plus souscrit au dépôt à terme que les clients **mariés**.
+    """.format(resultats_chi2DM[0], resultats_chi2DM[1]))
+    
+
 
 #---------------------------------------
 # Education
 elif graph_choisi == 'Education en fonction de Deposit' :
     
-    col1,col2=st.columns(2)
-    
     # Graphique
-    with col1:
-        d = df.groupby(['education','deposit'],
-                       as_index= False)['age'].count().rename(columns= {'age':'Count'})
-        d['percent'] = round(d['Count'] * 100 / d.groupby('education')['Count'].transform('sum'), 1)
-        d['percent'] = d['percent'].apply(lambda x: '{}%'.format(x))
+    st.markdown("#### 📊 Visualisation")
+    
+    d = df.groupby(['education','deposit'],
+                   as_index= False)['age'].count().rename(columns= {'age':'Count'})
+    d['percent'] = round(d['Count'] * 100 / d.groupby('education')['Count'].transform('sum'), 1)
+    d['percent'] = d['percent'].apply(lambda x: '{}%'.format(x))
         
-        figeducation = px.bar(d,
-                              x= 'education',
-                              y= 'Count',
-                              text= 'percent',
-                              color= 'deposit',
-                              barmode= 'group',
-                              color_discrete_sequence= ['lightcoral', 'lightblue'],
-                              width= 600, 
-                              height= 450)
+    figeducation = px.bar(d,
+                          x= 'education',
+                          y= 'Count',
+                          text= 'percent',
+                          color= 'deposit',
+                          barmode= 'group',
+                          color_discrete_sequence= ['lightcoral', 'lightblue'],
+                          width= 600, 
+                          height= 450)
+    
+    figeducation.update_traces(marker=dict(line=dict(color='#000000', width=1)),textposition = "outside")
         
-        figeducation.update_traces(marker=dict(line=dict(color='#000000', width=1)),textposition = "outside")
+    figeducation.update_layout(showlegend=True,
+                               title_text='<b style="color:black; font-size:90%;">Distribution de education en fonction de deposit</b>',
+                               font_family="Arial",
+                               title_font_family="Arial")
+    st.plotly_chart(figeducation)
         
-        figeducation.update_layout(title_x=0.5,
-                                   showlegend=True,
-                                   title_text='<b style="color:black; font-size:110%;">Distribution de education en fonction de deposit</b>',
-                                   font_family="Arial",
-                                   title_font_family="Arial")
-        st.plotly_chart(figeducation)
-        
-    # Statistique    
-    with col2:
-        ctDM = pd.crosstab(df['deposit'], df['education'])
-        resultats_chi2DM = chi2_contingency(ctDM)
-        st.write("Test KI-deux :")
-        st.write("Résultat statistique :",resultats_chi2DM[0])
-        st.write("Résultat p_valeur :",resultats_chi2DM[1]) 
-        st.write("   ")
-        st.write("Le test nous montre qu'il y a une relation entre les deux variables")
-        st.write("   ") 
-        st.write("   ")   
-        st.markdown("**(51,2%)** des clients ont un niveau d'études secondaires et **(34.9%)** un niveau d'études supérieures.") 
-        st.markdown("On remarque que les clients avec un niveau d'études supérieures **('tertiary')** représentent la catégorie qui a le plus souscrit au dépôt à terme par rapport aux 2 autres.")     
+    # Statistique   
+    st.markdown("#### 📈 Statistique")  
+    ctDM = pd.crosstab(df['deposit'], df['education'])
+    resultats_chi2DM = chi2_contingency(ctDM)
+    
+    st.markdown("""
+    **- Test KI-deux** :
+    
+    Résultat statistique : `{}`
+    
+    Résultat p_valeur : `{}`
+
+    #### 💬 Interprétation 
+    Le test nous montre qu'il y a une relation entre les deux variables, car la valeur de la p-valeur est inférieur à 0,05.
+    
+    **(51,2%)** des clients ont un niveau d'études secondaires et **(34.9%)** un niveau d'études supérieures.
+    
+    On remarque que les clients avec un niveau d'études supérieures **('tertiary')** représentent la catégorie qui a le plus souscrit au dépôt à terme par rapport aux 2 autres.
+    """.format(resultats_chi2DM[0], resultats_chi2DM[1]))
+    

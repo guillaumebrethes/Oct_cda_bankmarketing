@@ -390,24 +390,48 @@ elif graph_choisi_banc == 'Balance en fonction de Deposit' :
 
 # Graphique
     st.markdown("#### 📊 Visualisation")
-    
-    balance_min = -2500
-    balance_max = 15000
-    nbins = 100
-    
-    balance_filtre = df[(df['balance'] >= balance_min) & (df['balance'] <= balance_max)]
+# Filtrage des données
+    balance_filtre = df[(df['balance'] >= -2500) & (df['balance'] <= 15000)]
 
-    fig = px.histogram(balance_filtre, 
-                       x='balance',
-                       color='deposit', 
-                       marginal='box', 
-                       hover_data=df.columns, 
-                       color_discrete_map={'yes': 'lightblue', 'no': 'lightcoral'}, 
-                       nbins= nbins)
-    fig.update_layout(yaxis_title="Nombre de clients")
-    
+# Création de la figure
+    fig = px.histogram(balance_filtre, x='balance', height=400, width=600)
+
+    # Mise en forme de la figure
+    fig.update_layout(
+        title_text= '<b style="color:black; font-size:90%;">Distribution de Balance en fonction de deposit </b>',
+        xaxis_title="Balance",
+        yaxis_title="Nombre de clients")
+
+# Affichage de la figure
     st.plotly_chart(fig)
+
     
+    x0 = df[(df['deposit'] == 'yes') & (df['balance'] >= -2500) & (df['balance'] <= 15000)]['balance']
+    x1 = df[(df['deposit'] == 'no') & (df['balance'] >= -2500) & (df['balance'] <= 15000)]['balance']
+    
+
+# Création de la figure
+    figdeposit = go.Figure()
+
+# Ajout des données
+    figdeposit.add_trace(go.Box(x=x0, name='deposit_yes', marker_color='lightblue'))
+    figdeposit.add_trace(go.Box(x=x1, name='deposit_no', marker_color='lightcoral'))
+
+# Mise en forme de la figure
+    figdeposit.update_layout(width=600, 
+                             height=400, 
+                             showlegend=False,
+                             title='',
+                             font_family='Arial',
+                             title_font_family='Arial',
+                             xaxis_title='Balance')
+    
+    figdeposit.update_traces(orientation='h')
+    st.plotly_chart(figdeposit)
+
+
+    
+
 # Statistique   
     st.markdown("#### 📈 Statistique") 
     resultBD = statsmodels.formula.api.ols('balance ~ deposit', data=df).fit()

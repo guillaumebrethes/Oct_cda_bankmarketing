@@ -1,8 +1,11 @@
 import streamlit as st  # type: ignore
 import pandas as pd  # type: ignore
+import seaborn as sns # type: ignore
+import statsmodels.api # type: ignore
+from plotly import graph_objs as go # type: ignore
+import plotly.graph_objects as go # type: ignore
 import plotly.express as px # type: ignore
 import plotly.figure_factory as ff # type: ignore
-import statsmodels.api # type: ignore
 from scipy.stats import chi2_contingency # type: ignore
 
 
@@ -65,7 +68,7 @@ st.write("### Caractéristiques socio-démographiques des clients ###")
 
 # Selection du graphique à afficher
 st.write("   ")
-graph_choisi = st.selectbox(label="Sélectionner les variables à étudier", 
+graph_choisi_socio = st.selectbox(label="Sélectionner les variables à étudier", 
                             options=["Age en fonction de Deposit",
                                      "Job en fonction de Deposit",
                                      "Marital en fonction de Deposit",
@@ -75,7 +78,7 @@ graph_choisi = st.selectbox(label="Sélectionner les variables à étudier",
 
 #---------------------------------------
 # Age 
-if graph_choisi == 'Age en fonction de Deposit':
+if graph_choisi_socio == 'Age en fonction de Deposit':
     
     # Graphique 
     x1 = df[df['deposit'] == 'yes']['age']
@@ -116,10 +119,9 @@ if graph_choisi == 'Age en fonction de Deposit':
     On remarque que pour les plus de **58 ans** et les moins de **30 ans**, la part de clients qui ont souscrit au dépôt à terme est plus importante.
 """.format(tableAD['PR(>F)']['deposit']))
 
-
 #---------------------------------------
 # Job 
-elif graph_choisi == 'Job en fonction de Deposit':
+elif graph_choisi_socio == 'Job en fonction de Deposit':
 
     # Graphique     
 
@@ -170,10 +172,9 @@ elif graph_choisi == 'Job en fonction de Deposit':
     A la différence des professions **blue-collar**, **services** et **technician** qui ont une valeur à **Non** supérieur à **Oui.**
     """.format(resultats_chi2DJ[0], resultats_chi2DJ[1]))
 
-
 #---------------------------------------
 # Marital
-elif graph_choisi == 'Marital en fonction de Deposit' :
+elif graph_choisi_socio == 'Marital en fonction de Deposit' :
     
     # Graphique
     c = df.groupby(['marital','deposit'],
@@ -221,11 +222,9 @@ elif graph_choisi == 'Marital en fonction de Deposit' :
     Les **célibataires** ont proportionnellement plus souscrit au dépôt à terme que les clients **mariés**.
     """.format(resultats_chi2DM[0], resultats_chi2DM[1]))
     
-
-
 #---------------------------------------
 # Education
-elif graph_choisi == 'Education en fonction de Deposit' :
+elif graph_choisi_socio == 'Education en fonction de Deposit' :
     
     # Graphique
     st.markdown("#### 📊 Visualisation")
@@ -272,4 +271,203 @@ elif graph_choisi == 'Education en fonction de Deposit' :
     
     On remarque que les clients avec un niveau d'études supérieures **('tertiary')** représentent la catégorie qui a le plus souscrit au dépôt à terme par rapport aux 2 autres.
     """.format(resultats_chi2DM[0], resultats_chi2DM[1]))
+
+#--------------------------------------------------------------------------------------------
+# Affichage des caractéristiques bancaires des clients
+#--------------------------------------------------------------------------------------------
+st.write("---")
+st.write("### Caractéristiques bancaires des clients ###")
+
+graph_choisi_banc = st.selectbox(label="Selectionner les variables à étudier", 
+                                 options=["Default en fonction de Deposit",
+                                          "Housing en fonction de Deposit",
+                                          "Loan en fonction de Deposit",
+                                          "Balance en fonction de Deposit"], 
+                                 index=None,
+                                 placeholder=". . .")
+
+#---------------------------------------
+# Default 
+if graph_choisi_banc == 'Default en fonction de Deposit' :
+    st.write("  ")
+
+#---------------------------------------
+# Housing
+elif graph_choisi_banc == 'Housing en fonction de Deposit' :
+
+    # Graphique
+    st.markdown("#### 📊 Visualisation")
     
+    e = df.groupby(['housing','deposit'],
+                   as_index=False)['age'].count().rename(columns={'age':'Count'})
+    e['percent'] = round(e['Count'] * 100 / e.groupby('housing')['Count'].transform('sum'),1)
+    e['percent'] = e['percent'].apply(lambda x: '{}%'.format(x))
+    fighousing = px.bar(e,
+                    x= 'housing',
+                    y= 'Count',
+                    text= 'percent',
+                    color= 'deposit',
+                    barmode= 'group',
+                    color_discrete_sequence= ['lightcoral', 'lightblue'],
+                    width= 600, height= 450)
+
+    fighousing.update_traces(marker=dict(line=dict(color='#000000', width=1)),textposition = "outside")
+    fighousing.update_layout(showlegend=True,
+                             title_text='<b style="color:black; font-size:90%;">Distribution de Housing en fonction de deposit</b>',font_family="Arial",
+                             title_font_family="Arial")
+    st.plotly_chart(fighousing)
+
+# Statistique   
+    st.markdown("#### 📈 Statistique") 
+    ctDH = pd.crosstab(df['deposit'], df['housing'])
+    resultats_chi2DH = chi2_contingency(ctDH)
+    st.markdown("""
+    **- Test KI-deux** :
+    
+    Résultat statistique : `{}`
+    
+    Résultat p_valeur : `{}`
+
+    #### 💬 Interprétation 
+    Le test nous montre qu'il y a une relation entre les deux variables, car la valeur de la p-valeur est inférieur à 0,05.
+
+    Notre jeu de données a une répartition assez équilibrée sur cette variable, **52%** ont un prêt immobilier contre **48%** sans prêt     immobilier.
+    Le graphique ci-contre nous montre que les clients qui ont un prêt immobilier ont tendance à ne pas souscrire au dépôt à terme **(63.3%)**.
+    """.format(resultats_chi2DH[0], resultats_chi2DH[1]))
+
+
+
+#---------------------------------------
+# Loan
+elif graph_choisi_banc == 'Loan en fonction de Deposit' :
+    
+    f = df.groupby(['loan','deposit'],
+    as_index=False)['age'].count().rename(columns={'age':'Count'})
+    f['percent'] = round(f['Count'] * 100 / f.groupby('loan')['Count'].transform('sum'),1)
+    f['percent'] = f['percent'].apply(lambda x: '{}%'.format(x))
+    
+# Graphique
+    st.markdown("#### 📊 Visualisation")
+    figloan = px.bar(f,
+                     x= 'loan',
+                     y= 'Count',
+                     text= 'percent',
+                     color= 'deposit',
+                     barmode= 'group',
+                     color_discrete_sequence= ['lightcoral', 'lightblue'],
+                     width=600, height=450)
+
+    figloan.update_traces(marker=dict(line=dict(color='#000000', width=1)),textposition = "outside")
+    figloan.update_layout(showlegend=True,
+                          title_text='<b style="color:black; font-size:90%;">Distribution de Loan en fonction de deposit</b>',font_family="Arial",
+                          title_font_family="Arial")
+    st.plotly_chart(figloan)
+
+# Statistique   
+    st.markdown("#### 📈 Statistique") 
+    ctDL = pd.crosstab(df['deposit'], df['loan'])
+    resultats_chi2DL = chi2_contingency(ctDL)
+    st.markdown("""
+    **- Test KI-deux** :
+    
+    Résultat statistique : `{}`
+    
+    Résultat p_valeur : `{}`
+
+    #### 💬 Interprétation 
+    Le test nous montre qu'il y a une relation entre les deux variables, car la valeur de la p-valeur est inférieur à 0,05.
+
+    Notre jeu de données a une répartition déséquilibrée sur cette variable, **86.5%** des clients n'ont pas de prêt personnel contre **13.5%**     qui en ont un.
+    
+    Le graphique ci-dessus nous montre que les clients qui ont un prêt personnel ont tendance à ne pas souscrire au dépôt à terme **(67%)**.
+    """.format(resultats_chi2DL[0], resultats_chi2DL[1]))
+
+    
+    
+#---------------------------------------
+# Balance
+elif graph_choisi_banc == 'Balance en fonction de Deposit' :
+
+# Graphique
+    st.markdown("#### 📊 Visualisation")
+# Filtrage des données
+    balance_filtre = df[(df['balance'] >= -2500) & (df['balance'] <= 15000)]
+
+# Création de la figure
+    fig = px.histogram(balance_filtre, x='balance', height=400, width=600)
+
+    # Mise en forme de la figure
+    fig.update_layout(
+        title_text= '<b style="color:black; font-size:90%;">Distribution de Balance en fonction de deposit </b>',
+        xaxis_title="Balance",
+        yaxis_title="Nombre de clients")
+
+# Affichage de la figure
+    st.plotly_chart(fig)
+
+    
+    x0 = df[(df['deposit'] == 'yes') & (df['balance'] >= -2500) & (df['balance'] <= 15000)]['balance']
+    x1 = df[(df['deposit'] == 'no') & (df['balance'] >= -2500) & (df['balance'] <= 15000)]['balance']
+    
+
+# Création de la figure
+    figdeposit = go.Figure()
+
+# Ajout des données
+    figdeposit.add_trace(go.Box(x=x0, name='deposit_yes', marker_color='lightblue'))
+    figdeposit.add_trace(go.Box(x=x1, name='deposit_no', marker_color='lightcoral'))
+
+# Mise en forme de la figure
+    figdeposit.update_layout(width=600, 
+                             height=400, 
+                             showlegend=False,
+                             title='',
+                             font_family='Arial',
+                             title_font_family='Arial',
+                             xaxis_title='Balance')
+    
+    figdeposit.update_traces(orientation='h')
+    st.plotly_chart(figdeposit)
+
+
+    
+
+# Statistique   
+    st.markdown("#### 📈 Statistique") 
+    resultBD = statsmodels.formula.api.ols('balance ~ deposit', data=df).fit()
+    tableBD = statsmodels.api.stats.anova_lm(resultBD)
+    
+    st.markdown("""
+    **-Test ANOVA** : PR(>F) : `{}`
+    
+    #### 💬 Interprétation 
+    Le test nous montre qu'il y a une relation entre les deux variables
+
+    Sur ces graphiques, nous avons décidé de restreindre les valeurs des abscisses **(balance)** afin de leur donner plus de clarté. La     distribution de balance est très écrasée à cause de valeurs extrêmes très grandes (maximum est égal à 81204).
+    En visualisant les graphiques Boîtes à moustache ci-dessus, on peut voir que les clients qui souscrivent au dépôt à terme ont un solde moyen    plus élevé que ceux qui ne souscrivent pas.
+    """.format(tableBD['PR(>F)']['deposit']))
+
+            
+            
+    with st.expander(label="Autres tests", expanded=False):
+        col1,col2,col3=st.columns(3)
+        with col1:
+            ctLH = pd.crosstab(df['loan'], df['housing'])
+            resultats_chi2LH = chi2_contingency(ctLH)
+            st.write("Test KI-deux housing/loan :")
+            st.write("Résultat statistique :",resultats_chi2LH[0])
+            st.write("Résultat p_valeur :",resultats_chi2LH[1])
+        with col2:
+            ctBH = pd.crosstab(df['balance'], df['housing'])
+            resultats_chi2BH = chi2_contingency(ctBH)
+            st.write("Test KI-deux housing/balance :")
+            st.write("Résultat statistique :",resultats_chi2BH[0])
+            st.write("Résultat p_valeur :",resultats_chi2BH[1])
+        with col3:
+            resultBL = statsmodels.formula.api.ols('balance ~ loan', data=df).fit()
+            tableBL = statsmodels.api.stats.anova_lm(resultBL)
+            st.write("Test ANOVA balance/loan :")
+            st.write("PR(>F) :",tableBL['PR(>F)']['loan'])
+            st.write("   ")
+            st.write("Ces variables sont toutes liées entre elles, cependant elles apportent chacune des informations bien différentes les unes des autres il est donc pertinent de toutes les garder dans le jeu de données.")
+    #--

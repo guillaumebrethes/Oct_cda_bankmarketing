@@ -12,6 +12,10 @@ st.set_page_config(
 )
 
 st.title("Présentation des données")
+
+# bouton de basculement vers page précédente
+if st.button("◀️\u2003🏠 Contexte"):
+    st.switch_page("pages/1_🏠_Contexte.py")
 st.write("---")
 
 # Texte introductif
@@ -35,11 +39,11 @@ st.write(
     "*(solde moyen du compte, prêt immobilier en cours, autres prêts en cours)*"
     )
 st.write(
-         "Vous pouvez visualiser les premières lignes de celui-ci:"
+         "Vous pouvez visualiser les lignes que vous désirez ci-dessous:"
          )
 
-
-# Afficher le conteneur expansible
+# ------------------------------------------------------------------------------------------------
+# Afficher le conteneur expansible 
 with st.expander(label="Contenu du Dataset", expanded=False):
     
     # Diviser l'espace en deux colonnes
@@ -69,6 +73,36 @@ with st.expander(label="Contenu du Dataset", expanded=False):
     selected_df = df.iloc[start_row:end_row]
     st.dataframe(selected_df)
     
+# ------------------------------------------------------------------------------------------------
+# Affichage des doublons 
+st.write("---")
+st.write(
+         "Vous pouvez  les doublons et les valeurs manquantes ci-dessous:"
+         )
 
+# Diviser la page en deux colonnes
+col1, col2 = st.columns(2)
 
+# Expander pour les doublons
+with col1.expander(label="Afficher les doublons", expanded=False):
+    st.write(df.duplicated().sum())
+    st.write("   ")
 
+# Expander pour les valeurs manquantes
+with col2.expander(label="Afficher les valeurs manquantes", expanded=False):
+    st.dataframe(df.isna().sum())
+
+# ------------------------------------------------------------------------------------------------
+# Variable cible 
+st.write("---")
+url_page_exploration = "Streamlit/pages/3_🔍_Exploration.py"
+st.markdown("La variable cible **`deposit`** est une valeur boolééne, qui réprésente la validation `1` ou non `0` du client du produit bancaire appelé **dépôt à terme**. \n\n Ce produit est souscrit\npar le client qui dépose une somme d'argent à la banque, qui sera bloquée sur une période données générant des intérets. Dans le jeu de\ndonnées elle se répartie en deux valeurs **'Yes et No'**.\n\n La page *Exploration des données* se concentre sur l'explotation des données dans leur ensemble.")
+
+# ------------------------------------------------------------------------------------------------
+# Tableau explicatif des variables  
+st.write("---")
+st.markdown("Vous avez la possibilité d'afficher les variables préssente dans notre jeux de données avec leur description et leur type.")
+
+# bouton de basculement de page 
+if st.button("▶️\u2003🔍 Exploration des données"):
+    st.switch_page("pages/3_🔍_Exploration.py")

@@ -391,22 +391,56 @@ elif graph_choisi_banc == 'Balance en fonction de Deposit' :
 # Graphique
     st.markdown("#### 📊 Visualisation")
     
-    balance_min = -2500
-    balance_max = 15000
-    nbins = 100
-    
+    # Définition des valeurs initiales
+    balance_min_default = -2500
+    balance_max_default = 15000
+    nbins_default = 100
+
+    # Définition du slider pour la plage de valeurs de balance
+    balance_range = st.slider("Plage de valeurs pour balance", 
+                          min_value=-5000, 
+                          max_value=20000, 
+                          value=(balance_min_default, balance_max_default))
+
+    # Extraction des valeurs min et max de la plage
+    balance_min = balance_range[0]
+    balance_max = balance_range[1]
+
+    # Définition du slider pour nbins
+    nbins = st.slider("Nombre de bacs (bins)", min_value=10, max_value=200, value=nbins_default)
+
+    # Filtrage des données en fonction de la plage de valeurs
     balance_filtre = df[(df['balance'] >= balance_min) & (df['balance'] <= balance_max)]
 
+    # Création du graphique
     fig = px.histogram(balance_filtre, 
-                       x='balance',
-                       color='deposit', 
-                       marginal='box', 
-                       hover_data=df.columns, 
-                       color_discrete_map={'yes': 'lightblue', 'no': 'lightcoral'}, 
-                       nbins= nbins)
+                   x='balance',
+                   color='deposit', 
+                   marginal='box', 
+                   hover_data=df.columns, 
+                   color_discrete_map={'yes': 'lightblue', 'no': 'lightcoral'}, 
+                   nbins=nbins)
     fig.update_layout(yaxis_title="Nombre de clients")
-    
+
+    # Affichage du graphique
     st.plotly_chart(fig)
+    
+    # Couleur bulle slider
+    st.markdown("""
+    <style>
+    .st-emotion-cache-1vzeuhh {background-color: black;}
+    .st-dw {
+    background: linear-gradient(to right, rgba(151, 166, 195, 0.25) 0%,
+    rgba(151, 166, 195, 0.25) 10%, 
+    rgb(0, 104, 201) 10%, 
+    rgb(9, 171, 59) 80%, 
+    rgba(151, 166, 195, 0.25) 80%, 
+    rgba(151, 166, 195, 0.25) 100%);}
+    </style>
+    """, unsafe_allow_html=True)
+
+
+
     
 # Statistique   
     st.markdown("#### 📈 Statistique") 
@@ -425,25 +459,25 @@ elif graph_choisi_banc == 'Balance en fonction de Deposit' :
 
             
             
-    with st.expander(label="Autres tests", expanded=False):
-        col1,col2,col3=st.columns(3)
-        with col1:
-            ctLH = pd.crosstab(df['loan'], df['housing'])
-            resultats_chi2LH = chi2_contingency(ctLH)
-            st.write("Test KI-deux housing/loan :")
-            st.write("Résultat statistique :",resultats_chi2LH[0])
-            st.write("Résultat p_valeur :",resultats_chi2LH[1])
-        with col2:
-            ctBH = pd.crosstab(df['balance'], df['housing'])
-            resultats_chi2BH = chi2_contingency(ctBH)
-            st.write("Test KI-deux housing/balance :")
-            st.write("Résultat statistique :",resultats_chi2BH[0])
-            st.write("Résultat p_valeur :",resultats_chi2BH[1])
-        with col3:
-            resultBL = statsmodels.formula.api.ols('balance ~ loan', data=df).fit()
-            tableBL = statsmodels.api.stats.anova_lm(resultBL)
-            st.write("Test ANOVA balance/loan :")
-            st.write("PR(>F) :",tableBL['PR(>F)']['loan'])
-            st.write("   ")
-            st.write("Ces variables sont toutes liées entre elles, cependant elles apportent chacune des informations bien différentes les unes des autres il est donc pertinent de toutes les garder dans le jeu de données.")
+with st.expander(label="Autres tests", expanded=False):
+    col1,col2,col3=st.columns(3)
+    with col1:
+        ctLH = pd.crosstab(df['loan'], df['housing'])
+        resultats_chi2LH = chi2_contingency(ctLH)
+        st.write("Test KI-deux housing/loan :")
+        st.write("Résultat statistique :",resultats_chi2LH[0])
+        st.write("Résultat p_valeur :",resultats_chi2LH[1])
+    with col2:
+        ctBH = pd.crosstab(df['balance'], df['housing'])
+        resultats_chi2BH = chi2_contingency(ctBH)
+        st.write("Test KI-deux housing/balance :")
+        st.write("Résultat statistique :",resultats_chi2BH[0])
+        st.write("Résultat p_valeur :",resultats_chi2BH[1])
+    with col3:
+        resultBL = statsmodels.formula.api.ols('balance ~ loan', data=df).fit()
+        tableBL = statsmodels.api.stats.anova_lm(resultBL)
+        st.write("Test ANOVA balance/loan :")
+        st.write("PR(>F) :",tableBL['PR(>F)']['loan'])
+        st.write("   ")
+        st.write("Ces variables sont toutes liées entre elles, cependant elles apportent chacune des informations bien différentes les unes des autres il est donc pertinent de toutes les garder dans le jeu de données.")
     #--

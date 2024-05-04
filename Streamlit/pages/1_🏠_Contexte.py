@@ -1,4 +1,4 @@
-import streamlit as st 
+import streamlit as st  # type: ignore
 
 # Page
 st.set_page_config(
@@ -19,7 +19,8 @@ st.image(url_image_contexte,
          use_column_width='always', 
          output_format='auto')
 
+# ------------------------------------------------------------------------------------------------
 # bouton de basculement vers page suivante 
 st.write("---")
-if st.button("▶️\u2003📖 Présentation des données"):
-    st.switch_page("pages/2_📖_Presentation_des_données.py")
+if st.button("▶️\u2003📖 Présentation - Exploration"):
+    st.switch_page("pages/2_📖_Presentation_-_Exploration.py")

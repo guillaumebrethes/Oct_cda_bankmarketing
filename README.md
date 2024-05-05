@@ -12,3 +12,15 @@ This project focuses on analyzing marketing data in a service-oriented context.
 It involves **visually and statistically** exploring factors influencing whether a bank client subscribes to a 'term deposit.' 
 Following the visual analysis, machine learning techniques will be applied to predict client subscriptions. 
 Model interpretability will then be used to explain individual subscription likelihood. This interpretability is essential for the project conclusion.
+
+
+
+
+
+To do : 
+pip install scikit-learn==1.2.2
+pip install joblib
+pip install seaborn 
+pip install streamlit-shap
+pip install shap
+

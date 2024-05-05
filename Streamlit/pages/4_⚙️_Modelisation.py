@@ -10,7 +10,8 @@ import plotly.graph_objects as go # type: ignore
 # Page
 st.set_page_config(
     page_title="Bank Marketing",
-    page_icon="⚙️" 
+    page_icon="⚙️", 
+    layout="wide" 
 )
 
 st.title("Modélisation")
@@ -35,6 +36,7 @@ X_test_copie = pd.read_csv("Split_csv/3_bank_X_test_copie.csv",index_col=0)
 shap_values_gbc = np.load('Shap/shap_values_gbc.npy')
 shap_values_rfc = np.load('Shap/shap_values_rfc.npy')
 
+st.write(shap_values_rfc.shape)
 
 # importations des modèles optimisés à interpréter
 gbc_after = joblib.load("Models/model_gbc_after")
@@ -60,21 +62,65 @@ with st.expander("Cliquez ici pour en savoir plus sur la méthode SHAP"):
     """, unsafe_allow_html=True)
 st.write("---")
 
-#---------------------------------------
+#----------------------------------------------------------------------------------------------------------------------
 #On propose de voir la page en fonction du modèle séléctionné gbc_after ou rfc_after
 
 # Sélection du modèle via liste déroulante
 model_choice = st.selectbox(
-    '**Sélectionner un modèle**',
-    ['Gradiant Boosting Classifier', 'Random Forest Classifier'])
+    label='**Sélectionner un modèle pour afficher les 10 plus importantes variables**',
+    options=['Gradiant Boosting Classifier', 'Random Forest Classifier'], 
+    index = None, 
+    placeholder= "Modèle . . .", 
+    help= "Le chargement peut prendre entre 20 et 30 secondes")
 
 # Chargement des valeurs SHAP et explainer en fonction du modèle sélectionné
 model = gbc_after if model_choice == 'Gradiant Boosting Classifier' else rfc_after
 
 shap_values = shap_values_gbc if model_choice == 'Gradiant Boosting Classifier' else shap_values_rfc
 
-expected_value = shap.TreeExplainer(gbc_after).expected_value \
-    if model_choice == 'Gradiant Boosting Classifier'\
-        else shap.TreeExplainer(rfc_after).expected_value[1]
+expected_value = shap.TreeExplainer(gbc_after).expected_value
 
-#---------------------------------------
+if model_choice == 'Gradiant Boosting Classifier':
+    explainer = shap.TreeExplainer(gbc_after)
+    expected_value = explainer.expected_value
+else:
+    explainer = shap.TreeExplainer(rfc_after)
+    expected_value = explainer.expected_value[1]
+
+shap_values = explainer.shap_values(X_test)
+plt.figure() 
+
+shap.summary_plot(shap_values, 
+                  X_test, 
+                  plot_type="bar", 
+                  max_display=10, 
+                  show=False)
+
+st.pyplot(plt.gcf(), use_container_width=True)
+st.markdown(
+    """
+    L'axe des X représente la moyenne des valeurs SHAP absolues pour chaque variable, indiquant l'importance moyenne de chaque variable sur la prédiction du modèle. **duration est la variable qui influence le plus la prédiction du modèle (moyenne de 1.2)**
+    """
+    )
+
+st.write("---")
+
+#--------------------------------------------------------------------------------------------------------------
+
+# Utilisation d'un extender pour montrer le Graphique d'importance des variables     
+with st.expander("🔍 **Impact des variables dans la décision du modèle**"):
+    plt.figure() 
+    shap.summary_plot(shap_values, 
+                      X_test, 
+                      max_display=10, show=False)
+    
+    st.pyplot(plt.gcf(), use_container_width=True)
+    st.markdown("""
+Dans ce graphique, l'axe des x représente la valeur SHAP et l'axe des y représente les variables explicatives (ici le TOP 10). 
+
+Chaque point du graphique correspond à une valeur SHAP pour une prédiction et une variable explicative. La couleur rouge signifie une valeur plus élevée de la variable explicative. Le bleu signifie une valeur faible de cette dernière. Nous pouvons avoir une idée générale de la directionnalité de l'impact des variables en fonction de la distribution des points rouges et bleus.
+
+On peut lire que plus la valeur de **duration** est grande (le temps de l'appel long), plus l'impact sur la prédiction de souscription du dépôt à terme est positif  et inversement plus **duration** est faible, plus l'impact sur la prédiction est négatif. Une valeur importante de **poutcome_success** (client avait souscrit à un dépôt à terme auparavant) a un impact positif sur la souscription du dépôt à terme. 
+
+Une valeur plus grande de **housing** (le client a un prêt immobilier) a un impact négatif sur la prédiction de la souscription du dépôt et inversement une valeur faible ( le client n’a pas de prêt immobilier) a un effet positif sur la prédiction de la souscription du dépôt.
+""")

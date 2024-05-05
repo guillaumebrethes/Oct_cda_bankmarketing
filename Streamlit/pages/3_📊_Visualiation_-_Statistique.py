@@ -16,7 +16,8 @@ df = pd.read_csv("/Users/gub/Documents/Privé/Formations/DataScientest/Data_pro
 # Page
 st.set_page_config(
     page_title="Bank Marketing",
-    page_icon="🔍" 
+    page_icon="🔍", 
+    layout="wide", 
 )
 
 st.title("Exploration du jeu de données")
@@ -68,13 +69,14 @@ st.write("### Caractéristiques socio-démographiques des clients ###")
 
 # Selection du graphique à afficher
 st.write("   ")
-graph_choisi_socio = st.selectbox(label="Sélectionner les variables à étudier", 
-                            options=["Age en fonction de Deposit",
-                                     "Job en fonction de Deposit",
-                                     "Marital en fonction de Deposit",
-                                     "Education en fonction de Deposit"],
-                            index=None, 
-                            placeholder=". . .")
+graph_choisi_socio = st.selectbox(
+    label="Sélectionner les variables à étudier", 
+    options=["Age en fonction de Deposit",
+             "Job en fonction de Deposit",
+             "Marital en fonction de Deposit",
+             "Education en fonction de Deposit"],
+    index=None, 
+    placeholder=". . .")
 
 #---------------------------------------
 # Age 

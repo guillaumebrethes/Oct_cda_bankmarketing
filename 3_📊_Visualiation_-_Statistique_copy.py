@@ -23,7 +23,7 @@ st.title("Exploration du jeu de données")
 
 if st.button("◀️\u2003📖 Présentation - Exploration"):
     st.switch_page("pages/2_📖_Presentation_-_Exploration.py")
-st.write("---")
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 
 st.markdown("""
 Dans ce chapitre nous allons étudier plus en profondeur notre jeu de données.
@@ -38,8 +38,7 @@ Nous allons aborder l'étude selon 2 axes principaux :
 #--------------------------------------------------------------------------------------------
 # Affichage de la repartition de la variable Deposit en camembert 
 #--------------------------------------------------------------------------------------------
-st.write("---")
-st.write("### Visualisation de la variable cible ###")
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)st.write("### Visualisation de la variable cible ###")
 
 a = df.groupby(['deposit'],
         as_index= False)['age'].count().rename(columns= {'age':'Count'})
@@ -63,8 +62,7 @@ st.write("A completer")
 #--------------------------------------------------------------------------------------------
 # Affichage des caractéristiques socio démographiques des clients
 #--------------------------------------------------------------------------------------------
-st.write("---")
-st.write("### Caractéristiques socio-démographiques des clients ###")
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)st.write("### Caractéristiques socio-démographiques des clients ###")
 
 # Selection du graphique à afficher
 st.write("   ")
@@ -275,8 +273,7 @@ elif graph_choisi_socio == 'Education en fonction de Deposit' :
 #--------------------------------------------------------------------------------------------
 # Affichage des caractéristiques bancaires des clients
 #--------------------------------------------------------------------------------------------
-st.write("---")
-st.write("### Caractéristiques bancaires des clients ###")
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)st.write("### Caractéristiques bancaires des clients ###")
 
 graph_choisi_banc = st.selectbox(label="Selectionner les variables à étudier", 
                                  options=["Default en fonction de Deposit",

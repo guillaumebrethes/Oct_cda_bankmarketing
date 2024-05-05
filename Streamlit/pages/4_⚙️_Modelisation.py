@@ -18,8 +18,7 @@ st.title("Modélisation")
 
 if st.button("◀️\u2003📊 Visualiation - Statistique"):
     st.switch_page("pages/3_📊_Visualiation_-_Statistique.py")
-st.write("---")
-
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.markdown(
     """ 
     Introduction à ecrire 
@@ -41,7 +40,7 @@ gbc_after = joblib.load("Models/model_gbc_after")
 rfc_after = joblib.load("Models/model_rfc_after")
 # --------------------------------------------------------------------------------------------
 
-st.write("---")
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.write("### Interprétation des Modèles avec la méthode SHAP ###")
 # st.markdown('<h1 style="font-size: 30px;">Interprétation des Modèles avec la méthode SHAP</h1>', unsafe_allow_html=True)
 
@@ -49,8 +48,9 @@ st.write("### Interprétation des Modèles avec la méthode SHAP ###")
 #Création d'un expander pour expliquer la méthode Shap
 
 with st.expander("Cliquez ici pour en savoir plus sur la méthode SHAP"):
+
     st.markdown("""
-    <div>
+    <div class="explain_shap">
         La méthode SHAP (SHapley Additive exPlanations) repose sur les valeurs de Shapley, une méthode issue de la théorie des jeux coopératifs, pour attribuer à chaque caractéristique (ou variable) une importance en fonction de sa contribution à la prédiction.
         <br><br>
         SHAP est une méthode qui explique comment les prédictions individuelles sont effectuées par un modèle d'apprentissage automatique. Elle déconstruit une prédiction en une somme de contributions (valeurs SHAP) de chacune des variables d'entrée du modèle.
@@ -58,8 +58,8 @@ with st.expander("Cliquez ici pour en savoir plus sur la méthode SHAP"):
         À noter que SHAP indique ce que fait le modèle dans le contexte des données sur lesquelles il a été formé. Il ne révèle pas nécessairement la véritable relation entre les variables et les résultats dans le monde réel.
     </div>
     """, unsafe_allow_html=True)
-st.write("---")
-
+    
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 #----------------------------------------------------------------------------------------------------------------------
 #On propose de voir la page en fonction du modèle séléctionné gbc_after ou rfc_after
 
@@ -217,6 +217,15 @@ if model_choice:
 
 # ------------------------------------------------------------------------------------------------
 # bouton de basculement de page 
-st.write("---")
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 if st.button("▶️\u2003 ✅ Interpretation"):
     st.switch_page("pages/5_✅_Interpretation.py")
+    
+
+# ------------------------------------------------------------------------------------------------
+# CSS 
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+local_css("Streamlit/styles.css")

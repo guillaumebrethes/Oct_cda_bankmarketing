@@ -1,0 +1,10 @@
+/* styles.css */
+
+/* ligne de séparation */
+.my_custom_hr {
+    border-top: 2px solid #f00; /* Couleur rouge */
+}
+
+.explain_shap {
+    background-color: rgb(227, 133, 133);
+}

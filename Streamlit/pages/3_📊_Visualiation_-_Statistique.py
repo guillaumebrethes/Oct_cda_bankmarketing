@@ -23,8 +23,7 @@ st.title("Exploration du jeu de données")
 
 if st.button("◀️\u2003📖 Présentation - Exploration"):
     st.switch_page("pages/2_📖_Presentation_-_Exploration.py")
-st.write("---")
-
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.markdown("""
 Dans ce chapitre nous allons étudier plus en profondeur notre jeu de données.
 
@@ -38,7 +37,7 @@ Nous allons aborder l'étude selon 2 axes principaux :
 #--------------------------------------------------------------------------------------------
 # Affichage de la repartition de la variable Deposit en camembert 
 #--------------------------------------------------------------------------------------------
-st.write("---")
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.write("### Visualisation de la variable cible ###")
 
 a = df.groupby(['deposit'],
@@ -63,7 +62,7 @@ st.write("A completer")
 #--------------------------------------------------------------------------------------------
 # Affichage des caractéristiques socio démographiques des clients
 #--------------------------------------------------------------------------------------------
-st.write("---")
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.write("### Caractéristiques socio-démographiques des clients ###")
 
 # Selection du graphique à afficher
@@ -276,7 +275,7 @@ elif graph_choisi_socio == 'Education en fonction de Deposit' :
 #--------------------------------------------------------------------------------------------
 # Affichage des caractéristiques bancaires des clients
 #--------------------------------------------------------------------------------------------
-st.write("---")
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.write("### Caractéristiques bancaires des clients ###")
 
 graph_choisi_banc = st.selectbox(label="Selectionner les variables à étudier", 
@@ -430,13 +429,6 @@ elif graph_choisi_banc == 'Balance en fonction de Deposit' :
     st.markdown("""
     <style>
     .st-emotion-cache-1vzeuhh {background-color: black;}
-    .st-dw {
-    background: linear-gradient(to right, rgba(151, 166, 195, 0.25) 0%,
-    rgba(151, 166, 195, 0.25) 10%, 
-    rgb(0, 104, 201) 10%, 
-    rgb(9, 171, 59) 80%, 
-    rgba(151, 166, 195, 0.25) 80%, 
-    rgba(151, 166, 195, 0.25) 100%);}
     </style>
     """, unsafe_allow_html=True)
 
@@ -488,6 +480,15 @@ with st.expander(label="Autres tests", expanded=False):
     
     # ------------------------------------------------------------------------------------------------
 # bouton de basculement de page 
-st.write("---")
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 if st.button("▶️\u2003 ⚙️ Modelisation"):
     st.switch_page("pages/4_⚙️_Modelisation.py")
+    
+
+# ------------------------------------------------------------------------------------------------
+# CSS 
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+local_css("Streamlit/styles.css")

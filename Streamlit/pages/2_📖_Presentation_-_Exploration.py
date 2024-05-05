@@ -16,7 +16,7 @@ st.title("Présentation des données")
 # bouton de basculement vers page précédente
 if st.button("◀️\u2003🏠 Contexte"):
     st.switch_page("pages/1_🏠_Contexte.py")
-st.write("---")
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 
 # Texte introductif
 st.write(
@@ -44,7 +44,8 @@ st.write(
 
 # ------------------------------------------------------------------------------------------------
 # Afficher le conteneur expansible 
-with st.expander(label="Contenu du Dataset", expanded=False):
+with st.expander(label="Contenu du Dataset", 
+                 expanded=False):
     
     # Diviser l'espace en deux colonnes
     col1, col2 = st.columns(2)
@@ -73,9 +74,10 @@ with st.expander(label="Contenu du Dataset", expanded=False):
     selected_df = df.iloc[start_row:end_row]
     st.dataframe(selected_df)
     
+    
 # ------------------------------------------------------------------------------------------------
 # Affichage des doublons 
-st.write("---")
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.write(
          "Vous pouvez afficher les doublons et les valeurs manquantes ci-dessous:"
          )
@@ -94,12 +96,12 @@ with col2.expander(label="Afficher les valeurs manquantes", expanded=False):
 
 # ------------------------------------------------------------------------------------------------
 # Variable cible 
-st.write("---")
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.markdown("La variable cible **`deposit`** est une valeur boolééne, qui réprésente la validation `1` ou non `0` du client du produit bancaire appelé **dépôt à terme**. \n\n Ce produit est souscrit\npar le client qui dépose une somme d'argent à la banque, qui sera bloquée sur une période données générant des intérets. Dans le jeu de\ndonnées elle se répartie en deux valeurs **'Yes et No'**.\n\n La page *Exploration des données* se concentre sur l'explotation des données dans leur ensemble.")
 
 # ------------------------------------------------------------------------------------------------
 # Tableau explicatif des variables  
-st.write("---")
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.markdown("Vous avez la possibilité d'afficher les variables préssente dans notre jeux de données avec leur description et leur type.")
 
 with st.expander(label="Afficher le tableau des variables", expanded=False):
@@ -131,7 +133,7 @@ with st.expander(label="Afficher le tableau des variables", expanded=False):
 
 # ------------------------------------------------------------------------------------------------
 # Gestion des valeurs manquantes
-st.write("---")
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.markdown("L'exploration des données nous a permis d'identifer que nous n'avons pas de valeur manquante. Par contre nous possèdons des valeurs qui ne nous parraisent pas exploitable en l'état")
 
 
@@ -154,21 +156,19 @@ with st.expander(label="Afficher le tableau des valeurs non désirés", expanded
 
 st.markdown("Nous allons donc procéder à la suppression des **«unknown»** des modalités des varibles `job` et `education`, car elles représentent un volume minime de notre jeu de données (respectivement 1% et 4%).\n\n Les variables `pdays` et `previous` decrivent la même chose, nous décidons donc de garder qu’une seule variable `pdays`. Cette dernière nous apporte une information en plus; le nombre de jours écoulés depuis le dernier contact. \n\n Pour la variable `poutcome`, nous décidons de regrouper les 2 modalités unknown et other sous une même modalité commune (unknown), car il se peut que cela nous apporte une information supplémentaire lors de nos futures exploitations.\n\n La variable `contact` qui a un grand nombre d’inconnues n’a aucun enjeux métier, elle est donc supprimée.")
 
-
-
-
-
-
-
-
-
-
-
-
 # ------------------------------------------------------------------------------------------------
 # bouton de basculement de page 
-st.write("---")
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 if st.button("▶️\u2003📊 Visualiation - Statistique"):
     st.switch_page("pages/3_📊_Visualiation_-_Statistique.py")
     
+    
+    
+# ------------------------------------------------------------------------------------------------
+# CSS 
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+local_css("Streamlit/styles.css")
 

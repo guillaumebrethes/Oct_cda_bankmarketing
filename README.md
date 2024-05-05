@@ -17,10 +17,10 @@ Model interpretability will then be used to explain individual subscription like
 
 
 
-To do : 
-pip install scikit-learn==1.2.2
-pip install joblib
-pip install seaborn 
-pip install streamlit-shap
-pip install shap
+To do :
+* pip install scikit-learn==1.2.2
+* pip install joblib
+* pip install seaborn 
+* pip install streamlit-shap
+* pip install shap
 

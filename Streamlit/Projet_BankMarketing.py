@@ -15,7 +15,7 @@ import scipy.stats as stats
 from scipy.stats import chi2_contingency
 
 # Chargement du fichier de données
-df = pd.read_csv("bank.csv")
+df = pd.read_csv("Streamlit/bank.csv")
 
 # Mise en place d'un titre pour le projet
 #st.markdown("<h3 style='font-size: 20px; font-family: Arial, sans-serif;'>Prédiction du succès d'une campagne de Marketing d'une banque</h>", unsafe_allow=True)
@@ -23,7 +23,7 @@ st.write("Prédiction du succès d'une campagne de Marketing d'une banque")
 
 # Configuration de la barre 
 with st.sidebar:
-    st.image("Sommaire.jpg")
+    st.image("Streamlit/Sommaire.jpg")
     st.title("Sommaire")
     pages = ["Contexte du projet",
              "Présentation des données",
@@ -55,7 +55,7 @@ if page == pages[0] :
     st.write("Nous avons à disposition les données de la dernière campagne télémarketing d'une banque pour la ")
     st.write("vente de dépôts à terme. Ce jeu de données est en accès libre sur la plateforme Kaggle.com.")
     st.write("L'objectif est de prédire quels clients sont les plus susceptibles de souscrire au dépôt à terme.")
-    st.image("banque.jpg")
+    st.image("Streamlit/banque.jpg")
 
 # Traitement de la page 1
 elif page == pages[1]:
@@ -91,7 +91,7 @@ elif page == pages[1]:
 elif page == pages[2]:
     st.write("### Exploration du jeu de données ###")
     st.write("2.1 Gestion des valeurs non désirées ou manquantes")
-    st.image("Valeurs_non_desirees.jpg")
+    st.image("Streamlit/Valeurs_non_desirees.jpg")
 
 # Traitement de la page 3
 elif page == pages[3]:

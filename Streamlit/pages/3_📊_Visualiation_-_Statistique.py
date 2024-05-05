@@ -482,3 +482,12 @@ with st.expander(label="Autres tests", expanded=False):
         st.write("   ")
         st.write("Ces variables sont toutes liées entre elles, cependant elles apportent chacune des informations bien différentes les unes des autres il est donc pertinent de toutes les garder dans le jeu de données.")
     #--
+    
+    
+    
+    
+    # ------------------------------------------------------------------------------------------------
+# bouton de basculement de page 
+st.write("---")
+if st.button("▶️\u2003 ⚙️ Modelisation"):
+    st.switch_page("pages/4_⚙️_Modelisation.py")

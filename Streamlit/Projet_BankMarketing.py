@@ -16,7 +16,8 @@ from scipy.stats import chi2_contingency
 
 # Chargement du fichier de données
 df = pd.read_csv("Streamlit/bank.csv")
-
+ 
+# 
 # Mise en place d'un titre pour le projet
 #st.markdown("<h3 style='font-size: 20px; font-family: Arial, sans-serif;'>Prédiction du succès d'une campagne de Marketing d'une banque</h>", unsafe_allow=True)
 st.write("Prédiction du succès d'une campagne de Marketing d'une banque")

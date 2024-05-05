@@ -11,7 +11,7 @@ import plotly.graph_objects as go # type: ignore
 st.set_page_config(
     page_title="Bank Marketing",
     page_icon="⚙️", 
-    layout="wide" 
+    #layout="wide" 
 )
 
 st.title("Modélisation")

@@ -8,8 +8,7 @@ df = pd.read_csv("/Users/gub/Documents/Privé/Formations/DataScientest/Data_pro
 # Page
 st.set_page_config(
     page_title="Bank Marketing",
-    page_icon="📖",
-    layout="wide", 
+    page_icon="📖"
 )
 
 st.title("Présentation des données")

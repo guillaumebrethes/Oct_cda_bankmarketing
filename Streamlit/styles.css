@@ -8,3 +8,37 @@
 .explain_shap {
     background-color: rgb(227, 133, 133);
 }
+
+/* Titre de page */
+.custom-title {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 5px 0;
+    color: blue;  /* Laurent */
+    text-decoration: underline; /* Laurent */
+}
+
+/* css créer par laurant */
+.orange-bold { 
+    color: #EA6B14; 
+    font-weight: bold; 
+}
+
+/* gestion de la page texte */
+.st-emotion-cache-gh2jqd {
+    /* width: 100%;
+    padding: 6% 20% 20%;
+    max-width: 120rem; */
+    background-color: #f6f7f7;
+}
+
+/* gestion de la page totale */
+.st-emotion-cache-uf99v8 {
+    background-color: #73eded;
+}
+
+/* gestion de la page de gauche */
+.st-emotion-cache-6qob1r {
+    background-color: #9ced73;
+}

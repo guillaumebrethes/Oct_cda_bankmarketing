@@ -1,12 +1,21 @@
 import streamlit as st  # type: ignore
 
+
+
 # Page
 st.set_page_config(
     page_title="Bank Marketing",
     page_icon="🏠",
 )
 
-st.title("Contexte du projet")
+# CSS - - - - - 
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+local_css("Streamlit/styles.css")
+# - - - - - - - 
+
+st.markdown('<h1 class="custom-title">Contexte du projet</h1>', unsafe_allow_html=True)
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 
 
@@ -28,9 +37,3 @@ if st.button("▶️\u2003📖 Présentation - Exploration"):
     st.switch_page("pages/2_📖_Presentation_-_Exploration.py")
     
 # ------------------------------------------------------------------------------------------------
-# CSS 
-def local_css(file_name):
-    with open(file_name) as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-
-local_css("Streamlit/styles.css")

@@ -14,7 +14,15 @@ st.set_page_config(
     #layout="wide" 
 )
 
-st.title("Modélisation")
+# CSS - - - - - 
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+local_css("Streamlit/styles.css")
+# - - - - - - - 
+
+# titre
+st.markdown('<h1 class="custom-title">Modélisation</h1>', unsafe_allow_html=True)
 
 if st.button("◀️\u2003📊 Visualiation - Statistique"):
     st.switch_page("pages/3_📊_Visualiation_-_Statistique.py")
@@ -223,9 +231,3 @@ if st.button("▶️\u2003 ✅ Interpretation"):
     
 
 # ------------------------------------------------------------------------------------------------
-# CSS 
-def local_css(file_name):
-    with open(file_name) as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-
-local_css("Streamlit/styles.css")

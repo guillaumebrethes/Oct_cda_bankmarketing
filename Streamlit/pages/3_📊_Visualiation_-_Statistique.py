@@ -19,7 +19,16 @@ st.set_page_config(
     page_icon="🔍"
 )
 
-st.title("Exploration du jeu de données")
+# CSS - - - - - 
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+local_css("Streamlit/styles.css")
+# - - - - - - - 
+
+# titre
+st.markdown('<h1 class="custom-title">Exploration du jeu de données</h1>', unsafe_allow_html=True)
+
 
 if st.button("◀️\u2003📖 Présentation - Exploration"):
     st.switch_page("pages/2_📖_Presentation_-_Exploration.py")
@@ -486,9 +495,3 @@ if st.button("▶️\u2003 ⚙️ Modelisation"):
     
 
 # ------------------------------------------------------------------------------------------------
-# CSS 
-def local_css(file_name):
-    with open(file_name) as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-
-local_css("Streamlit/styles.css")

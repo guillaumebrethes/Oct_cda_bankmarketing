@@ -11,7 +11,16 @@ st.set_page_config(
     page_icon="📖"
 )
 
-st.title("Présentation des données")
+# CSS - - - - - 
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+local_css("Streamlit/styles.css")
+# - - - - - - - 
+
+# titre 
+st.markdown('<h1 class="custom-title">Présentation des données</h1>', unsafe_allow_html=True)
+
 
 # bouton de basculement vers page précédente
 if st.button("◀️\u2003🏠 Contexte"):
@@ -165,10 +174,5 @@ if st.button("▶️\u2003📊 Visualiation - Statistique"):
     
     
 # ------------------------------------------------------------------------------------------------
-# CSS 
-def local_css(file_name):
-    with open(file_name) as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
-local_css("Streamlit/styles.css")
 

@@ -16,7 +16,7 @@ df = pd.read_csv("/Users/gub/Documents/Privé/Formations/DataScientest/Data_pro
 # Page
 st.set_page_config(
     page_title="Bank Marketing",
-    page_icon="🔍"
+    page_icon="📊"
 )
 
 # CSS - - - - - 
@@ -27,12 +27,14 @@ local_css("Streamlit/styles.css")
 # - - - - - - - 
 
 # titre
-st.markdown('<h1 class="custom-title">Exploration du jeu de données</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="custom-title">Visualisation et Statistique</h1>', unsafe_allow_html=True)
 
 
 if st.button("◀️\u2003📖 Présentation - Exploration"):
-    st.switch_page("pages/2_📖_Presentation_-_Exploration.py")
+    st.switch_page("pages/2_📖_Présentation_-_Exploration.py")
+    
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
+
 st.markdown("""
 Dans ce chapitre nous allons étudier plus en profondeur notre jeu de données.
 

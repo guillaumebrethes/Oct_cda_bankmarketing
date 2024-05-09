@@ -34,6 +34,6 @@ st.image(url_image_contexte,
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 
 if st.button("▶️\u2003📖 Présentation - Exploration"):
-    st.switch_page("pages/2_📖_Presentation_-_Exploration.py")
+    st.switch_page("pages/2_📖_Présentation_-_Exploration.py")
     
 # ------------------------------------------------------------------------------------------------

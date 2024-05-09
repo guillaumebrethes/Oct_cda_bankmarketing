@@ -14,7 +14,7 @@ local_css("Streamlit/styles.css")
 
 st.markdown('<h1 class="custom-title">Interprétation des résultats</h1>', unsafe_allow_html=True)
 
-if st.button("◀️\u2003📊 Modélisation"):
+if st.button("◀️\u2003⚙️ Modélisation"):
     st.switch_page("pages/4_⚙️_Modelisation.py")
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 

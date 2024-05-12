@@ -1,11 +1,16 @@
 import streamlit as st  # type: ignore
+from streamlit_shap import st_shap # type: ignore
 import pandas as pd
 import numpy as np
 import joblib # type: ignore
 import matplotlib.pyplot as plt
-from streamlit_shap import st_shap # type: ignore
+import seaborn as sns # type: ignore
 import shap # type: ignore
 import plotly.graph_objects as go # type: ignore
+import plotly.express as px # type: ignore
+from sklearn.metrics import classification_report # type: ignore
+from sklearn.metrics import confusion_matrix # type: ignore
+from sklearn.metrics import roc_curve, roc_auc_score # type: ignore
 
 # Page
 st.set_page_config(
@@ -21,11 +26,12 @@ def local_css(file_name):
 local_css("styles.css")
 # - - - - - - - 
 
-# titre
 st.markdown('<h1 class="custom-title">Modélisation</h1>', unsafe_allow_html=True)
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
+
 
 if st.button("◀️\u2003📊 Visualiation - Statistique"):
-    st.switch_page("pages/3_📊_Visualiation_-_Statistique.py")
+    st.switch_page("pages/3_Visualiation_-_Statistique.py")
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.markdown(
     """ 
@@ -34,9 +40,14 @@ st.markdown(
     )
 
 # --------------------------------------------------------------------------------------------
+
+df=pd.read_csv("bank.csv")
+dfclean=pd.read_csv("2_bank_clean.csv")
 # Importation des jeux d'entrainement et de test sauvegardés  depuis google collab
 X_test = pd.read_csv("Split_csv/3_bank_X_test.csv",index_col=0)
 y_test = pd.read_csv("Split_csv/3_bank_y_test.csv",index_col=0)
+X_train= pd.read_csv("Split_csv/3_bank_X_train.csv",index_col=0)
+y_train= pd.read_csv("Split_csv/3_bank_y_train.csv",index_col=0)
 X_test_copie = pd.read_csv("Split_csv/3_bank_X_test_copie.csv",index_col=0)
 
 #Importation des valeurs Shap (que la classe 1 pour rfc)
@@ -46,188 +57,290 @@ shap_values_rfc = np.load('Shap/shap_values_rfc.npy')
 # importations des modèles optimisés à interpréter
 gbc_after = joblib.load("Models/model_gbc_after")
 rfc_after = joblib.load("Models/model_rfc_after")
+
+# importations des modèlesavant optimisation
+gbc_before = joblib.load("Models/model_gbc_before")
+rfc_before = joblib.load("Models/model_rfc_before")
 # --------------------------------------------------------------------------------------------
 
+# PRE PROCESSING
+
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
-st.write("### Interprétation des Modèles avec la méthode SHAP ###")
+st.markdown("<h3 class='titre-h3'>Pré Processing</h3>", unsafe_allow_html=True)
+
+
+with st.expander("Cliquez ici pour en savoir plus sur la Transformation du Data Frame pour l'étape de machine Learning"):
+    
+# Gestion des Outliers
+    if st.checkbox("Gestion des Valeur Extrêmes", key='checkbox1'):
+        st.markdown("Il n'y a aucune valeurs extrêmes qui semblent abérentes dans nos variables qualitatives. Cependant nous devons traiter les valeurs extrêmes pour éviter les perturbations sur nos modèles de Machine Learning.")
+        st.markdown(
+            """ 
+            **Nous appliquons la méthode <span class="orange-bold">"IQR"</span> :**  
+            on supprime les valeurs qui se trouvent en dehors de l'intervalle "Inter Quartile Range", c'est à dire :
+            - les valeurs supérieures à [ Q3 + 1.5 x (Q3 - Q1)]
+            - les valeurs inférieures à [Q1 - 1.5 x (Q3 - Q1)]  
+            avec Q1 le premier quartile et Q3 le troisième quartile
+            """, unsafe_allow_html=True)
+        
+        st.write("Nous avons supprimé", round((100 - (dfclean.shape[0] * 100) / df.shape[0]), 2), "*%* des lignes de notre dataframe initial", "cependant il nous reste encore :", dfclean.shape[0], "lignes (clients) pour le reste des études")
+
+
+    # Définition de la fonction plot_box pour afficher les boxplots d'une seule colonne
+        def plot_box(df, 
+                     column, 
+                     fig_width=600, 
+                     fig_height=300, 
+                     color='skyblue', 
+                     title_suffix=""):
+            fig = px.box(df, 
+                         x=column, 
+                         hover_data=df.columns)
+            fig.update_layout(title=f"<b>Boxplot de '{column}' {title_suffix}</b>", width=fig_width, height=fig_height)
+            fig.update_traces(marker=dict(color=color))
+            st.plotly_chart(fig)
+
+   # Liste des variables pour lesquelles on veut voir les boxplots avec une option initiale
+        variables = ['age', 'balance', 'duration', 'campaign']
+        selected_var = st.selectbox(
+            "Choisir une variable pour afficher les boîtes à moustache avant et après suppression des valeurs extrêmes:", 
+            options = variables,
+            index = None,
+            placeholder = "Variables . . .")
+
+    # Vérification si une variable a été sélectionnée et n'est pas l'option initiale
+        if selected_var :
+            plot_box(df, 
+                     selected_var, 
+                     fig_width=600, 
+                     fig_height=300, 
+                     color='lightcoral', 
+                     title_suffix="avant supression des valeurs extrêmes")
+    
+            plot_box(dfclean, 
+                     selected_var, 
+                     fig_width=600, 
+                     fig_height=300, 
+                     color='lightcoral', 
+                     title_suffix="après suppression des valeurs extrêmes")
+
+# Encodage des variables
+    if st.checkbox("Encodage des variables", key='checkbox2'):
+   
+        # Variables Binaires 
+        st.markdown("<strong class='type-de-variables'>🗂️ Variables Binaires</strong>", unsafe_allow_html=True)
+        st.markdown(
+            """
+            - Les modalités **`yes`** et **`no`** des variables **`default`**, **`housing`**, **`loan`**, **`deposit`** seront donc remplacées respectivement par **`1`** et **`0`**
+            - Nous avons arbitrairement remplacé la modalité **`-1`** de **`pdays`**  par **`0`**, pour faciliter la compréhension d'un point de vue métier. En effet, si il n'y a pas eu de contact depuis la précédente campagne marketing, la valeur la plus adaptée semble être **`0`**
+            """
+            )
+        
+        # Variables ordinales 
+        st.markdown("<strong class='type-de-variables'>🗂️ Variables ordinales</strong>", unsafe_allow_html=True)
+
+        st.markdown("- La seule variable ordinale dans le jeu de données est **`education`**. Nous décidons de remplacer les modalités : **`primary`**, **`secondary`** et **`tertiary`**, respectivement par **`0`**, **`1`** et **`2`**.")
+        
+        # Variables non-ordinales
+        st.markdown("<strong class='type-de-variables'>🗂️ Variables non-ordinales</strong>", unsafe_allow_html=True)
+        st.markdown(
+            """
+            - Pour les variables **`job`**, **`marital`**, **`month`**, **`poutcome`** qui sont non-ordinales, nous allons appliquer la méthode **`get.dummies()`**, pour effectuer une dichotomisation.
+            - Avant cela, nous avons bien évidemment séparé notre variable cible **`y (deposit)`** de notre jeu de données **`X`**. Nous avons réalisé un split entre le jeu d'entraînement **` X_TRAIN (80%)`** et le jeu de test **`X_TEST (20%)`**. 
+            """
+            )
+
+        st.write("➡️ la taille de notre df initial est de :",df.shape)
+        st.write("➡️ la taille de notre df X_train est de :", X_train.shape)
+        st.write("➡️ la taille de notre df X_test est de :", X_test.shape)
+    
+
+# Standardisation des données   
+    if st.checkbox("Standardisation des données", key='checkbox3'):
+        lien_standartScaller = "https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html"
+    
+        st.markdown(
+            """
+            Nous utilisons <a href="{lien_standartScaller}" class="orange-bold">StandartScaler()</a>, qui nous permet de réaliser une mise à l'échelle en soustrayant la moyenne et en divisant par l'écart type, de sorte que les valeurs aient une moyenne de zéro, et un écart type de 1.
+            """, unsafe_allow_html=True)
+
+        
+
+#--------------------------------------------------------------------------------------------
+  
+  
+#MODELISATION
+
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
+st.markdown("<h3 class='titre-h3'>Sélection et Optimisation des Modèles</h3>", unsafe_allow_html=True)
+
 # st.markdown('<h1 style="font-size: 30px;">Interprétation des Modèles avec la méthode SHAP</h1>', unsafe_allow_html=True)
 
-#---------------------------------------
-#Création d'un expander pour expliquer la méthode Shap
+#Synthèse des étapes de modélisation et présentation du tableau de résultats
+with st.expander("Cliquez ici pour en savoir plus sur les étapes de la modélisation"):
 
-with st.expander("Cliquez ici pour en savoir plus sur la méthode SHAP"):
+    st.markdown(
+        """<strong class='type-de-variables'>📝 Problématique</strong> 
+                
+Ce projet s'apparente à une tâche de machine learning appelée **`la classification supervisée`**. La classification consiste à prédire si un client (**la variable à prédire**) acceptera (**classe 1**) ou non (**classe 0**) de souscrire à un dépôt bancaire en utilisant les données disponibles sur ce client.
+""", unsafe_allow_html=True)
+
+    st.markdown(
+        """ <strong class='type-de-variables'>📏 Métrique</strong>
+
+Nous choisissons le **`Recall de la classe 1`** comme métrique clé dans **l'évaluation** de nos modèles.  
+↗️ Maximiser les **Vrais positifs** (identifications correctes de clients potentiels qui sont très susceptibles de souscrire à l'offre)  
+↘️ Minimiser les **Faux Négatifs** (le nombre de ces clients potentiels que le modèle pourrait manquer)
+""", unsafe_allow_html=True)
+
+    st.markdown(
+        """ <strong class='type-de-variables'>⚙️ Méthode d'optimisation des hyperparamètres</strong>
+          
+Nous utilisons **`GridSearchCV()`** pour trouver la combinaison optimale des paramètres des modèles.
+""", unsafe_allow_html=True)
 
     st.markdown("""
-    <div class="explain_shap">
-        La méthode SHAP (SHapley Additive exPlanations) repose sur les valeurs de Shapley, une méthode issue de la théorie des jeux coopératifs, pour attribuer à chaque caractéristique (ou variable) une importance en fonction de sa contribution à la prédiction.
-        <br><br>
-        SHAP est une méthode qui explique comment les prédictions individuelles sont effectuées par un modèle d'apprentissage automatique. Elle déconstruit une prédiction en une somme de contributions (valeurs SHAP) de chacune des variables d'entrée du modèle.
-        <br><br>
-        À noter que SHAP indique ce que fait le modèle dans le contexte des données sur lesquelles il a été formé. Il ne révèle pas nécessairement la véritable relation entre les variables et les résultats dans le monde réel.
-    </div>
-    """, unsafe_allow_html=True)
-    
+✔️ **Modèles entrainés et optimisés**  
+  1️⃣ Random Forest Classifier<br>
+  2️⃣ Gradiant Boosting Classifier<br>
+  3️⃣ Decision Tree Classifier<br>
+  4️⃣ SVM Classifier<br>
+  5️⃣ Regression<br>
+
+""", unsafe_allow_html=True)
+
+#On présente le tableau des résultats avec un bouton qui s'ouvre ou se ferme
+    # Initialisation de la variable d'état si elle n'existe pas déjà
+    if 'show_image' not in st.session_state:
+        st.session_state.show_image = False
+
+    # Définition du bouton
+    if st.button("🎯 Tableau de résultats de la modélisation", key='button4'):
+        # Toggle de l'état
+        st.session_state.show_image = not st.session_state.show_image
+
+    # Condition pour afficher ou non l'image
+    if st.session_state.show_image:
+        st.image("Resultats_modelisation.jpg", width=500, use_column_width='always', output_format='auto')
+
+
+#ANALYSE PAPPROFONDIE DES TOPS MODELES
+
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
-#----------------------------------------------------------------------------------------------------------------------
+st.markdown("<h3 class='titre-h3'>Analyse Approfondie des Top Modèles</h3>", unsafe_allow_html=True)
+
+# st.markdown('<h1 style="font-size: 30px;">Interprétation des Modèles avec la méthode SHAP</h1>', unsafe_allow_html=True)
+
 #On propose de voir la page en fonction du modèle séléctionné gbc_after ou rfc_after
 
 st.markdown("""
-Bienvenue dans cette application d'analyse des modèles ! Vous pouvez sélectionner un modèle dans la liste déroulante ci-dessous pour visualiser les 10 variables les plus importantes.
+Bienvenue dans cette application d'analyse des modèles ! Vous pouvez sélectionner un modèle dans la liste déroulante ci-dessous pour découvrir ce modèle en détails.
 """)
 
 # Sélection du modèle via liste déroulante
 model_choice = st.selectbox(
-    label='',
-    options=['Gradiant Boosting Classifier', 'Random Forest Classifier'], 
-    index=None, 
-    placeholder="Modèle . . .")
+    label='Sélectionner un modèle',
+    options=['...','Gradiant Boosting Classifier', 'Random Forest Classifier'], 
+    index=None,  # Assurez-vous également que l'index est valide, 0 pour sélectionner le premier élément
+    placeholder="Modèle . . .")  # Masquer le label tout en restant accessible
 # ------------------------------------------
 
-# Graphique d'importance des variables
-if model_choice:
-    model = gbc_after if model_choice == 'Gradiant Boosting Classifier' else rfc_after
-    shap_values = shap_values_gbc if model_choice == 'Gradiant Boosting Classifier' else shap_values_rfc
-    expected_value = shap.TreeExplainer(gbc_after).expected_value \
-    if model_choice == 'Gradiant Boosting Classifier'\
-        else shap.TreeExplainer(rfc_after).expected_value[1]
-
-    plt.figure() 
-    shap.summary_plot(shap_values, 
-                      X_test, 
-                      plot_type="bar", 
-                      max_display=10, 
-                      show=False)
-    st.pyplot(plt.gcf(), use_container_width=True)
-
-    st.markdown(
-        """
-        L'axe des X représente la moyenne des valeurs SHAP absolues pour chaque variable, indiquant l'importance moyenne de chaque variable sur la prédiction du modèle. **duration est la variable qui influence le plus la prédiction du modèle**
-        """)
-
-# Utilisation d'un extender pour montrer le Graphique d'importance des variables     
-    with st.expander("🔍 **Impact des variables dans la décision du modèle**"):
-        plt.figure() 
-        shap.summary_plot(shap_values, 
-                          X_test, 
-                          max_display=10, 
-                          show=False)
-        st.pyplot(plt.gcf(), use_container_width=True)
-         
-        st.markdown(
-            """
-            Dans ce graphique, l'axe des x représente la valeur SHAP et l'axe des y représente les variables explicatives (ici le TOP 10). Chaque point du graphique correspond à une valeur SHAP pour une prédiction et une variable explicative. 
-            
-            La couleur rouge signifie une valeur plus élevée de la variable explicative. Le bleu signifie une valeur faible de cette dernière. Nous pouvons avoir une idée générale de la directionnalité de l'impact des variables en fonction de la distribution des points rouges et bleus. 
-            
-            
-            On peut lire que plus la valeur de **duration** est grande (le temps de l'appel long), plus l'impact sur la prédiction de souscription du dépôt à terme est positif  et inversement plus **duration** est faible, plus l'impact sur la prédiction est négatif.
-            
-            Une valeur importante de **poutcome_success** (client avait souscrit à un dépôt à terme auparavant) a un impact positif sur la souscription du dépôt à terme.
-            
-            Une valeur plus grande de de **housing** (le client a un prêt immobilier) a un impact négatif sur la prédiction de la souscription du dépôt et inversement une valeur faible ( le client n’a pas de prêt immobilier) a un effet positif sur la prédiction de la souscription du dépôt.
-            """
-            )
-
-#---------------------------------------
-# Utilisation d'un extender pour montrer les predictions et shap values par individu
-    with st.expander("🔍 **Visualisation des prédictions individuelles du jeux de données Test**"):
+if model_choice != '...':
     
-    # Choix de l'index par l'utilisateur 743 est cool
-        index_to_show = st.slider('Choisissez l\'index de l\'observation à visualiser', 0, len(X_test) - 1, 0, 
-                              help = "les cases cochées représentent le mois, le job, le poutcome du client selectionné")
-
-    # Créer un objet Explanationx
-        shap_values_instance = shap.Explanation(
-            values=shap_values[index_to_show],
-            base_values=expected_value,
-            data=X_test.iloc[index_to_show]  # Inclure les données d'entrée pour plus de contexte dans le plot
-    )
-
-    #Afficher les informations du DataFrame pour cet infividu
-        st.dataframe(X_test_copie.iloc[[index_to_show]])
-
-    # Afficher (y_test) ---
-        if y_test.iloc[index_to_show].item()== 1:
-            deposit = "**a souscrit au dépôt à terme**"
-        else:
-            deposit = "**n'a pas souscrit au dépôt à terme**"
-        st.markdown(f"**Décision réelle du client** : Cet individu {deposit}")
-    # ---
     
-    # Afficher ((y_pred) ---
-        y_pred = model.predict(X_test.iloc[[index_to_show]])
-        if y_pred.item() == 1:
-           deposit_pred = " **souscrira au dépôt à terme**"
-        else:
-            deposit_pred = "**ne souscrira pas au dépôt à terme**"
-        st.markdown(f"**Prédiction du modèle** : Ce modèle prédit que cet individu {deposit_pred}")
-    # ---
-
-    #Afficher les valeurs shap (top 10 pour cet individu)
-        st.markdown(' **Waterfall plot** pour cet individu : ')
-    
-    # Create a figure 
-        fig, ax = plt.subplots()
-
-    # Generate the waterfall plot on the created figure
-        shap.plots.waterfall(shap_values_instance, max_display=10, show=False)  
-
-    # Display the plot in Streamlit
-        st.pyplot(fig)
-
-   #Explications de lecture du graphique
-   
-        st.markdown(
-        """
-        La structure en cascade illustre comment les contributions additives des variables explicatives, qu'elles soient positives ou négatives, s'accumulent à partir d'une valeur de base (E[f(X)]). 
+    if model_choice:
+        model_after = gbc_after if model_choice == 'Gradiant Boosting Classifier' else rfc_after
+        model_before = gbc_before if model_choice == 'Gradiant Boosting Classifier' else rfc_before
         
-        Cette accumulation met en évidence comment chaque variable explicative construit progressivement la prédiction finale du modèle, notée f(x).
-        """
-        ) 
-
-#---------------------------------------
-
-    with st.expander("🔍 **Impact des variables dans la prédiction en fonction de leur valeur**"):
-    
-        st.markdown("Grace au **Dependance plot** on peut visualiser et comprendre comment des valeurs spécifiques d'une variable influencent les prédictions du modèle.")
-   
-    # Case à cocher pour le  graphique
-        if st.checkbox("Dependance Plot **duration**", key='checkbox5'):
-            plt.figure()
-            shap.dependence_plot('duration', shap_values, X_test_copie, interaction_index=None)
-            st.pyplot(plt)
-            st.markdown("• On peut voir à partir de quelle valeur de **duration** l'impact sur la prédiction devient positif")
-        
-    # Case à cocher pour le  graphique
-        if st.checkbox("Dependance Plot **balance**", key='checkbox6'):
-            st.markdown("**balance** est le solde moyen annuel sur le compte courant")
-            plt.figure()
-            shap.dependence_plot('balance', shap_values, X_test_copie, interaction_index=None)
-            st.pyplot(plt)
-            st.markdown("• On peut voir à partir de quelle valeur de **balance** l'impact sur la prédiction devient positif")
-        
-    # Case à cocher pour le  graphique
-        if st.checkbox("Dependance Plot **age**", key='checkbox7'):
-            plt.figure()
-            shap.dependence_plot('age', shap_values, X_test_copie, interaction_index=None)
-            st.pyplot(plt)
-            st.markdown("• On peut voir les **ages** pour lesquels l'impact sur la prédiction est positif et ceux pour lesquels l'impact est négatif")
-        
-    # Case à cocher pour le  graphique
-        if st.checkbox("Dependance Plot **campaign**", key='checkbox8'):
-            st.markdown("**campaign** est le nombre de contacts effectués sur la campagne")
-            plt.figure()
-            shap.dependence_plot('campaign', shap_values, X_test_copie, interaction_index=None)
-            st.pyplot(plt)        
-            st.markdown("• On peut voir que s'il y a plus d'1 contact, **campaign** a un impact négatif sur la prévision")
+    #Présentation du modèle
+        if st.checkbox("Présentation du Modèle", key='checkbox8'):
             
+            st.markdown("under construction")
+            
+    #Performance du modèle       
+        if st.checkbox("Performance du Modèle avant et après Optimisation", key='checkbox9'):
+            st.markdown('under construction')
+            def display_model_performance(model, title):
+                st.header(title)
+            
+                # Affichage des scores
+                train_score = "{:.4f}".format(model.score(X_train, y_train))
+                test_score = "{:.4f}".format(model.score(X_test, y_test))
+                st.write(f"Score sur ensemble train: {train_score}")
+                st.write(f"Score sur ensemble test: {test_score}")
+        
+                # Prédiction et rapport de classification
+                y_pred = model.predict(X_test)
+                report = classification_report(y_test, y_pred)
+                st.code(f"Rapport de classification :\n{report}")
+        
+                # Calcul de la matrice de confusion
+                conf_matrix = confusion_matrix(y_test, y_pred)
+                fig, ax = plt.subplots(figsize=(4,3))
+                sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', cbar=False, ax=ax)
+                ax.set_title('Heatmap de la Matrice de Confusion')
+                ax.set_xlabel('Prédictions')
+                ax.set_ylabel('Véritables Classes')
+                st.pyplot(fig)
+        
+            # Création de deux colonnes pour les modèles
+            col1, col2 = st.columns(2)
+        
+        
+            # Affichage du modèle avant dans la première colonne
+            with col1:
+                display_model_performance(model_before, "Modèle Avant")
+        
+            # Affichage du modèle après dans la deuxième colonne
+            with col2:
+                display_model_performance(model_after, "Modèle Après")
+        
+        
+        
+        #Courbe ROC
+            # Prédire les scores de probabilité
+            y_scores_before = model_before.predict_proba(X_test)[:, 1]  # Score pour la classe positive
+            y_scores_after = model_after.predict_proba(X_test)[:, 1]
+        
+            # Calcul des courbes ROC
+            fpr_before, tpr_before, _ = roc_curve(y_test, y_scores_before)
+            fpr_after, tpr_after, _ = roc_curve(y_test, y_scores_after)
+        
+            # Tracer les courbes ROC
+            fig, ax = plt.subplots()
+            ax.plot(fpr_before, tpr_before, label=f'ROC Modèle Avant (AUC = {roc_auc_score(y_test, y_scores_before):.2f})')
+            ax.plot(fpr_after, tpr_after, label=f'ROC Modèle Après (AUC = {roc_auc_score(y_test, y_scores_after):.2f})')
+            ax.set_title('Comparaison des Courbes ROC')
+            ax.set_xlabel('Taux de Faux Positifs')
+            ax.set_ylabel('Taux de Vrais Positifs')
+            ax.legend(loc='lower right')
+            ax.grid(True)
+        
+            st.pyplot(fig)
+    
+    
+    #Interpretation du modèle     
+    
+        if st.checkbox("Interprétion du Modèle", key='checkbox10'):
+        # bouton Interpretation qui provoque un basculement de page sur le modèle sélectionné 
+            if st.button("✅ Interpréter avec SHAP"):
+                st.session_state['selected_model'] = model_choice
+                st.switch_page("pages/5_Interpretation.py")
+    
 
 
-# ------------------------------------------------------------------------------------------------
-# bouton de basculement de page 
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
-if st.button("▶️\u2003 ✅ Interpretation"):
-    st.switch_page("pages/5_✅_Interpretation.py")
-    
+
+
+#Si non porte confusion avec le bouton au dessus
+# if st.button("▶️\u2003 ✅ Interpretation"):
+#     st.switch_page("pages/5_Interpretation.py")
+
 
 # ------------------------------------------------------------------------------------------------
+# CSS 
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+local_css("styles.css")

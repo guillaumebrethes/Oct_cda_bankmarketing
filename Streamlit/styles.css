@@ -10,7 +10,7 @@
     background-color: rgb(227, 133, 133);
 }
 
-/* Titre de page */
+/* Titre de page principal */
 .custom-title {
     background-color: #f0f0f0;
     padding: 10px;
@@ -18,6 +18,18 @@
     margin: 5px 0;
     color: blue;  /* Laurent */
     text-decoration: underline; /* Laurent */
+}
+
+/* Sous titre page conclusion*/
+.titre-h3 {
+    color: blue;
+    text-decoration: underline;
+}
+
+/* Sous titre page modélisation*/
+.type-de-variables {
+    color: blue;
+    /* Add more styles as needed */
 }
 
 /* css créer par laurant */

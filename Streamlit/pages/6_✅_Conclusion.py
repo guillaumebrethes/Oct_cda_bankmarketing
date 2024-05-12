@@ -23,10 +23,6 @@ st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 # ------------------------------------------------------------------------------------------------
 
 st.markdown("""
-    <style>
-        /* Importation de la classe CSS pour les styles communs */
-        .orange-bold { color: #EA6B14; font-weight: bold; }
-    </style>
     <ul>
         <li>Au cours de ce projet, nous avons analysé les données issues de la récente campagne de télémarketing pour identifier les profils de clients les plus enclins à souscrire à des dépôts à terme. Cette démarche répond aux objectifs de la direction visant à accroître les bénéfices tout en minimisant les dépenses.</li><br>
         <li>Les modèles de machine learning que nous avons retenus, le <span class="orange-bold">Gradient Boost Classifier</span> et le <span class="orange-bold">Random Forest Classifier</span>, ont été adaptés pour maximiser le rappel de la classe 1. Ils ont démontré une <span class="orange-bold">amélioration notable</span> dans le ciblage des clients potentiels, avec un rappel de <span class="orange-bold">88,00 %</span> pour le <span class="orange-bold">Random Forest Classifier</span> et de <span class="orange-bold">86,09 %</span> pour le <span class="orange-bold">Gradient Boost Classifier</span>, réduisant ainsi efficacement le nombre de <span class="orange-bold">faux négatifs</span> et améliorant la performance de la campagne.</li><br>

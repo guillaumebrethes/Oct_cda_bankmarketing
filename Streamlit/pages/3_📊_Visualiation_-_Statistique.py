@@ -68,7 +68,11 @@ figdeposit = px.pie(a,
 figdeposit.update_traces(text=a['percent'], textposition='inside', textinfo='percent+label')
 st.plotly_chart(figdeposit)
 
-st.write("A completer")
+st.markdown(
+    """
+    La répartition des données concernant la variable cible <span class="orange-bold">deposit</span> est relativement équilibrée, ce qui représente un atout pour la modélisation.
+    """, unsafe_allow_html=True)
+
 
 #--------------------------------------------------------------------------------------------
 # Affichage des caractéristiques socio démographiques des clients

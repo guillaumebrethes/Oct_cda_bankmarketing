@@ -31,7 +31,7 @@ st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 
 
 if st.button("◀️\u2003📊 Visualiation - Statistique"):
-    st.switch_page("pages/3_Visualiation_-_Statistique.py")
+    st.switch_page("pages/3_📊_Visualiation_-_Statistique.py")
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.markdown(
     """ 

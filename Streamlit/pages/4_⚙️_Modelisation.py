@@ -224,12 +224,10 @@ Nous utilisons **`GridSearchCV()`** pour trouver la combinaison optimale des par
 
     # Condition pour afficher ou non l'image
     if st.session_state.show_image:
-# ------------------------------------------------------------------------------        
     # Afficher les lignes sélectionnées du DataFrame
         st.write(df_tableau_diff_analyse)
-# ------------------------------------------------------------------------------        
 
-
+# ----------------------------------------------------------------------
 #ANALYSE PAPPROFONDIE DES TOPS MODELES
 
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)

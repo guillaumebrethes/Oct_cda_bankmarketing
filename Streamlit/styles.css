@@ -14,7 +14,7 @@
 .custom-title {
     background-color: #f0f0f0;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 10px;
     margin: 5px 0;
     color: blue;  /* Laurent */
     text-decoration: underline; /* Laurent */
@@ -24,6 +24,9 @@
 .titre-h3 {
     color: blue;
     text-decoration: underline;
+    background-color: #e8e2de;
+    border-radius: 10px;
+    padding: 10px;
 }
 
 /* Sous titre page modélisation*/
@@ -33,6 +36,7 @@
 }
 
 /* css créer par laurant */
+/* des mots en gras */
 .orange-bold { 
     color: #EA6B14; 
     font-weight: bold; 
@@ -59,5 +63,21 @@
 /*bouton de pages*/
 .st-emotion-cache-7ym5gk:hover {
     background-color: black;
+    border-radius: 10px;
 }
 
+/*fond d'écran des expander*/
+.st-emotion-cache-1h9usn1{
+    background-color: rgb(236, 167, 167);
+    margin-top: 5px;
+}
+
+/*fond d'écran des selectbox*/
+.st-b7{
+    background-color: rgb(231, 118, 118);
+}
+
+/*coulleur du texte*/
+.st-emotion-cache-1r4qj8v{
+    color:#0b0808
+}

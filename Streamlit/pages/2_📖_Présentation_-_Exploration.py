@@ -4,6 +4,7 @@ import time
 
 # Variables 
 df = pd.read_csv("bank.csv")
+df_table_description = pd.read_csv("table_description.csv")
 
 # Page
 st.set_page_config(
@@ -115,30 +116,7 @@ st.markdown("Vous avez la possibilité d'afficher les variables préssente dans 
 
 with st.expander(label="Afficher le tableau des variables", expanded=False):
     st.markdown("### Tableau des variables")
-
-    table_description = """
-        | Colonne    | Description                                                              | Qualitative / Quantitative | Type     |
-        |------------|--------------------------------------------------------------------------|----------------------------|----------|
-        | age        | Âge du client                                                            |Quantitative - catégorielles|int64     |
-        | job        | Type d'emploi du client                                                  |Qualitative - continues     |object    |
-        | marital    | Statut marital du client                                                 |Qualitative - continues     |object    |
-        | education  | Niveau d'éducation du client                                             |Qualitative - continues     |object    |
-        | default    | Le client à t'il un défaut sur un crédit                                 |Qualitative - continues     |object    |
-        | balance    | Solde moyen annuel sur le compte                                         |Quantitative - catégorielles|int64     |
-        | housing    | Le client à t'il un prêt immobilier                                      |Qualitative - continues     |object    |
-        | loan       | Le client à un prêt personnel en cour personnel                          |Qualitative - continues     |object    |
-        | contact    | Type de communication pour contacter le client                           |Qualitative - continues     |object    |
-        | day        | Jour du mois pour le dernier contact                                     |Qualitative - continues     |int64     |
-        | month      | Mois de la dernière communication                                        |Qualitative - continues     |object    |
-        | duration   | Durée de la dernière communication en secondes                           |Quantitative - catégorielles|int64     |
-        | campaign   | Nombre de contacts effectués lors de cette campagne                      |Quantitative - catégorielles|int64     |
-        | pdays      | Nombre de jours écoulés depuis le dernier contact de la dernière campagne|Quantitative - catégorielles|int64     |
-        | previous   | Nombre de contacts effectués avant cette campagne                        |Quantitative - catégorielles|int64     |
-        | poutcome   | Résultat de la dernière campagne de marketing précédente                 |Qualitative - continues     |object    |
-        | deposit    | Le client à t'il souscrit à un dépôt à terme                             |Qualitative - continues     |object    |
-        """
-
-    st.markdown(table_description, unsafe_allow_html=True)
+    st.write(df_table_description)
 
 # ------------------------------------------------------------------------------------------------
 # Gestion des valeurs manquantes

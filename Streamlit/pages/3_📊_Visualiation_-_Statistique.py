@@ -11,7 +11,7 @@ from scipy.stats import chi2_contingency # type: ignore
 
 
 # Variables 
-df = pd.read_csv("/Users/gub/Documents/Privé/Formations/DataScientest/Data_projet/Oct_cda_bankmarketing/Streamlit/pages/bank.csv")
+df = pd.read_csv("bank.csv")
 
 # Page
 st.set_page_config(

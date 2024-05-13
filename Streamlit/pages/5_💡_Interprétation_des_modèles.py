@@ -10,7 +10,7 @@ import plotly.graph_objects as go # type: ignore
 # Page
 st.set_page_config(
     page_title="Bank Marketing",
-    page_icon="⚙️", 
+    page_icon="💡", 
     #layout="wide" 
 )
 

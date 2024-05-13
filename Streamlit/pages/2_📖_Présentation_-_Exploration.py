@@ -3,7 +3,7 @@ import pandas as pd # type: ignore
 import time
 
 # Variables 
-df = pd.read_csv("/Users/gub/Documents/Privé/Formations/DataScientest/Data_projet/Oct_cda_bankmarketing/Streamlit/pages/bank.csv")
+df = pd.read_csv("bank.csv")
 
 # Page
 st.set_page_config(
@@ -24,7 +24,7 @@ st.markdown('<h1 class="custom-title">Présentation des données</h1>', unsafe_a
 
 # bouton de basculement vers page précédente
 if st.button("◀️\u2003🏠 Contexte"):
-    st.switch_page("pages/1_🏠_Contexte.py")
+    st.switch_page("🏠_Projet_BankMarketing.py")
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 
 # Texte introductif

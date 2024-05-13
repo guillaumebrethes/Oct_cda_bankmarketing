@@ -55,3 +55,11 @@ st.markdown("""
         <li>Ce projet, réalisé dans le cadre de notre formation en tant que data analysts, représente une opportunité significative pour mettre en pratique nos compétences et approfondir notre compréhension des techniques de machine learning. Grâce à cette expérience, nous nous sentons désormais plus confiants pour aborder des problématiques similaires dans nos futures missions professionnelles.</li>
     </ul>
     """, unsafe_allow_html=True)
+
+
+# ------------------------------------------------------------------------------------------------
+# bouton de basculement de page 
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
+if st.button("▶️\u2003 💬 Contacts"):
+    st.switch_page("pages/9_💬_Contacts.py")
+# ------------------------------------------------------------------------------------------------

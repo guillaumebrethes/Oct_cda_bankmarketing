@@ -35,21 +35,23 @@ if st.button("◀️\u2003📖 Présentation - Exploration"):
     
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 
-st.markdown("""
-Dans ce chapitre nous allons étudier plus en profondeur notre jeu de données.
+st.markdown(
+    """
+    Dans ce chapitre nous allons étudier plus en profondeur notre jeu de données.
 
-Nous allons aborder l'étude selon 2 axes principaux :
+    Nous allons aborder l'étude selon 2 axes principaux :
 
-- **La visualisation** à l'aide de graphiques pertinents\n\n
-- **L'étude statistique** pour corroborer notre exploration et visualisation
-""")
+    - **La visualisation** à l'aide de graphiques pertinents\n\n
+    - **L'étude statistique** pour corroborer notre exploration et visualisation
+    """)
 
 
 #--------------------------------------------------------------------------------------------
 # Affichage de la repartition de la variable Deposit en camembert 
 #--------------------------------------------------------------------------------------------
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
-st.write("### Visualisation de la variable cible ###")
+st.markdown("<h3 class='titre-h3'>Visualisation de la variable cible</h3>", unsafe_allow_html=True)
+
 
 a = df.groupby(['deposit'],
         as_index= False)['age'].count().rename(columns= {'age':'Count'})
@@ -78,7 +80,7 @@ st.markdown(
 # Affichage des caractéristiques socio démographiques des clients
 #--------------------------------------------------------------------------------------------
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
-st.write("### Caractéristiques socio-démographiques des clients ###")
+st.markdown("<h3 class='titre-h3'>Caractéristiques socio-démographiques des clients</h3>", unsafe_allow_html=True)
 
 # Selection du graphique à afficher
 st.write("   ")
@@ -291,7 +293,8 @@ elif graph_choisi_socio == 'Education en fonction de Deposit' :
 # Affichage des caractéristiques bancaires des clients
 #--------------------------------------------------------------------------------------------
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
-st.write("### Caractéristiques bancaires des clients ###")
+st.markdown("<h3 class='titre-h3'>Caractéristiques bancaires des clients</h3>", unsafe_allow_html=True)
+
 
 graph_choisi_banc = st.selectbox(label="Selectionner les variables à étudier", 
                                  options=["Default en fonction de Deposit",
@@ -498,6 +501,4 @@ with st.expander(label="Autres tests", expanded=False):
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 if st.button("▶️\u2003 ⚙️ Modelisation"):
     st.switch_page("pages/4_⚙️_Modelisation.py")
-    
-
 # ------------------------------------------------------------------------------------------------

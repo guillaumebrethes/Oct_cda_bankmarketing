@@ -28,28 +28,22 @@ if st.button("◀️\u2003🏠 Contexte"):
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 
 # Texte introductif
-st.write(
-    "Nous avons un jeu de données qui se compose de **11 162 lignes et 17 colonnes**, il contient des "
-    "valeurs **numériques** ainsi que des valeurs textuelles."
-    )
-st.write(
-    "Dans ce jeu de données nous avons des informations sur les : "
-    )
-st.write(
-    "- caractéristiques **socio-démographiques** "
-    "*(âge, type d'emploi, situation familiale, niveau d'études)* "
-    )
-st.write(
-    "- caractéristiques **bancaires** des clients " 
-    "*(solde moyen du compte, prêt immobilier en cours, autres prêts en cours)*"
-    )
-st.write(
-    "- caractéristiques de la campagne tel que *(Durée du dernier appel, nombre de contacts avant la campagne* " 
-    "*(solde moyen du compte, prêt immobilier en cours, autres prêts en cours)*"
-    )
-st.write(
-         "Vous pouvez visualiser les lignes que vous désirez ci-dessous:"
-         )
+st.markdown(
+    """
+    Nous avons un jeu de données qui se compose de **11 162 lignes et 17 colonnes**, il contient des valeurs **numériques** ainsi que des valeurs textuelles.
+    Dans ce jeu de données nous avons des informations sur les :
+    - caractéristiques **socio-démographiques**
+    
+        *(âge, type d'emploi, situation familiale, niveau d'études)*
+    - caractéristiques **bancaires** des clients 
+        
+        *(solde moyen du compte, prêt immobilier en cours, autres prêts en cours)*
+    - caractéristiques de la campagne tel que *(Durée du dernier appel, nombre de contacts avant la campagne* 
+    
+        *(solde moyen du compte, prêt immobilier en cours, autres prêts en cours)*
+    
+    Vous pouvez visualiser les lignes que vous désirez ci-dessous:
+         """)
 
 # ------------------------------------------------------------------------------------------------
 # Afficher le conteneur expansible 
@@ -106,7 +100,13 @@ with col2.expander(label="Afficher les valeurs manquantes", expanded=False):
 # ------------------------------------------------------------------------------------------------
 # Variable cible 
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
-st.markdown("La variable cible **`deposit`** est une valeur boolééne, qui réprésente la validation `1` ou non `0` du client du produit bancaire appelé **dépôt à terme**. \n\n Ce produit est souscrit\npar le client qui dépose une somme d'argent à la banque, qui sera bloquée sur une période données générant des intérets. Dans le jeu de\ndonnées elle se répartie en deux valeurs **'Yes et No'**.\n\n La page *Exploration des données* se concentre sur l'explotation des données dans leur ensemble.")
+st.markdown(
+    """
+    La variable cible <span class="orange-bold">deposit</span> est une valeur boolééne, qui réprésente la validation <span class="orange-bold">1</span> ou non <span class="orange-bold">0</span> du client du produit bancaire appelé <span class="orange-bold">dépôt à terme</span>. 
+    
+    Ce produit est souscrit par le client qui dépose une somme d'argent à la banque, qui sera bloquée sur une période données générant des intérets. 
+    
+    Dans le jeu de données elle se répartie en deux valeurs <span class="orange-bold">Yes</span> et <span class="orange-bold">No</span>. La page *Exploration des données* se concentre sur l'explotation des données dans leur ensemble.""",unsafe_allow_html=True)
 
 # ------------------------------------------------------------------------------------------------
 # Tableau explicatif des variables  
@@ -163,7 +163,18 @@ with st.expander(label="Afficher le tableau des valeurs non désirés", expanded
 
     st.markdown(table_unknown, unsafe_allow_html=True)
 
-st.markdown("Nous allons donc procéder à la suppression des **«unknown»** des modalités des varibles `job` et `education`, car elles représentent un volume minime de notre jeu de données (respectivement 1% et 4%).\n\n Les variables `pdays` et `previous` decrivent la même chose, nous décidons donc de garder qu’une seule variable `pdays`. Cette dernière nous apporte une information en plus; le nombre de jours écoulés depuis le dernier contact. \n\n Pour la variable `poutcome`, nous décidons de regrouper les 2 modalités unknown et other sous une même modalité commune (unknown), car il se peut que cela nous apporte une information supplémentaire lors de nos futures exploitations.\n\n La variable `contact` qui a un grand nombre d’inconnues n’a aucun enjeux métier, elle est donc supprimée.")
+
+st.markdown(
+    """
+    Nous allons donc procéder à la suppression des <span class="orange-bold">**«unknown»**</span> des modalités des varibles <span class="orange-bold">job</span> et <span class="orange-bold">education</span>, car elles représentent un volume minime de notre jeu de données (respectivement 1% et 4%).
+
+    Les variables <span class="orange-bold">pdays</span> et <span class="orange-bold">previous</span> decrivent la même chose, nous décidons donc de garder qu’une seule variable <span class="orange-bold">pdays</span>. Cette dernière nous apporte une information en plus; le nombre de jours écoulés depuis le dernier contact.
+
+    Pour la variable <span class="orange-bold">poutcome</span>, nous décidons de regrouper les 2 modalités <span class="orange-bold">unknown</span> et <span class="orange-bold">other</span> sous une même modalité commune (<span class="orange-bold">unknown</span>), car il se peut que cela nous apporte une information supplémentaire lors de nos futures exploitations.
+
+    La variable <span class="orange-bold">contact</span> qui a un grand nombre d’inconnues n’a aucun enjeux métier, elle est donc supprimée.
+    """, unsafe_allow_html=True)
+
 
 # ------------------------------------------------------------------------------------------------
 # bouton de basculement de page 

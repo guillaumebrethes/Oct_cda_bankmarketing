@@ -12,6 +12,9 @@ from sklearn.metrics import classification_report # type: ignore
 from sklearn.metrics import confusion_matrix # type: ignore
 from sklearn.metrics import roc_curve, roc_auc_score # type: ignore
 
+# Variables 
+df_tableau_diff_analyse = pd.read_csv("Tableau_des_différentes_analyses.csv", sep=";")
+
 # Page
 st.set_page_config(
     page_title="Bank Marketing",
@@ -221,7 +224,10 @@ Nous utilisons **`GridSearchCV()`** pour trouver la combinaison optimale des par
 
     # Condition pour afficher ou non l'image
     if st.session_state.show_image:
-        st.image("Resultats_modelisation.jpg", width=500, use_column_width='always', output_format='auto')
+# ------------------------------------------------------------------------------        
+    # Afficher les lignes sélectionnées du DataFrame
+        st.write(df_tableau_diff_analyse)
+# ------------------------------------------------------------------------------        
 
 
 #ANALYSE PAPPROFONDIE DES TOPS MODELES

@@ -1,0 +1,11 @@
+Modules;Hyper parametres;% Score Train;% Score Test;Recall % class 0;Recall % class 1;Vrai Négatif [0,0];Faux Positif [0,1];Faux Négatif [1,0];Vrai Positif [1,1]
+Decision Tree Classifier;par défault;78.94;78.76;78.00;80.00;734;211;150;605
+Decision Tree Classifier;Personnalisé;81.78;81.52;78.00;86.00;740;205;109;646
+Gradient boost classifier;par défault;85.07;0.84;85.00;82.00;807;138;134;621
+Gradient boost classifier;Personnalisé;89.79;86.06;86.03;86.09;813;132;105;650
+Random Forest Classifier;par défault;75.92;75.11;91.00;55.00;864;81;342;413
+Random Forest Classifier;Personnalisé;87.65;84.82;82.00;88.00;779;166;92;663
+Regression;par défault;81.38;82.17;87.00;76.00;820;125;178;577
+Regression;Personnalisé;81.38;82.17;87.00;76.00;820;125;178;577
+SVM Classifier;par défault;86.53;83.35;85.00;81.00;803;142;141;614
+SVM Classifier;Personnalisé;86.73;84.00;83.07;85.17;785;160;112;643

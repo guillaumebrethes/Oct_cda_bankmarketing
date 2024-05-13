@@ -240,48 +240,48 @@ Bienvenue dans cette application d'analyse des modèles ! Vous pouvez sélection
 # Sélection du modèle via liste déroulante
 model_choice = st.selectbox(
     label='Sélectionner un modèle',
-    options=['...','Gradiant Boosting Classifier', 'Random Forest Classifier'], 
+    options=['Gradiant Boosting Classifier', 'Random Forest Classifier'], 
     index=None,  # Assurez-vous également que l'index est valide, 0 pour sélectionner le premier élément
     placeholder="Modèle . . .")  # Masquer le label tout en restant accessible
 # ------------------------------------------
 
-if model_choice != '...':
-    
-    
-    if model_choice:
-        model_after = gbc_after if model_choice == 'Gradiant Boosting Classifier' else rfc_after
-        model_before = gbc_before if model_choice == 'Gradiant Boosting Classifier' else rfc_before
+if model_choice:
+    model_after = gbc_after if model_choice == 'Gradiant Boosting Classifier' else rfc_after
+    model_before = gbc_before if model_choice == 'Gradiant Boosting Classifier' else rfc_before
         
     #Présentation du modèle
-        if st.checkbox("Présentation du Modèle", key='checkbox8'):
-            
-            st.markdown("under construction")
+    st.markdown("...................under construction..................;;")
             
     #Performance du modèle       
-        if st.checkbox("Performance du Modèle avant et après Optimisation", key='checkbox9'):
-            st.markdown('under construction')
-            def display_model_performance(model, title):
-                st.header(title)
+    if st.checkbox("Performance du Modèle avant et après Optimisation", key='checkbox9'):
+        st.markdown('under construction')
+        def display_model_performance(model, title):
+            st.header(title)
             
-                # Affichage des scores
-                train_score = "{:.4f}".format(model.score(X_train, y_train))
-                test_score = "{:.4f}".format(model.score(X_test, y_test))
-                st.write(f"Score sur ensemble train: {train_score}")
-                st.write(f"Score sur ensemble test: {test_score}")
+            # Affichage des scores
+            train_score = "{:.4f}".format(model.score(X_train, y_train))
+            test_score = "{:.4f}".format(model.score(X_test, y_test))
+            st.write(f"Score sur ensemble train: {train_score}")
+            st.write(f"Score sur ensemble test: {test_score}")
         
-                # Prédiction et rapport de classification
-                y_pred = model.predict(X_test)
-                report = classification_report(y_test, y_pred)
-                st.code(f"Rapport de classification :\n{report}")
+            # Prédiction et rapport de classification
+            y_pred = model.predict(X_test)
+            report = classification_report(y_test, y_pred)
+            st.code(f"Rapport de classification :\n{report}")
         
-                # Calcul de la matrice de confusion
-                conf_matrix = confusion_matrix(y_test, y_pred)
-                fig, ax = plt.subplots(figsize=(4,3))
-                sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', cbar=False, ax=ax)
-                ax.set_title('Heatmap de la Matrice de Confusion')
-                ax.set_xlabel('Prédictions')
-                ax.set_ylabel('Véritables Classes')
-                st.pyplot(fig)
+            # Calcul de la matrice de confusion
+            conf_matrix = confusion_matrix(y_test, y_pred)
+            fig, ax = plt.subplots(figsize=(4,3))
+            sns.heatmap(conf_matrix, 
+                        annot=True, 
+                        fmt='d', 
+                        cmap='Blues', 
+                        cbar=False, 
+                        ax=ax)
+            ax.set_title('Heatmap de la Matrice de Confusion')
+            ax.set_xlabel('Prédictions')
+            ax.set_ylabel('Véritables Classes')
+            st.pyplot(fig)
         
             # Création de deux colonnes pour les modèles
             col1, col2 = st.columns(2)
@@ -308,8 +308,12 @@ if model_choice != '...':
         
             # Tracer les courbes ROC
             fig, ax = plt.subplots()
-            ax.plot(fpr_before, tpr_before, label=f'ROC Modèle Avant (AUC = {roc_auc_score(y_test, y_scores_before):.2f})')
-            ax.plot(fpr_after, tpr_after, label=f'ROC Modèle Après (AUC = {roc_auc_score(y_test, y_scores_after):.2f})')
+            ax.plot(fpr_before, 
+                    tpr_before, 
+                    label=f'ROC Modèle Avant (AUC = {roc_auc_score(y_test, y_scores_before):.2f})')
+            ax.plot(fpr_after,
+                    tpr_after, 
+                    label=f'ROC Modèle Après (AUC = {roc_auc_score(y_test, y_scores_after):.2f})')
             ax.set_title('Comparaison des Courbes ROC')
             ax.set_xlabel('Taux de Faux Positifs')
             ax.set_ylabel('Taux de Vrais Positifs')
@@ -318,29 +322,11 @@ if model_choice != '...':
         
             st.pyplot(fig)
     
-    
-    #Interpretation du modèle     
-    
-        if st.checkbox("Interprétion du Modèle", key='checkbox10'):
-        # bouton Interpretation qui provoque un basculement de page sur le modèle sélectionné 
-            if st.button("✅ Interpréter avec SHAP"):
-                st.session_state['selected_model'] = model_choice
-                st.switch_page("pages/5_Interpretation.py")
-    
-
-
+# ------------------------------------------------------------------------------------------------
+# bouton de basculement de page 
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
-
-
-#Si non porte confusion avec le bouton au dessus
-# if st.button("▶️\u2003 ✅ Interpretation"):
-#     st.switch_page("pages/5_Interpretation.py")
-
+if st.button("▶️\u2003 💡 Interprétation_des_modèles"):
+    st.switch_page("pages/5_💡_Interprétation_des_modèles.py")
+    
 
 # ------------------------------------------------------------------------------------------------
-# CSS 
-def local_css(file_name):
-    with open(file_name) as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-
-local_css("styles.css")

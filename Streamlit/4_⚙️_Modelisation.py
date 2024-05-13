@@ -241,7 +241,6 @@ st.markdown("""
 Bienvenue dans cette application d'analyse des modèles ! Vous pouvez sélectionner un modèle dans la liste déroulante ci-dessous pour découvrir ce modèle en détails.
 """)
 
-
 # Sélection du modèle via liste déroulante
 model_choice = st.selectbox(
     label='Sélectionner un modèle',
@@ -250,39 +249,43 @@ model_choice = st.selectbox(
     placeholder="Modèle . . .")  # Masquer le label tout en restant accessible
 # ------------------------------------------
 
-        
 if model_choice:
-        model_after = gbc_after if model_choice == 'Gradiant Boosting Classifier' else rfc_after
-        model_before = gbc_before if model_choice == 'Gradiant Boosting Classifier' else rfc_before
- 
-            
-        st.markdown("under construction...........explication du modèle...........")
+    model_after = gbc_after if model_choice == 'Gradiant Boosting Classifier' else rfc_after
+    model_before = gbc_before if model_choice == 'Gradiant Boosting Classifier' else rfc_before
+        
+    #Présentation du modèle
+    st.markdown("...................under construction..................;;")
             
     #Performance du modèle       
-        if st.checkbox("Performance du Modèle avant et après Optimisation", key='checkbox9'):
-            st.markdown('under construction')
-            def display_model_performance(model, title):
-                st.header(title)
+    if st.checkbox("Performance du Modèle avant et après Optimisation", key='checkbox9'):
+        st.markdown('under construction')
+        def display_model_performance(model, title):
+            st.header(title)
             
-                # Affichage des scores
-                train_score = "{:.4f}".format(model.score(X_train, y_train))
-                test_score = "{:.4f}".format(model.score(X_test, y_test))
-                st.write(f"Score sur ensemble train: {train_score}")
-                st.write(f"Score sur ensemble test: {test_score}")
+            # Affichage des scores
+            train_score = "{:.4f}".format(model.score(X_train, y_train))
+            test_score = "{:.4f}".format(model.score(X_test, y_test))
+            st.write(f"Score sur ensemble train: {train_score}")
+            st.write(f"Score sur ensemble test: {test_score}")
         
-                # Prédiction et rapport de classification
-                y_pred = model.predict(X_test)
-                report = classification_report(y_test, y_pred)
-                st.code(f"Rapport de classification :\n{report}")
+            # Prédiction et rapport de classification
+            y_pred = model.predict(X_test)
+            report = classification_report(y_test, y_pred)
+            st.code(f"Rapport de classification :\n{report}")
         
-                # Calcul de la matrice de confusion
-                conf_matrix = confusion_matrix(y_test, y_pred)
-                fig, ax = plt.subplots(figsize=(4,3))
-                sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', cbar=False, ax=ax)
-                ax.set_title('Heatmap de la Matrice de Confusion')
-                ax.set_xlabel('Prédictions')
-                ax.set_ylabel('Véritables Classes')
-                st.pyplot(fig)
+            # Calcul de la matrice de confusion
+            conf_matrix = confusion_matrix(y_test, y_pred)
+            fig, ax = plt.subplots(figsize=(4,3))
+            sns.heatmap(conf_matrix, 
+                        annot=True, 
+                        fmt='d', 
+                        cmap='Blues', 
+                        cbar=False, 
+                        ax=ax)
+            ax.set_title('Heatmap de la Matrice de Confusion')
+            ax.set_xlabel('Prédictions')
+            ax.set_ylabel('Véritables Classes')
+            st.pyplot(fig)
         
             # Création de deux colonnes pour les modèles
             col1, col2 = st.columns(2)
@@ -312,7 +315,7 @@ if model_choice:
             ax.plot(fpr_before, 
                     tpr_before, 
                     label=f'ROC Modèle Avant (AUC = {roc_auc_score(y_test, y_scores_before):.2f})')
-            ax.plot(fpr_after, 
+            ax.plot(fpr_after,
                     tpr_after, 
                     label=f'ROC Modèle Après (AUC = {roc_auc_score(y_test, y_scores_after):.2f})')
             ax.set_title('Comparaison des Courbes ROC')

@@ -1,0 +1,83 @@
+/* styles.css 
+
+/* ligne de séparation */
+.my_custom_hr {
+    border-top: 2px solid #f00;
+    margin: 0.5rem 0.5rem 0.5rem 0.5rem;
+}
+
+.explain_shap {
+    background-color: rgb(227, 133, 133);
+}
+
+/* Titre de page principal */
+.custom-title {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 5px 0;
+    color: blue;  /* Laurent */
+    text-decoration: underline; /* Laurent */
+}
+
+/* Sous titre page conclusion*/
+.titre-h3 {
+    color: blue;
+    text-decoration: underline;
+    background-color: #e8e2de;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+/* Sous titre page modélisation*/
+.type-de-variables {
+    color: blue;
+    /* Add more styles as needed */
+}
+
+/* css créer par laurant */
+/* des mots en gras */
+.orange-bold { 
+    color: #EA6B14; 
+    font-weight: bold; 
+}
+
+/* gestion de la page texte */
+.st-emotion-cache-gh2jqd {
+    /* width: 100%;
+    padding: 6% 20% 20%;
+    max-width: 120rem; */
+    background-color: #95e4e4;
+}
+
+/* gestion de la page totale */
+.st-emotion-cache-uf99v8 {
+    background-color: #7483f1;
+}
+
+/* gestion de la page de gauche */
+.st-emotion-cache-6qob1r {
+    background-color: #9ced73;
+}
+
+/*bouton de pages*/
+.st-emotion-cache-7ym5gk:hover {
+    background-color: black;
+    border-radius: 10px;
+}
+
+/*fond d'écran des expander*/
+.st-emotion-cache-1h9usn1{
+    background-color: rgb(236, 167, 167);
+    margin-top: 5px;
+}
+
+/*fond d'écran des selectbox*/
+.st-b7{
+    background-color: rgb(231, 118, 118);
+}
+
+/*coulleur du texte*/
+.st-emotion-cache-1r4qj8v{
+    color:#0b0808
+}

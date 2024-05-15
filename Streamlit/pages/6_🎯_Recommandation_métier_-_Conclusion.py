@@ -59,7 +59,10 @@ st.markdown("""
 
 # ------------------------------------------------------------------------------------------------
 # bouton de basculement de page 
+st.write("   ")
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
+st.write("   ")
+
 if st.button("▶️\u2003 💬 Contacts"):
     st.switch_page("pages/9_💬_Contacts.py")
 # ------------------------------------------------------------------------------------------------

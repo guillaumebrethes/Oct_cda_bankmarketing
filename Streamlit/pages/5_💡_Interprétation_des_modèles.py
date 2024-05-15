@@ -225,7 +225,10 @@ if model_choice:
 
 # ------------------------------------------------------------------------------------------------
 # bouton de basculement de page 
+st.write("   ")
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
+st.write("   ")
+
 if st.button("▶️\u2003 🎯 Recommandation métier - Conclusion"):
     st.switch_page("pages/6_🎯_Recommandation_métier_-_Conclusion.py")
     

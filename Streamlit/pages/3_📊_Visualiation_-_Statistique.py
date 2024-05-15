@@ -498,7 +498,10 @@ with st.expander(label="Autres tests", expanded=False):
     
     # ------------------------------------------------------------------------------------------------
 # bouton de basculement de page 
+st.write("   ")
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
+st.write("   ")
+
 if st.button("▶️\u2003 ⚙️ Modelisation"):
     st.switch_page("pages/4_⚙️_Modelisation.py")
 # ------------------------------------------------------------------------------------------------

@@ -80,6 +80,13 @@
     background-color: #D9D9D9;
 }
 
+/* gestion des boutons page de gauche */
+.st-emotion-cache-18l0hbk {
+    gap: 1.5rem;
+    margin-top: 0.2rem ;
+
+}
+
 /*bouton de pages au survol*/
 .st-emotion-cache-7ym5gk:hover {
     background-color: #C65911;

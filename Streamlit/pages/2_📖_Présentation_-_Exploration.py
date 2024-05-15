@@ -156,7 +156,10 @@ st.markdown(
 
 # ------------------------------------------------------------------------------------------------
 # bouton de basculement de page 
+st.write("   ")
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
+st.write("   ")
+
 if st.button("▶️\u2003📊 Visualiation - Statistique"):
     st.switch_page("pages/3_📊_Visualiation_-_Statistique.py")
     

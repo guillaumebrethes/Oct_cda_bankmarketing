@@ -30,7 +30,6 @@ local_css("styles.css")
 # - - - - - - - 
 
 st.markdown('<h1 class="custom-title">Modélisation</h1>', unsafe_allow_html=True)
-st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 
 
 if st.button("◀️\u2003📊 Visualiation - Statistique"):
@@ -325,7 +324,10 @@ if model_choice:
     
 # ------------------------------------------------------------------------------------------------
 # bouton de basculement de page 
+st.write("   ")
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
+st.write("   ")
+
 if st.button("▶️\u2003 💡 Interprétation_des_modèles"):
     st.switch_page("pages/5_💡_Interprétation_des_modèles.py")
     

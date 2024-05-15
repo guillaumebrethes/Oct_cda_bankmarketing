@@ -10,7 +10,7 @@ st.set_page_config(
 def local_css(file_name):
     with open(file_name) as f:
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-local_css("pages/styles.css")
+local_css("styles.css")
 # - - - - - - - 
 
 st.markdown('<h1 class="custom-title">Contexte du projet</h1>', unsafe_allow_html=True)

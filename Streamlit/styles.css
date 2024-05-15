@@ -2,36 +2,54 @@
 
 /* ligne de séparation */
 .my_custom_hr {
-    border-top: 2px solid #f00;
+    border-top: 2px solid #C65977;
     margin: 0.5rem 0.5rem 0.5rem 0.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5)
+
+}
+
+.my_custom_hr::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 98%;
+    height: 5px;
+    border-top: 5px solid #C65911;
+    margin: 0.5rem 0.5rem 0.5rem 0.5rem;
+    top: -8px;
 }
 
 .explain_shap {
-    background-color: rgb(227, 133, 133);
+    /*background-color: rgb(96, 242, 152); */
 }
 
 /* Titre de page principal */
 .custom-title {
-    background-color: #f0f0f0;
+    background-color: #C65911;
     padding: 10px;
     border-radius: 10px;
     margin: 5px 0;
-    color: blue;  /* Laurent */
+    text-align: center;
+    color: #FFFFFF;  /* Laurent */
     text-decoration: underline; /* Laurent */
 }
 
 /* Sous titre page conclusion*/
 .titre-h3 {
-    color: blue;
+    color: #C65911;
     text-decoration: underline;
-    background-color: #e8e2de;
+    background-color: transparent;
     border-radius: 10px;
     padding: 10px;
 }
 
 /* Sous titre page modélisation*/
 .type-de-variables {
-    color: blue;
+    /* color: #C65911; laurent*/
+    color: #ffffff;
+    background-color: transparent;
+    text-decoration: underline;
+    
     /* Add more styles as needed */
 }
 
@@ -42,42 +60,70 @@
     font-weight: bold; 
 }
 
-/* gestion de la page texte */
+/* gestion de la page texte centrale */
 .st-emotion-cache-gh2jqd {
     /* width: 100%;
     padding: 6% 20% 20%;
     max-width: 120rem; */
-    background-color: #95e4e4;
+    background-color: #FEF8F4;
+    /*border: 2px solid #C65911; */
+    box-shadow: 0 0 100px rgba(0, 0, 0, 0.2)
 }
 
 /* gestion de la page totale */
 .st-emotion-cache-uf99v8 {
-    background-color: #7483f1;
+    background-color: #FEF8F4;
 }
 
 /* gestion de la page de gauche */
 .st-emotion-cache-6qob1r {
-    background-color: #9ced73;
+    background-color: #D9D9D9;
 }
 
-/*bouton de pages*/
+/*bouton de pages au survol*/
 .st-emotion-cache-7ym5gk:hover {
-    background-color: black;
+    background-color: #C65911;
+    color: white;
     border-radius: 10px;
 }
 
-/*fond d'écran des expander*/
-.st-emotion-cache-1h9usn1{
-    background-color: rgb(236, 167, 167);
+/*bouton de pages*/
+.st-emotion-cache-7ym5gk {
+    border: 2px solid #C65911;
     margin-top: 5px;
 }
 
-/*fond d'écran des selectbox*/
+
+/*fond d'écran des expander*/
+.st-emotion-cache-1h9usn1 {
+    background-color: rgb(247, 199, 172);
+    margin-top: 5px;
+    box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.2); /* Décalage vertical de 5px pour éviter l'ombre en haut */
+}
+
+/*selectbox liste déroulante*/
+[data-baseweb="select"] {
+    margin-top: 5px;
+    box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.2); /* Décalage vertical de 5px pour éviter l'ombre en haut */
+}
+/*selectbox liste déroulante*/
+.st-c7.st-c8.st-c9.st-ca.st-av.st-br.st-c6.st-af.st-cb.st-cc.st-b0.st-b1.st-b2.st-b3.st-aw.st-ax.st-ay.st-az.st-cd.st-ao.st-ap.st-bw.st-ce.st-cf.st-cg.st-ch.st-ci {
+    background-color: rgb(247, 199, 172);
+}
+
+
+/*fond d'écran des selectbox à coher*/
 .st-b7{
-    background-color: rgb(231, 118, 118);
+    background-color: rgb(241, 169, 131);
 }
 
 /*coulleur du texte*/
 .st-emotion-cache-1r4qj8v{
     color:#0b0808
+}
+/* fond d'écran des graphiques*/
+[data-testid="stFullScreenFrame"] {
+    /* Vos styles CSS ici */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Ombre avec un léger flou */
+    background-color: white;
 }

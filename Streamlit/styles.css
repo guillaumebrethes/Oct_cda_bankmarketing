@@ -77,26 +77,27 @@
 
 /* gestion de la page de gauche */
 .st-emotion-cache-6qob1r {
-    background-color: #D9D9D9;
+    background-color: rgb(220, 197, 182);
 }
 
 /* gestion des boutons page de gauche */
 .st-emotion-cache-18l0hbk {
-    gap: 1.5rem;
-    margin-top: 0.2rem ;
-
+    /*gap: 1.5rem; */
+    margin-top: 0.6rem ;
+    background-color: rgb(198, 89, 17, 0.4);
 }
+
 
 /*bouton de pages au survol*/
 .st-emotion-cache-7ym5gk:hover {
-    background-color: #C65911;
+    background-color: rgb(211,155,126);
     color: white;
     border-radius: 10px;
 }
 
 /*bouton de pages*/
 .st-emotion-cache-7ym5gk {
-    border: 2px solid #C65911;
+    border: 2px solid rgb(211,155,126);
     margin-top: 5px;
 }
 

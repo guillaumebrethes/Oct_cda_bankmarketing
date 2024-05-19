@@ -29,7 +29,7 @@ if st.button("◀️\u2003⚙️ Modelisation"):
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.markdown(
     """ 
-    Introduction à ecrire 
+    Introduction à ecrire  Estelle
     """
     )
 

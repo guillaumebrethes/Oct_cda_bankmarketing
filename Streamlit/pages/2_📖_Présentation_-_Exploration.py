@@ -5,6 +5,7 @@ import time
 # Variables 
 df = pd.read_csv("bank.csv")
 df_table_description = pd.read_csv("table_description.csv")
+df_tableau_des_valeurs_non_désirées = pd.read_csv('Tableau_des_valeurs_non_désirées.csv')
 
 # Page
 st.set_page_config(
@@ -124,29 +125,16 @@ st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.markdown("L'exploration des données nous a permis d'identifer que nous n'avons pas de valeur manquante. Par contre nous possèdons des valeurs qui ne nous parraisent pas exploitable en l'état")
 
 
-with st.expander(label="Afficher le tableau des valeurs non désirés", expanded=False):
+with st.expander(label="Afficher le tableau des valeurs non désirées", expanded=False):
     st.markdown("### Tableau des valeurs non désirés")
-
-    table_unknown = """
-    | Variables | modalité en % | Modalité | Description de cette modalité    |
-    |-----------|------------------|----------|-------------------------------|
-    | job       | 1                | unknown  | Le "job" du client est inconnu |
-    | education | 4                | unknown  | L'éducation du client est inconnue |
-    | pdays     | 75               | -1       | La valeur -1 est attribuée aux nouveaux clients, c’est-à-dire aux clients qui n’ont jamais été appelés     pour une précédente campagne |
-    | previous  | 75               | 0        | Comme les clients n'ont jamais été appelés suite à la précédente campagne, previous est égal à 0 |
-    | poutcome  | 75               | unknown  | Ces mêmes nouveaux clients n'avaient jamais participé à une précédente campagne |
-    | poutcome  | 5                | other    | |
-    | contact   | 21               | unknown  | 21 % du moyen de contact est inconnu |
-    """
-
-    st.markdown(table_unknown, unsafe_allow_html=True)
+    st.write(df_tableau_des_valeurs_non_désirées)
 
 
 st.markdown(
     """
     Nous allons donc procéder à la suppression des <span class="orange-bold">**«unknown»**</span> des modalités des varibles <span class="orange-bold">job</span> et <span class="orange-bold">education</span>, car elles représentent un volume minime de notre jeu de données (respectivement 1% et 4%).
 
-    Les variables <span class="orange-bold">pdays</span> et <span class="orange-bold">previous</span> decrivent la même chose, nous décidons donc de garder qu’une seule variable <span class="orange-bold">pdays</span>. Cette dernière nous apporte une information en plus; le nombre de jours écoulés depuis le dernier contact.
+    Les variables <span class="orange-bold">pdays</span> et <span class="orange-bold">previous</span> decrivent la même chose, nous décidons donc de garder qu’une seule variable <span class="orange-bold">pdays</span>. Cette dernière nous apporte une information en plus, le nombre de jours écoulés depuis le dernier contact.
 
     Pour la variable <span class="orange-bold">poutcome</span>, nous décidons de regrouper les 2 modalités <span class="orange-bold">unknown</span> et <span class="orange-bold">other</span> sous une même modalité commune (<span class="orange-bold">unknown</span>), car il se peut que cela nous apporte une information supplémentaire lors de nos futures exploitations.
 
@@ -161,7 +149,7 @@ st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.write("   ")
 
 if st.button("▶️\u2003📊 Visualiation - Statistique"):
-    st.switch_page("pages/3_📊_Visualiation_-_Statistique.py")
+    st.switch_page("pages/3_📊_Visualisation_-_Statistique.py")
     
     
     

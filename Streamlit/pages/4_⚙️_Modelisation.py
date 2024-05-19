@@ -37,7 +37,7 @@ if st.button("◀️\u2003📊 Visualiation - Statistique"):
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.markdown(
     """ 
-    Introduction à ecrire 
+    Introduction à ecrire Estelle.
     """
     )
 
@@ -159,7 +159,7 @@ with st.expander("Cliquez ici pour en savoir plus sur la Transformation du Data 
 
 # Standardisation des données   
     if st.checkbox("Standardisation des données", key='checkbox3'):
-        lien_standartScaller = "https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html"
+        lien_standartScaller = "[https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html]"
     
         st.markdown(
             """
@@ -201,10 +201,12 @@ Nous choisissons le **`Recall de la classe 1`** comme métrique clé dans **l'é
 Nous utilisons **`GridSearchCV()`** pour trouver la combinaison optimale des paramètres des modèles.
 """, unsafe_allow_html=True)
 
-    st.markdown("""
-✔️ **Modèles entrainés et optimisés**  
+    st.markdown(
+        """
+        <strong class='type-de-variables'>✔️ Modèles entrainés et optimisés</strong>
+        
   1️⃣ Random Forest Classifier<br>
-  2️⃣ Gradiant Boosting Classifier<br>
+  2️⃣ Gradient Boosting Classifier<br>
   3️⃣ Decision Tree Classifier<br>
   4️⃣ SVM Classifier<br>
   5️⃣ Regression<br>

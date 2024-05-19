@@ -1,0 +1,8 @@
+Variables,modalité en %,Modalité,Description de cette modalité
+job,1,unknown,Le "job" du client est inconnu
+education,4,unknown,L'éducation du client est inconnue
+pdays,75,-1,La valeur -1 est attribuée aux nouveaux clients c’est-à-dire aux clients qui n’ont jamais été appelés pour une précédente campagne
+previous,75,0,Comme les clients n'ont jamais été appelés suite à la précédente campagne previous est égal à 0
+poutcome,75,unknown,Ces mêmes nouveaux clients n'avaient jamais participé à une précédente campagne
+poutcome,5,other,
+contact,21,unknown,21 % du moyen de contact est inconnu

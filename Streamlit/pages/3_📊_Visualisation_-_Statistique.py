@@ -475,25 +475,31 @@ with st.expander(label="Autres tests", expanded=False):
     with col1:
         ctLH = pd.crosstab(df['loan'], df['housing'])
         resultats_chi2LH = chi2_contingency(ctLH)
-        st.write("Test KI-deux housing/loan :")
+        st.write("Test KI-deux :")
+        st.write("housing/loan :")
+
         st.write("Résultat statistique :",resultats_chi2LH[0])
         st.write("Résultat p_valeur :",resultats_chi2LH[1])
     with col2:
         ctBH = pd.crosstab(df['balance'], df['housing'])
         resultats_chi2BH = chi2_contingency(ctBH)
-        st.write("Test KI-deux housing/balance :")
+        st.write("Test KI-deux :")
+        st.write("housing/balance :")
         st.write("Résultat statistique :",resultats_chi2BH[0])
         st.write("Résultat p_valeur :",resultats_chi2BH[1])
     with col3:
         resultBL = statsmodels.formula.api.ols('balance ~ loan', data=df).fit()
         tableBL = statsmodels.api.stats.anova_lm(resultBL)
-        st.write("Test ANOVA balance/loan :")
+        st.write("Test ANOVA :")
+        st.write("balance/loan :")
         st.write("PR(>F) :",tableBL['PR(>F)']['loan'])
         st.write("   ")
-        st.write("Ces variables sont toutes liées entre elles, cependant elles apportent chacune des informations bien différentes les unes des autres il est donc pertinent de toutes les garder dans le jeu de données.")
+    st.write("Ces variables sont toutes liées entre elles, cependant elles apportent chacune des informations bien différentes les unes des autres il est donc pertinent de toutes les garder dans le jeu de données.")
     #--
     
     
+st.markdown("<h3 class='titre-h3'>Caractéristiques ------- de la campagne</h3>", unsafe_allow_html=True)
+
     
     
     # ------------------------------------------------------------------------------------------------

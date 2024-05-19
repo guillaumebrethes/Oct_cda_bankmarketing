@@ -135,3 +135,19 @@
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Ombre avec un léger flou */
     background-color: white;
 }
+
+/* autres test variables vs variables*/
+.variables_autres_tests{
+    background-color: #ffffff;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+
+.tests_autres_tests{
+    text-decoration: underline;
+    text-decoration-color: rgb(252, 252, 252);
+    text-decoration-thickness: 4px;  /* Augmentez cette valeur pour une ligne plus épaisse */
+    text-underline-offset: 3px;  /* Augmentez cette valeur pour plus d'espace entre le mot et le trait */
+        
+}

@@ -320,6 +320,7 @@ elif graph_choisi_banc == 'Housing en fonction de Deposit' :
                    as_index=False)['age'].count().rename(columns={'age':'Count'})
     e['percent'] = round(e['Count'] * 100 / e.groupby('housing')['Count'].transform('sum'),1)
     e['percent'] = e['percent'].apply(lambda x: '{}%'.format(x))
+    
     fighousing = px.bar(e,
                     x= 'housing',
                     y= 'Count',
@@ -468,38 +469,279 @@ elif graph_choisi_banc == 'Balance en fonction de Deposit' :
     En visualisant les graphiques Boîtes à moustache ci-dessus, on peut voir que les clients qui souscrivent au dépôt à terme ont un solde moyen    plus élevé que ceux qui ne souscrivent pas.
     """.format(tableBD['PR(>F)']['deposit']))
 
+
+#--------------------------------------------------------------------------------------------
+# Affichage des caractéristiques de la campagne marketing
+#--------------------------------------------------------------------------------------------
+
+# tr_duree vs deposit
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
+st.markdown("<h3 class='titre-h3'>Caractéristiques de la campagne marketing</h3>", unsafe_allow_html=True)
+
+graph_choisi_camp = st.selectbox(label="Selectionner les variables à étudier", 
+                                 options=["Duration en fonction de Deposit",
+                                          "Poutcome en fonction de Deposit",
+                                          "Month en fonction de Deposit",
+                                          "Campaign en fonction de Deposit"], 
+                                 index=None,
+                                 placeholder=". . .")
             
+if graph_choisi_camp == 'Duration en fonction de Deposit' :
+    st.write("  ")
+        
+# Graphique
+    st.markdown("#### 📊 Visualisation")
+    g = df.groupby(['tr_duree','deposit'],
+                   as_index=False)['age'].count().rename(columns={'age':'Count'})
+
+    g['percent'] = round(g['Count'] * 100 / g.groupby('tr_duree')['Count'].transform('sum'),1)
+    g['percent'] = g['percent'].apply(lambda x: '{}%'.format(x))
+        
+    figduration = px.bar(g,
+                         x='tr_duree',
+                         y='Count',
+                         text='percent',
+                         color='deposit',
+                         barmode='group',
+                         color_discrete_sequence=['lightcoral','lightblue'],width=600, height=450)
+
+    figduration.update_traces(marker=dict(line=dict(color='#000000', width=1)),textposition = "outside")
+    figduration.update_layout(title_x=0.5,
+                                    showlegend=True,
+                                    title_text='<b style="color:black; font-size:90%;">Distribution de tr_duree en fonction de deposit</b>',font_family="Arial",title_font_family="Arial")
+    st.plotly_chart(figduration)
+        
+# Statistique         
+    st.markdown("#### 📈 Statistique")
+    ctDD = pd.crosstab(df['deposit'], df['duration'])
+    resultats_chi2DD = chi2_contingency(ctDD)
+    st.markdown(
+        """
+        **- Test KI-deux** :
+
+        Résultat statistique : `{}`
+    
+        Résultat p_valeur : `{}`
+    
+        #### 💬 Interprétation 
+        Le test nous montre qu'il y a une relation entre les deux variables.
+
+        Le graphique représente l'information de **DURATION en minutes**. Dans notre jeu de données **57%** des appels durent moins de 5 minutes.
+        Le graphique montre que sur ces **57%** il y a **71.6%** qui n'ont pas souscrit un contrat à terme.
+        En revanche nous pouvons constater que sur les autres tranches dont le temps est supérieur les **%** de contrat à terme souscrit est très supérieur.
+""".format(resultats_chi2DD[0], resultats_chi2DD[1]))
+
+                
+#---------------------------------------
+# poutcome / deposit
+elif graph_choisi_camp == 'Poutcome en fonction de Deposit' :
+    h = df.groupby(['poutcome','deposit'],
+    as_index=False)['age'].count().rename(columns={'age':'Count'})
+
+    h['percent'] = round(h['Count'] * 100 / h.groupby('poutcome')['Count'].transform('sum'),1)
+    h['percent'] = h['percent'].apply(lambda x: '{}%'.format(x))
+
+# Graphique
+    st.markdown("#### 📊 Visualisation")
+    figpoutcome = px.bar(h,
+                         x='poutcome',
+                         y='Count',
+                         text='percent',
+                         color='deposit',
+                         barmode='group',
+                         color_discrete_sequence=['lightcoral','lightblue'],
+                         width=600, height=450)
+
+    figpoutcome.update_traces(marker=dict(line=dict(color='#000000', width=1)),textposition = "outside")
+
+    figpoutcome.update_layout(title_x=0.5,
+                              showlegend=True,
+                              title_text='<b style="color:black; font-size:90%;">Distribution de poutcome en fonction de deposit</b>',
+                              font_family="Arial",
+                              title_font_family="Arial")
+    st.plotly_chart(figpoutcome)
+
+# Statistique   
+    st.markdown("#### 📈 Statistique") 
+    ctDP = pd.crosstab(df['deposit'], df['poutcom'])
+    resultats_chi2DP = chi2_contingency(ctDP)
+    st.markdown(
+    """
+    **- Test KI-deux** :
+
+    Résultat statistique : `{}`
+
+    Résultat p_valeur : `{}`
+    
+    #### 💬 Interprétation 
+    Le test nous montre qu'il y a une relation entre les deux variables.
+
+    Pour cette variable, nous avons **79%** du jeu de données dont nous ne connaissons pas le résultat de la campagne précédente.
+    On peut voir que sur les clients qui avaient souscrit à un dépôt à terme lors d'une campagne précédente **91.2%** souscrivent à nouveau.
+    """.format(resultats_chi2DP[0], resultats_chi2DP[1]))
+
+#---------------------------------------
+# month en fonction de deposit                  
+elif graph_choisi_camp == 'Month en fonction de Deposit' :
+    
+    i = df.groupby(['month','deposit'],
+                   as_index=False)['age'].count().rename(columns={'age':'Count'})
+
+    i['percent'] = round(i['Count'] * 100 / i.groupby('month')['Count'].transform('sum'),1)
+    i['percent'] = i['percent'].apply(lambda x: '{}%'.format(x))
+    
+# Graphique
+    st.markdown("#### 📊 Visualisation")
+    figmonth = px.bar(i,
+                      x='month',
+                      y='Count',
+                      text='percent',
+                      color='deposit',
+                      barmode='group',
+                      color_discrete_sequence=['lightcoral','lightblue'],
+                      width=600, height=450)
+
+    figmonth.update_traces(marker=dict(line=dict(color='#000000', width=1)),textposition = "outside")
+
+    figmonth.update_layout(title_x=0.5,
+                           showlegend=True,
+                           title_text='<b style="color:black; font-size:110%;">Distribution de month en fonction de deposit</b>',
+                           font_family="Arial",
+                           title_font_family="Arial")
+    st.plotly_chart(figmonth)
+    
+# Statistique   
+    st.markdown("#### 📈 Statistique") 
+    ctDM = pd.crosstab(df['deposit'], df['month'])
+    resultats_chi2DM = chi2_contingency(ctDM)
+    st.markdown(
+        """
+        **- Test KI-deux** :
+
+        Résultat statistique : `{}`
+    
+        Résultat p_valeur : `{}`
+    
+        #### 💬 Interprétation 
+        Le test nous montre qu'il y a une relation entre les deux variables.
+
+        Dans la variable, le mois de mai sort du lot, il représente **25%** des appels.
+        Mais ce volume d'appels sur le mois de mai nous montre également que seulement **33%** ont souscrit un contrat à terme.
+        Pour les autres mois, on constate que plus le volume d'appels diminue, plus l'écart entre **Yes** et **NO** se réduit, même au profit du Yes sur certains mois.
+        """.format(resultats_chi2DM[0], resultats_chi2DM[1]))
+
+#---------------------------------------
+# Campaign en fonction de deposit                   
+elif graph_choisi_camp == 'Campaign en fonction de Deposit' :
+
+# Graphique
+    st.markdown("#### 📊 Visualisation")
+    j = df.groupby(['campaign','deposit'],
+                   as_index=False)['age'].count().rename(columns={'age':'Count'})
+
+    j['percent'] = round(j['Count'] * 100 / j.groupby('campaign')['Count'].transform('sum'),1)
+    j['percent'] = j['percent'].apply(lambda x: '{}%'.format(x))
+
+    figcampaign = px.bar(j,
+                         x='campaign',
+                         y='Count',
+                         text='percent',
+                         color='deposit',
+                         barmode='group',
+                         color_discrete_sequence=['lightcoral','lightblue'],
+                         width=600, height=450)
+
+    figcampaign.update_traces(marker=dict(line=dict(color='#000000', width=1)),textposition = "outside")
+
+    figcampaign.update_layout(title_x=0.5,
+                              showlegend=True,
+                              title_text='<b style="color:black; font-size:110%;">Distribution de campaign en fonction de deposit</b>',
+                              font_family="Arial",
+                              title_font_family="Arial")
+    st.plotly_chart(figcampaign)
+    
+# Statistique   
+    st.markdown("#### 📈 Statistique") 
+    ctDC = pd.crosstab(df['deposit'], df['campaign'])
+    resultats_chi2DC = chi2_contingency(ctDC)
+    st.markdown("""
+    **- Test KI-deux** :
+
+    Résultat statistique : `{}`
+    
+    Résultat p_valeur : `{}`
+    
+    #### 💬 Interprétation 
+    Le test nous montre qu'il y a une relation entre les deux variables.
+
+    **92%** de la cible a reçu au maximum 5 appels lors de cette campagne et on constate que **45%** ont souscrit un contrat à terme.
+    La répartition entre le **YES** et le **NO** sur ces **92%** est bien équilibrée, ce qui n'est plus vrai quand le nombre d'appels augmente, et ce, au profit du **NO**.
+    """.format(resultats_chi2DC[0], resultats_chi2DC[1]))
             
-with st.expander(label="Autres tests", expanded=False):
+#--------------------------------------------------------------------------------------------
+# Affichage autres tests
+#--------------------------------------------------------------------------------------------            
+
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
+st.markdown("<h3 class='titre-h3'>Comparaison de variables entre elles</h3>", unsafe_allow_html=True)
+
+with st.expander(label="Autres tests de comparaison de variables entre elles", expanded=False):
     col1,col2,col3=st.columns(3)
     with col1:
         ctLH = pd.crosstab(df['loan'], df['housing'])
         resultats_chi2LH = chi2_contingency(ctLH)
-        st.write("Test KI-deux :")
-        st.write("housing/loan :")
-
+        st.markdown(
+            """
+            <ul>
+            <span class="variables_autres_tests">housing vs loan :</span>
+            </ul> 
+            """, unsafe_allow_html=True)
+        st.markdown(
+            """
+            <ul>
+            <span class="tests_autres_tests">Test KI-deux :</span>
+            </ul> 
+            """, unsafe_allow_html=True)
         st.write("Résultat statistique :",resultats_chi2LH[0])
         st.write("Résultat p_valeur :",resultats_chi2LH[1])
+        
     with col2:
         ctBH = pd.crosstab(df['balance'], df['housing'])
         resultats_chi2BH = chi2_contingency(ctBH)
-        st.write("Test KI-deux :")
-        st.write("housing/balance :")
+        st.markdown(
+            """
+            <ul>
+            <span class="variables_autres_tests">housing vs balance :</span>
+            </ul> 
+            """, unsafe_allow_html=True)
+        st.markdown(
+            """
+            <ul>
+            <span class="tests_autres_tests">Test KI-deux :</span>
+            </ul> 
+            """, unsafe_allow_html=True)
         st.write("Résultat statistique :",resultats_chi2BH[0])
         st.write("Résultat p_valeur :",resultats_chi2BH[1])
+        
     with col3:
         resultBL = statsmodels.formula.api.ols('balance ~ loan', data=df).fit()
         tableBL = statsmodels.api.stats.anova_lm(resultBL)
-        st.write("Test ANOVA :")
-        st.write("balance/loan :")
-        st.write("PR(>F) :",tableBL['PR(>F)']['loan'])
+        st.markdown(
+            """
+            <ul>
+            <span class="variables_autres_tests">balance vs loan :</span>
+            </ul> 
+            """, unsafe_allow_html=True)
+        st.markdown(
+            """
+            <ul>
+            <span class="tests_autres_tests">Test ANOVA :</span>
+            </ul> 
+            """, unsafe_allow_html=True)
+        st.write("Résultat PR(>F) :",tableBL['PR(>F)']['loan'])
         st.write("   ")
     st.write("Ces variables sont toutes liées entre elles, cependant elles apportent chacune des informations bien différentes les unes des autres il est donc pertinent de toutes les garder dans le jeu de données.")
     #--
-    
-    
-st.markdown("<h3 class='titre-h3'>Caractéristiques ------- de la campagne</h3>", unsafe_allow_html=True)
-
     
     
     # ------------------------------------------------------------------------------------------------

@@ -506,9 +506,8 @@ if graph_choisi_camp == 'Duration en fonction de Deposit' :
                          color_discrete_sequence=['lightcoral','lightblue'],width=600, height=450)
 
     figduration.update_traces(marker=dict(line=dict(color='#000000', width=1)),textposition = "outside")
-    figduration.update_layout(title_x=0.5,
-                                    showlegend=True,
-                                    title_text='<b style="color:black; font-size:90%;">Distribution de tr_duree en fonction de deposit</b>',font_family="Arial",title_font_family="Arial")
+    figduration.update_layout(showlegend=True,
+                              title_text='<b style="color:black; font-size:90%;">Distribution de tr_duree en fonction de deposit</b>',font_family="Arial",title_font_family="Arial")
     st.plotly_chart(figduration)
         
 # Statistique         
@@ -554,8 +553,7 @@ elif graph_choisi_camp == 'Poutcome en fonction de Deposit' :
 
     figpoutcome.update_traces(marker=dict(line=dict(color='#000000', width=1)),textposition = "outside")
 
-    figpoutcome.update_layout(title_x=0.5,
-                              showlegend=True,
+    figpoutcome.update_layout(showlegend=True,
                               title_text='<b style="color:black; font-size:90%;">Distribution de poutcome en fonction de deposit</b>',
                               font_family="Arial",
                               title_font_family="Arial")
@@ -563,7 +561,7 @@ elif graph_choisi_camp == 'Poutcome en fonction de Deposit' :
 
 # Statistique   
     st.markdown("#### 📈 Statistique") 
-    ctDP = pd.crosstab(df['deposit'], df['poutcom'])
+    ctDP = pd.crosstab(df['deposit'], df['poutcome'])
     resultats_chi2DP = chi2_contingency(ctDP)
     st.markdown(
     """
@@ -603,8 +601,7 @@ elif graph_choisi_camp == 'Month en fonction de Deposit' :
 
     figmonth.update_traces(marker=dict(line=dict(color='#000000', width=1)),textposition = "outside")
 
-    figmonth.update_layout(title_x=0.5,
-                           showlegend=True,
+    figmonth.update_layout(showlegend=True,
                            title_text='<b style="color:black; font-size:110%;">Distribution de month en fonction de deposit</b>',
                            font_family="Arial",
                            title_font_family="Arial")
@@ -653,8 +650,7 @@ elif graph_choisi_camp == 'Campaign en fonction de Deposit' :
 
     figcampaign.update_traces(marker=dict(line=dict(color='#000000', width=1)),textposition = "outside")
 
-    figcampaign.update_layout(title_x=0.5,
-                              showlegend=True,
+    figcampaign.update_layout(showlegend=True,
                               title_text='<b style="color:black; font-size:110%;">Distribution de campaign en fonction de deposit</b>',
                               font_family="Arial",
                               title_font_family="Arial")

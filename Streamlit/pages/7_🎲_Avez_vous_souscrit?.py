@@ -16,7 +16,7 @@ def local_css(file_name):
 local_css("styles.css")
 # - - - - - - - 
 
-st.markdown('<h1 class="custom-title">Auriez vous souscrit/h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="custom-title">Auriez vous souscrit ?/h1>', unsafe_allow_html=True)
 
 if st.button("◀️\u2003💡 Interprétation des modèles"):
     st.switch_page("pages/5_💡_Interprétation_des_modèles.py")
@@ -132,11 +132,12 @@ def main():
         
         st.write(df_new_clients)
 
-        # standardisation
+        # standardisation ------------------------------------------------------------------
         # Convertir toutes les colonnes en entiers
         cols = df_new_clients.columns.tolist()
         scaler = StandardScaler()
         df_new_clients[cols] = scaler.fit_transform(df_new_clients[cols])
+        # -----------------------------------------------------------------------------------
 
 
         

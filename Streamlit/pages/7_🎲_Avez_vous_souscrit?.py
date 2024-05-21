@@ -25,7 +25,7 @@ st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 
 # ------------------------------------------------------------------------------------------------
 
-# - Recommendation métier
+# - Avez vous souscrit ? 
 st.markdown("<h3 class='titre-h3'>Auriez vous souscrit</h3>", unsafe_allow_html=True)
 st.write("   ")
 st.markdown("""
@@ -34,15 +34,6 @@ st.markdown("""
 </ul>
  """,unsafe_allow_html=True)
 
-# - Conslusion 
-
-st.markdown("<h3 class='titre-h3'>Conclusion</h3>", unsafe_allow_html=True)
-st.write("   ")
-st.markdown("""
-    <ul>
-        <li></li>
-    </ul>
-    """, unsafe_allow_html=True)
 
 # ------------------------------------------------------------------------------------------------
 
@@ -139,13 +130,14 @@ def main():
         df_new_clients = pd.concat([df_new_clients, encoded_poutcome], axis=1)
         df_new_clients = df_new_clients.drop("poutcome", axis=1)
         
+        st.write(df_new_clients)
+
         # standardisation
         # Convertir toutes les colonnes en entiers
-        st.info(df_new_clients)
-
-        cols = df_new_clients.columns
+        cols = df_new_clients.columns.tolist()
         scaler = StandardScaler()
-        df_new_clients[:] = scaler.fit_transform(df_new_clients)
+        df_new_clients[cols] = scaler.fit_transform(df_new_clients[cols])
+
 
         
         # Liste des colonnes dans l'ordre souhaité

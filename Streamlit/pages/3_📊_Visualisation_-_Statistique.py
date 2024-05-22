@@ -13,6 +13,14 @@ from scipy.stats import chi2_contingency # type: ignore
 # Variables 
 df = pd.read_csv("bank.csv")
 
+# durée ---------------------------------
+# Ajout d'une colonne 'tranche durée' pour la répartion de la durée en minutes par tranches
+df['tr_duree'] = pd.cut(x = df['duration']/60, bins = [0,5,10,15,100], labels = ['0-<5', '5-<10','10-<15','>=15'], include_lowest = True)
+# Ajout d'une colonne 'nb_appels' pour la répartion du nombre d'appels par tranches
+df['nb_appels'] = pd.cut(x = df['campaign'], bins = [0,1,2,3,4,5,50], labels = ['1','2','3','4','5','>=6'], include_lowest = True)
+# ---------------------------------------
+
+
 # Page
 st.set_page_config(
     page_title="Bank Marketing",
@@ -41,9 +49,9 @@ st.markdown(
 
     Nous allons aborder l'étude selon 2 axes principaux :
 
-    - **La visualisation** à l'aide de graphiques pertinents\n\n
-    - **L'étude statistique** pour corroborer notre exploration et visualisation
-    """)
+    - <span class="orange-bold">La visualisation</span> à l'aide de graphiques pertinents,\n\n
+    - <span class="orange-bold">L'étude statistique</span> pour corroborer notre exploration et visualisation.
+    """, unsafe_allow_html=True)
 
 
 #--------------------------------------------------------------------------------------------
@@ -68,7 +76,15 @@ figdeposit = px.pie(a,
                     color_discrete_sequence= ['lightcoral', 'lightblue'],
                     hole=0.3)
 figdeposit.update_traces(text=a['percent'], textposition='inside', textinfo='percent+label')
-st.plotly_chart(figdeposit)
+
+# Rendre le graphique transparent
+figdeposit.update_layout(
+	paper_bgcolor='rgba(0,0,0,0)',
+	plot_bgcolor='rgba(0,0,0,0)')
+
+
+st.plotly_chart(figdeposit, use_container_width=True)
+
 
 st.markdown(
     """
@@ -113,10 +129,14 @@ if graph_choisi_socio == 'Age en fonction de Deposit':
     st.markdown("#### 📊 Visualisation")
 
     density_fig.update_layout(title= '<b style="color:black; font-size:90%;">Distribution des âges</b>',
-                              xaxis_title= 'Âge',
-                              yaxis_title= 'Densité')
-    st.plotly_chart(density_fig)
-
+                              xaxis_title= '<b style="color:black; font-size:90%;">Âge</b>',
+                              yaxis_title= '<b style="color:black; font-size:90%;">Densité</b>',
+                              paper_bgcolor='rgba(0,0,0,0)',# Rendre le graphique transparent
+                          	  plot_bgcolor='rgba(0,0,0,0)')  # Rendre le graphique transparent
+    
+    st.plotly_chart(density_fig, use_container_width=True)
+    
+    
     # Statistique
     st.markdown("#### 📈 Statistique")
 
@@ -131,10 +151,10 @@ if graph_choisi_socio == 'Age en fonction de Deposit':
 
     Le test nous montre qu'il y a une relation entre les deux variables, car la valeur de la p-valeur est inférieur à 0,05. 
     
-    L'âge minimum des clients de notre jeu de données est de **18 ans** et le maximum est de **95 ans**.\n\n
-    La majorité des clients de notre jeu de données ont entre **32** et **49 ans**.\n\n
-    On remarque que pour les plus de **58 ans** et les moins de **30 ans**, la part de clients qui ont souscrit au dépôt à terme est plus importante.
-""".format(tableAD['PR(>F)']['deposit']))
+    L'âge minimum des clients de notre jeu de données est de <span class="orange-bold">18 ans</span> et le maximum est de <span class="orange-bold">95 ans</span>.\n\n
+    La majorité des clients de notre jeu de données ont entre <span class="orange-bold">32</span> et <span class="orange-bold">49 ans</span>.\n\n
+    On remarque que pour les plus de <span class="orange-bold">58 ans</span> et les moins de <span class="orange-bold">30 ans</span>, la part de clients qui ont souscrit au dépôt à terme est plus importante.
+""".format(tableAD['PR(>F)']['deposit']), unsafe_allow_html=True)
 
 #---------------------------------------
 # Job 
@@ -163,8 +183,14 @@ elif graph_choisi_socio == 'Job en fonction de Deposit':
     figjob.update_layout(showlegend= True,
                          title_text= '<b style="color:black; font-size:90%;">Distribution des job en fonction de deposit</b>',
                          font_family= "Arial",
-                         title_font_family= "Arial")
-    st.plotly_chart(figjob)
+                         title_font_family= "Arial",
+			             xaxis_title= '<b style="color:black; font-size:90%;">Job</b>',
+                         yaxis_title= '<b style="color:black; font-size:90%;">Count</b>',
+                         paper_bgcolor='rgba(0,0,0,0)',
+                     	 plot_bgcolor='rgba(0,0,0,0)')    
+    
+    st.plotly_chart(figjob, use_container_width=True)
+    
              
     # Statistique
     st.markdown("#### 📈 Statistique")  
@@ -182,12 +208,12 @@ elif graph_choisi_socio == 'Job en fonction de Deposit':
     #### 💬 Interprétation 
     
     Le test nous montre qu'il y a une relation entre les deux variables, car la valeur de la p-valeur est inférieur à 0,05.
-    Les professions **Management (22,8%)**, **Blue Collar(17,1%)** et **Technicians(16,9%)** sont les plus représentées dans notre jeu de   données.
+    Les professions <span class="orange-bold">Management (22,8%)</span>, <span class="orange-bold">Blue Collar(17,1%)</span> et <span class="orange-bold">Technicians(16,9%)</span> sont les plus représentées dans notre jeu de données.
 
-    Lorsque l'on regarde pour chaque catégorie la différence entre la souscription ou non au dépôt à terme, on constate que pour les    professions: **retired** et **student** ont une tendance à plus souscrire à ce produit bancaire.
+    Lorsque l'on regarde pour chaque catégorie la différence entre la souscription ou non au dépôt à terme, on constate que pour les professions: <span class="orange-bold">retired</span> et <span class="orange-bold">student</span> ont une tendance à plus souscrire à ce produit bancaire.
 
-    A la différence des professions **blue-collar**, **services** et **technician** qui ont une valeur à **Non** supérieur à **Oui.**
-    """.format(resultats_chi2DJ[0], resultats_chi2DJ[1]))
+    A la différence des professions <span class="orange-bold">blue-collar</span>, <span class="orange-bold">services</span> et <span class="orange-bold">technician</span> qui ont une valeur à <span class="orange-bold">Non</span> supérieur à <span class="orange-bold">Oui.</span>
+    """.format(resultats_chi2DJ[0], resultats_chi2DJ[1]), unsafe_allow_html=True)
 
 #---------------------------------------
 # Marital
@@ -215,8 +241,13 @@ elif graph_choisi_socio == 'Marital en fonction de Deposit' :
     figmarital.update_layout(showlegend=True,
                              title_text='<b style="color:black; font-size:90%;">Distribution de marital en fonction de deposit</b>',
                              font_family="Arial",
-                             title_font_family="Arial")
-    st.plotly_chart(figmarital)
+                             title_font_family="Arial",
+			                 xaxis_title= '<b style="color:black; font-size:90%;">Marital</b>',
+                             yaxis_title= '<b style="color:black; font-size:90%;">Count</b>',
+                             paper_bgcolor='rgba(0,0,0,0)',
+                         	 plot_bgcolor='rgba(0,0,0,0)')  
+    
+    st.plotly_chart(figmarital, use_container_width=True)
     
     # Statistique
     st.markdown("#### 📈 Statistique") 
@@ -234,10 +265,10 @@ elif graph_choisi_socio == 'Marital en fonction de Deposit' :
 
     Le test nous montre qu'il y a une relation entre les deux variables, car la valeur de la p-valeur est inférieur à 0,05.
 
-    Plus de la moitié des clients de notre jeu de données sont **mariés** et **(56.9%)** d'entre eux ne souscrivent pas au dépôt.
+    Plus de la moitié des clients de notre jeu de données sont <span class="orange-bold">mariés</span> et <span class="orange-bold">(56.9%)</span> d'entre eux ne souscrivent pas au dépôt.
     
-    Les **célibataires** ont proportionnellement plus souscrit au dépôt à terme que les clients **mariés**.
-    """.format(resultats_chi2DM[0], resultats_chi2DM[1]))
+    Les <span class="orange-bold">célibataires</span> ont proportionnellement plus souscrit au dépôt à terme que les clients <span class="orange-bold">mariés</span>.
+    """.format(resultats_chi2DM[0], resultats_chi2DM[1]), unsafe_allow_html=True)
     
 #---------------------------------------
 # Education
@@ -266,8 +297,13 @@ elif graph_choisi_socio == 'Education en fonction de Deposit' :
     figeducation.update_layout(showlegend=True,
                                title_text='<b style="color:black; font-size:90%;">Distribution de education en fonction de deposit</b>',
                                font_family="Arial",
-                               title_font_family="Arial")
-    st.plotly_chart(figeducation)
+                               title_font_family="Arial",
+			                   xaxis_title= '<b style="color:black; font-size:90%;">Education</b>',
+                               yaxis_title= '<b style="color:black; font-size:90%;">Count</b>',
+                               paper_bgcolor='rgba(0,0,0,0)',
+                           	   plot_bgcolor='rgba(0,0,0,0)')  
+    
+    st.plotly_chart(figeducation, use_container_width=True)
         
     # Statistique   
     st.markdown("#### 📈 Statistique")  
@@ -284,10 +320,10 @@ elif graph_choisi_socio == 'Education en fonction de Deposit' :
     #### 💬 Interprétation 
     Le test nous montre qu'il y a une relation entre les deux variables, car la valeur de la p-valeur est inférieur à 0,05.
     
-    **(51,2%)** des clients ont un niveau d'études secondaires et **(34.9%)** un niveau d'études supérieures.
+    <span class="orange-bold">(51,2%)</span> des clients ont un niveau d'études secondaires et <span class="orange-bold">(34.9%)</span> un niveau d'études supérieures.
     
-    On remarque que les clients avec un niveau d'études supérieures **('tertiary')** représentent la catégorie qui a le plus souscrit au dépôt à terme par rapport aux 2 autres.
-    """.format(resultats_chi2DM[0], resultats_chi2DM[1]))
+    On remarque que les clients avec un niveau d'études supérieures <span class="orange-bold">('tertiary')</span>* représentent la catégorie qui a le plus souscrit au dépôt à terme par rapport aux 2 autres.
+    """.format(resultats_chi2DM[0], resultats_chi2DM[1]), unsafe_allow_html=True)
 
 #--------------------------------------------------------------------------------------------
 # Affichage des caractéristiques bancaires des clients
@@ -304,10 +340,33 @@ graph_choisi_banc = st.selectbox(label="Selectionner les variables à étudier",
                                  index=None,
                                  placeholder=". . .")
 
-#---------------------------------------
-# Default 
+#--------------------------------------------------------------------------------------------
+# Affichage de la repartition de la variable Default en camembert 
+#--------------------------------------------------------------------------------------------
+
 if graph_choisi_banc == 'Default en fonction de Deposit' :
-    st.write("  ")
+    
+   # Graphique
+   st.markdown("#### 📊 Visualisation")
+   a = df.groupby(['default'],
+            as_index= False)['age'].count().rename(columns= {'age':'Count'})
+
+   a['percent'] = round(a['Count'] * 100 / a.groupby('default')['Count'].transform('sum'),1)
+   a['percent'] = a['percent'].apply(lambda x: '{}%'.format(x))
+
+   figdefault = px.pie(a, values='Count', names='default', color='default',
+                width=600, height=450,
+                color_discrete_sequence= ['lightcoral', 'lightblue'],
+                    hole=0.3)
+   figdefault.update_traces(text=a['percent'], textposition='inside', textinfo='percent+label')
+
+    # Rendre le graphique transparent
+   figdefault.update_layout(
+       paper_bgcolor='rgba(0,0,0,0)',
+       plot_bgcolor='rgba(0,0,0,0)')
+
+   st.plotly_chart(figdefault, use_container_width=True)
+
 
 #---------------------------------------
 # Housing
@@ -333,8 +392,13 @@ elif graph_choisi_banc == 'Housing en fonction de Deposit' :
     fighousing.update_traces(marker=dict(line=dict(color='#000000', width=1)),textposition = "outside")
     fighousing.update_layout(showlegend=True,
                              title_text='<b style="color:black; font-size:90%;">Distribution de Housing en fonction de deposit</b>',font_family="Arial",
-                             title_font_family="Arial")
-    st.plotly_chart(fighousing)
+                             title_font_family="Arial",
+			                 xaxis_title= '<b style="color:black; font-size:90%;">Housing</b>',
+                             yaxis_title= '<b style="color:black; font-size:90%;">Count</b>',
+                             paper_bgcolor='rgba(0,0,0,0)',
+                         	 plot_bgcolor='rgba(0,0,0,0)')  
+    
+    st.plotly_chart(fighousing, use_container_width=True)
 
 # Statistique   
     st.markdown("#### 📈 Statistique") 
@@ -350,9 +414,9 @@ elif graph_choisi_banc == 'Housing en fonction de Deposit' :
     #### 💬 Interprétation 
     Le test nous montre qu'il y a une relation entre les deux variables, car la valeur de la p-valeur est inférieur à 0,05.
 
-    Notre jeu de données a une répartition assez équilibrée sur cette variable, **52%** ont un prêt immobilier contre **48%** sans prêt     immobilier.
-    Le graphique ci-contre nous montre que les clients qui ont un prêt immobilier ont tendance à ne pas souscrire au dépôt à terme **(63.3%)**.
-    """.format(resultats_chi2DH[0], resultats_chi2DH[1]))
+    Notre jeu de données a une répartition assez équilibrée sur cette variable, <span class="orange-bold">52%</span> ont un prêt immobilier contre <span class="orange-bold">48%</span> sans prêt     immobilier.
+    Le graphique ci-contre nous montre que les clients qui ont un prêt immobilier ont tendance à ne pas souscrire au dépôt à terme <span class="orange-bold">(63.3%)</span>.
+    """.format(resultats_chi2DH[0], resultats_chi2DH[1]), unsafe_allow_html=True)
 
 
 
@@ -379,8 +443,13 @@ elif graph_choisi_banc == 'Loan en fonction de Deposit' :
     figloan.update_traces(marker=dict(line=dict(color='#000000', width=1)),textposition = "outside")
     figloan.update_layout(showlegend=True,
                           title_text='<b style="color:black; font-size:90%;">Distribution de Loan en fonction de deposit</b>',font_family="Arial",
-                          title_font_family="Arial")
-    st.plotly_chart(figloan)
+                          title_font_family="Arial",
+			              xaxis_title= '<b style="color:black; font-size:90%;">Loan</b>',
+                          yaxis_title= '<b style="color:black; font-size:90%;">Count</b>',
+                          paper_bgcolor='rgba(0,0,0,0)',
+                      	  plot_bgcolor='rgba(0,0,0,0)')  
+    
+    st.plotly_chart(figloan, use_container_width=True)
 
 # Statistique   
     st.markdown("#### 📈 Statistique") 
@@ -396,10 +465,10 @@ elif graph_choisi_banc == 'Loan en fonction de Deposit' :
     #### 💬 Interprétation 
     Le test nous montre qu'il y a une relation entre les deux variables, car la valeur de la p-valeur est inférieur à 0,05.
 
-    Notre jeu de données a une répartition déséquilibrée sur cette variable, **86.5%** des clients n'ont pas de prêt personnel contre **13.5%**     qui en ont un.
+    Notre jeu de données a une répartition déséquilibrée sur cette variable, <span class="orange-bold">86.5%</span> des clients n'ont pas de prêt personnel contre <span class="orange-bold">13.5%</span>     qui en ont un.
     
-    Le graphique ci-dessus nous montre que les clients qui ont un prêt personnel ont tendance à ne pas souscrire au dépôt à terme **(67%)**.
-    """.format(resultats_chi2DL[0], resultats_chi2DL[1]))
+    Le graphique ci-dessus nous montre que les clients qui ont un prêt personnel ont tendance à ne pas souscrire au dépôt à terme <span class="orange-bold">(67%)</span>.
+    """.format(resultats_chi2DL[0], resultats_chi2DL[1]), unsafe_allow_html=True)
 
     
     
@@ -433,16 +502,20 @@ elif graph_choisi_banc == 'Balance en fonction de Deposit' :
 
     # Création du graphique
     fig = px.histogram(balance_filtre, 
-                   x='balance',
-                   color='deposit', 
-                   marginal='box', 
-                   hover_data=df.columns, 
-                   color_discrete_map={'yes': 'lightblue', 'no': 'lightcoral'}, 
-                   nbins=nbins)
-    fig.update_layout(yaxis_title="Nombre de clients")
+                       x='balance',
+                       color='deposit', 
+                       marginal='box', 
+                       hover_data=df.columns, 
+                       color_discrete_map={'yes': 'lightblue', 'no': 'lightcoral'}, 
+                       nbins=nbins)    
+    fig.update_layout(title= '<b style="color:black; font-size:90%;">Distribution du nombre de clients en fonction de balance </b>',
+                      xaxis_title= '<b style="color:black; font-size:90%;">Balance</b>',
+                      yaxis_title= '<b style="color:black; font-size:90%;">Nombre de clients</b>',
+                      paper_bgcolor='rgba(0,0,0,0)',# Rendre le graphique transparent
+                	  plot_bgcolor='rgba(0,0,0,0)')  # Rendre le graphique transparent
 
     # Affichage du graphique
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, use_container_width=True)
     
     # Couleur bulle slider
     st.markdown("""
@@ -506,8 +579,14 @@ if graph_choisi_camp == 'Duration en fonction de Deposit' :
                          color_discrete_sequence=['lightcoral','lightblue'],width=600, height=450)
 
     figduration.update_traces(marker=dict(line=dict(color='#000000', width=1)),textposition = "outside")
-    figduration.update_layout(showlegend=True,
-                              title_text='<b style="color:black; font-size:90%;">Distribution de tr_duree en fonction de deposit</b>',font_family="Arial",title_font_family="Arial")
+   
+    figduration.update_layout(title= '<b style="color:black; font-size:90%;">Distribution de tr_duree en fonction de deposit</b>',
+                      xaxis_title= '<b style="color:black; font-size:90%;">Balance</b>',
+                      yaxis_title= '<b style="color:black; font-size:90%;">Nombre de clients</b>',
+                      showlegend=True,
+                      paper_bgcolor='rgba(0,0,0,0)',# Rendre le graphique transparent
+                	  plot_bgcolor='rgba(0,0,0,0)')  # Rendre le graphique transparent
+    
     st.plotly_chart(figduration)
         
 # Statistique         
@@ -552,11 +631,14 @@ elif graph_choisi_camp == 'Poutcome en fonction de Deposit' :
                          width=600, height=450)
 
     figpoutcome.update_traces(marker=dict(line=dict(color='#000000', width=1)),textposition = "outside")
-
-    figpoutcome.update_layout(showlegend=True,
-                              title_text='<b style="color:black; font-size:90%;">Distribution de poutcome en fonction de deposit</b>',
-                              font_family="Arial",
-                              title_font_family="Arial")
+    
+    figpoutcome.update_layout(title= '<b style="color:black; font-size:90%;">Distribution de poutcome en fonction de deposit</b>',
+                              xaxis_title= '<b style="color:black; font-size:90%;">poutcome</b>',
+                              yaxis_title= '<b style="color:black; font-size:90%;">Nombres de clients</b>',
+                              showlegend=True,
+                              paper_bgcolor='rgba(0,0,0,0)',# Rendre le graphique transparent
+                	          plot_bgcolor='rgba(0,0,0,0)')  # Rendre le graphique transparent
+    
     st.plotly_chart(figpoutcome)
 
 # Statistique   
@@ -601,10 +683,14 @@ elif graph_choisi_camp == 'Month en fonction de Deposit' :
 
     figmonth.update_traces(marker=dict(line=dict(color='#000000', width=1)),textposition = "outside")
 
-    figmonth.update_layout(showlegend=True,
-                           title_text='<b style="color:black; font-size:110%;">Distribution de month en fonction de deposit</b>',
-                           font_family="Arial",
-                           title_font_family="Arial")
+    
+    figmonth.update_layout(title= '<b style="color:black; font-size:90%;">Distribution de month en fonction de deposit</b>',
+                              xaxis_title= '<b style="color:black; font-size:90%;">month</b>',
+                              yaxis_title= '<b style="color:black; font-size:90%;">Nombres de clients</b>',
+                              showlegend=True,
+                              paper_bgcolor='rgba(0,0,0,0)',# Rendre le graphique transparent
+                	          plot_bgcolor='rgba(0,0,0,0)')  # Rendre le graphique transparent
+    
     st.plotly_chart(figmonth)
     
 # Statistique   
@@ -649,11 +735,14 @@ elif graph_choisi_camp == 'Campaign en fonction de Deposit' :
                          width=600, height=450)
 
     figcampaign.update_traces(marker=dict(line=dict(color='#000000', width=1)),textposition = "outside")
-
-    figcampaign.update_layout(showlegend=True,
-                              title_text='<b style="color:black; font-size:110%;">Distribution de campaign en fonction de deposit</b>',
-                              font_family="Arial",
-                              title_font_family="Arial")
+    
+    figcampaign.update_layout(title= '<b style="color:black; font-size:90%;">Distribution de campaign en fonction de deposit</b>',
+                              xaxis_title= '<b style="color:black; font-size:90%;">campaign</b>',
+                              yaxis_title= '<b style="color:black; font-size:90%;">Nombres de clients</b>',
+                              showlegend=True,
+                              paper_bgcolor='rgba(0,0,0,0)',# Rendre le graphique transparent
+                	          plot_bgcolor='rgba(0,0,0,0)')  # Rendre le graphique transparent
+    
     st.plotly_chart(figcampaign)
     
 # Statistique   

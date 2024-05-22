@@ -16,9 +16,9 @@ def local_css(file_name):
 local_css("styles.css")
 # - - - - - - - 
 
-st.markdown('<h1 class="custom-title">Auriez vous souscrit ?/h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="custom-title">Avez-vous souscrit ?</h1>', unsafe_allow_html=True)
 
-if st.button("◀️\u2003💡 Interprétation des modèles"):
+if st.button("◀️\u2003 🎯 Recommandation métier - Conclusion"):
     st.switch_page("pages/5_💡_Interprétation_des_modèles.py")
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 
@@ -26,17 +26,18 @@ st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 # ------------------------------------------------------------------------------------------------
 
 # - Avez vous souscrit ? 
-st.markdown("<h3 class='titre-h3'>Auriez vous souscrit</h3>", unsafe_allow_html=True)
+st.markdown("<h3 class='titre-h3'>Nous allons essayer de prédire votre choix...</h3>", unsafe_allow_html=True)
 st.write("   ")
 st.markdown("""
 <ul>
-    <li>Introduction du jeu </li>
+Veuillez remplir ce questionnaire en fournissant des informations précises sur votre situation personnelle. Soyez assuré(e) qu'aucune donnée personnelle ne sera sauvegardée. Une fois complété, notre outil d'analyse déterminera si vous êtes susceptible d'être intéressé(e) par notre offre commerciale concernant le dépôt à terme.
 </ul>
  """,unsafe_allow_html=True)
 
 
 # ------------------------------------------------------------------------------------------------
 
+X_train_standartscaller = pd.read_csv("Split_csv/3_bank_X_train_copie_before_standartscaller.csv",index_col=0)
 
 def load_models():
     # Charger les modèles à partir des fichiers
@@ -46,7 +47,7 @@ def load_models():
 
 
 def main():
-    st.title("Formulaire d'analyse")
+    st.title("Formulaire de prédiction ")
     
     # Charger les modèles
     gbc_after, rfc_after = load_models()
@@ -130,13 +131,12 @@ def main():
         df_new_clients = pd.concat([df_new_clients, encoded_poutcome], axis=1)
         df_new_clients = df_new_clients.drop("poutcome", axis=1)
         
-        st.write(df_new_clients)
-
         # standardisation ------------------------------------------------------------------
         # Convertir toutes les colonnes en entiers
-        cols = df_new_clients.columns.tolist()
+        cols = X_train_standartscaller.columns
         scaler = StandardScaler()
-        df_new_clients[cols] = scaler.fit_transform(df_new_clients[cols])
+        X_train_standartscaller[cols] = scaler.fit_transform(X_train_standartscaller[cols])
+        df_new_clients[cols] = scaler.transform(df_new_clients[cols])
         # -----------------------------------------------------------------------------------
 
 
@@ -157,26 +157,32 @@ def main():
         prediction_rfc = rfc_after.predict(df_new_clients)
 
         # Afficher le DataFrame et les prédictions
-        st.write(df_new_clients)
-        st.write(f"Prédiction du modèle Gradient Boosting Classifier : {prediction_gbc[0]}")
-        st.write(f"Prédiction du modèle Random Forest Classifier : {prediction_rfc[0]}")
+        if prediction_gbc[0] == 1:
+            st.markdown(
+                """
+                Notre modèle <span class="orange-bold">Gradient Boosting Classifier</span> prévoit que vous <span class="orange-bold">auriez</span> souscrit au dépôt
+                """,unsafe_allow_html=True)
+        else:
+            st.markdown(
+                """
+                Notre modèle <span class="orange-bold">Gradient Boosting Classifier</span> prévoit que vous <span class="orange-bold">n'auriez pas</span> souscrit au dépôt
+                """,unsafe_allow_html=True)
+            
+        # Affichage de la prédiction pour le modèle Random Forest Classifier
+        if prediction_rfc[0] == 1:
+            st.markdown(
+                """
+                Notre modèle <span class="orange-bold">Random Forest Classifier</span> prévoit que vous <span class="orange-bold">auriez</span> souscrit au dépôt
+                """,unsafe_allow_html=True)
+        else:
+            st.markdown(
+                """
+                Notre modèle <span class="orange-bold">Random Forest Classifier</span> prévoit que vous <span class="orange-bold">n'auriez pas</span> souscrit au dépôt
+                """,unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # ------------------------------------------------------------------------------------------------
@@ -188,3 +194,12 @@ st.write("   ")
 if st.button("▶️\u2003 💬 Contacts"):
     st.switch_page("pages/9_💬_Contacts.py")
 # ------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+

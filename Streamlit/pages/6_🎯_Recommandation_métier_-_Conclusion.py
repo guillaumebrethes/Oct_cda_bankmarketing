@@ -63,6 +63,6 @@ st.write("   ")
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.write("   ")
 
-if st.button("▶️\u2003 💬 Contacts"):
-    st.switch_page("pages/9_💬_Contacts.py")
+if st.button("▶️\u2003 🎲 Avez vous souscrit ?"):
+    st.switch_page("pages/7_🎲_Avez_vous_souscrit?.py")
 # ------------------------------------------------------------------------------------------------

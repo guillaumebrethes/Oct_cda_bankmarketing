@@ -22,7 +22,7 @@ st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 # ------------------------------------------------------------------------------------------------
 
 # - Recommendation métier
-st.markdown("<h3 class='titre-h3'>Recommendations métier</h3>", unsafe_allow_html=True)
+st.markdown("<h3 class='titre-h3'>Recommandations métier</h3>", unsafe_allow_html=True)
 st.write("   ")
 st.markdown("""
 <ul>

@@ -89,7 +89,7 @@ def main():
             "poutcome": poutcome,
             "pdays": 3,
             "day": 3,
-            "duration" : 2, 
+            "duration" : 200, 
             "campaign" : 2,
         }
         
@@ -184,6 +184,21 @@ def main():
 if __name__ == "__main__":
     main()
 
+
+st.write("   ")
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
+st.write("   ")
+if st.checkbox("Méthodologie de Prédiction", key='checkbox2'):
+
+    st.markdown("""
+<ul>
+Pour obtenir ce résultat, nous basons notre analyse sur des clients d'une campagne précédente. Nous avons entraîné un modèle pour essayer de prédire votre choix. 
+
+Cependant, nous avons dû anticiper et simuler certains paramètres. Par exemple, notre modèle est entraîné sur la durée des appels téléphoniques que les anciens clients ont eus avec notre service commercial. 
+
+Étant donné que nous ne connaissons pas cette variable pour vous, nous l'avons choisie arbitrairement de manière à minimiser son influence sur le choix du modèle
+</ul>
+ """,unsafe_allow_html=True)
 
 # ------------------------------------------------------------------------------------------------
 # bouton de basculement de page 

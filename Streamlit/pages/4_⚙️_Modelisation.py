@@ -33,7 +33,7 @@ st.markdown('<h1 class="custom-title">Modélisation</h1>', unsafe_allow_html=Tru
 
 
 if st.button("◀️\u2003📊 Visualiation - Statistique"):
-    st.switch_page("pages/3_📊_Visualiation_-_Statistique.py")
+    st.switch_page("pages/3_📊_Visualisation_-_Statistique.py")
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.markdown(
     """ 
@@ -330,7 +330,7 @@ st.write("   ")
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.write("   ")
 
-if st.button("▶️\u2003 💡 Interprétation_des_modèles"):
+if st.button("▶️\u2003 💡 Interprétation des modèles"):
     st.switch_page("pages/5_💡_Interprétation_des_modèles.py")
     
 

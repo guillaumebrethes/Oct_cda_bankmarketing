@@ -30,6 +30,7 @@ local_css("styles.css")
 # - - - - - - - 
 
 st.markdown('<h1 class="custom-title">Modélisation</h1>', unsafe_allow_html=True)
+st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 
 
 if st.button("◀️\u2003📊 Visualiation - Statistique"):

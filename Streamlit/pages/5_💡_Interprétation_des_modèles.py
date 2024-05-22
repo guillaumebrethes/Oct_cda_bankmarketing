@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from streamlit_shap import st_shap # type: ignore
 import shap # type: ignore
 import plotly.graph_objects as go # type: ignore
+import matplotlib.colors as mcolors
 
 # Page
 st.set_page_config(
@@ -96,21 +97,27 @@ if model_choice:
                       X_test, 
                       plot_type="bar", 
                       max_display=10, 
-                      show=False)
+                      show=False,
+                      color='#ADD8E6')
+
+    plt.gcf().set_facecolor('none')
     st.pyplot(plt.gcf(), use_container_width=True)
 
     st.markdown(
         """
-        L'axe des X représente la moyenne des valeurs SHAP absolues pour chaque variable, indiquant l'importance moyenne de chaque variable sur la prédiction du modèle. **duration est la variable qui influence le plus la prédiction du modèle**
-        """)
+        L'axe des X représente la moyenne des valeurs SHAP absolues pour chaque variable, indiquant l'importance moyenne de chaque variable sur la prédiction du modèle. <span class="orange-bold">duration est la variable qui influence le plus la prédiction du modèle</span>
+        """, unsafe_allow_html=True)
 
 # Utilisation d'un extender pour montrer le Graphique d'importance des variables     
     with st.expander("🔍 **Impact des variables dans la décision du modèle**"):
         plt.figure() 
+        cmap=mcolors.LinearSegmentedColormap.from_list("",["#ADD8E6","#F08080"])
         shap.summary_plot(shap_values, 
                           X_test, 
                           max_display=10, 
-                          show=False)
+                          show=False,
+                          cmap=cmap)
+        plt.gcf().set_facecolor('none')
         st.pyplot(plt.gcf(), use_container_width=True)
          
         st.markdown(
@@ -120,13 +127,12 @@ if model_choice:
             La couleur rouge signifie une valeur plus élevée de la variable explicative. Le bleu signifie une valeur faible de cette dernière. Nous pouvons avoir une idée générale de la directionnalité de l'impact des variables en fonction de la distribution des points rouges et bleus. 
             
             
-            On peut lire que plus la valeur de **duration** est grande (le temps de l'appel long), plus l'impact sur la prédiction de souscription du dépôt à terme est positif  et inversement plus **duration** est faible, plus l'impact sur la prédiction est négatif.
+            On peut lire que plus la valeur de <span class="orange-bold">duration</span> est grande (le temps de l'appel long), plus l'impact sur la prédiction de souscription du dépôt à terme est positif  et inversement plus <span class="orange-bold">duration</span> est faible, plus l'impact sur la prédiction est négatif.
             
-            Une valeur importante de **poutcome_success** (client avait souscrit à un dépôt à terme auparavant) a un impact positif sur la souscription du dépôt à terme.
+            Une valeur importante de <span class="orange-bold">poutcome_success</span> (client avait souscrit à un dépôt à terme auparavant) a un impact positif sur la souscription du dépôt à terme.
             
-            Une valeur plus grande de de **housing** (le client a un prêt immobilier) a un impact négatif sur la prédiction de la souscription du dépôt et inversement une valeur faible ( le client n’a pas de prêt immobilier) a un effet positif sur la prédiction de la souscription du dépôt.
-            """
-            )
+            Une valeur plus grande de de <span class="orange-bold">housing</span> (le client a un prêt immobilier) a un impact négatif sur la prédiction de la souscription du dépôt et inversement une valeur faible ( le client n’a pas de prêt immobilier) a un effet positif sur la prédiction de la souscription du dépôt.
+            """, unsafe_allow_html=True)
 
 #---------------------------------------
 # Utilisation d'un extender pour montrer les predictions et shap values par individu
@@ -148,30 +154,40 @@ if model_choice:
 
     # Afficher (y_test) ---
         if y_test.iloc[index_to_show].item()== 1:
-            deposit = "**a souscrit au dépôt à terme**"
+            deposit = "**a souscrit au dépôt à terme.**"
         else:
-            deposit = "**n'a pas souscrit au dépôt à terme**"
-        st.markdown(f"**Décision réelle du client** : Cet individu {deposit}")
+            deposit = "**n'a pas souscrit au dépôt à terme.**"
+        st.markdown(f"<span class='orange-bold'>Décision réelle du client</span> : Cet individu <span class='orange-bold'>{deposit}</span>", unsafe_allow_html=True)
     # ---
     
     # Afficher ((y_pred) ---
         y_pred = model.predict(X_test.iloc[[index_to_show]])
         if y_pred.item() == 1:
-           deposit_pred = " **souscrira au dépôt à terme**"
+           deposit_pred = " **souscrira au dépôt à terme.**"
         else:
-            deposit_pred = "**ne souscrira pas au dépôt à terme**"
-        st.markdown(f"**Prédiction du modèle** : Ce modèle prédit que cet individu {deposit_pred}")
+            deposit_pred = "**ne souscrira pas au dépôt à terme.**"
+        st.markdown(f"<span class='orange-bold'>Prédiction du modèle</span> : Ce modèle prédit que cet individu <span class='orange-bold'>{deposit_pred}</span>", unsafe_allow_html=True)
     # ---
 
     #Afficher les valeurs shap (top 10 pour cet individu)
-        st.markdown(' **Waterfall plot** pour cet individu : ')
+        st.markdown("<span class='orange-bold'>Waterfall plot</span> pour cet individu :", unsafe_allow_html=True)
     
     # Create a figure 
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(facecolor='none')
 
     # Generate the waterfall plot on the created figure
-        shap.plots.waterfall(shap_values_instance, max_display=10, show=False)  
-
+        shap.plots.waterfall(shap_values_instance, max_display=10, show=False)
+        
+    # Modifier les couleurs du graphique
+        colors=['#ADD8E6' if v<0 else '#F08080' for v in shap_values_instance.values]
+        #for i,bar in enumerate(ax.containers[0]):
+        for i,bar in enumerate(ax.patches):
+            bar.set_color(colors[i])
+            
+    # Obtenir les même couleurs sur les variables
+        for t in ax.texts:
+            t.set_color('#404040')
+                  
     # Display the plot in Streamlit
         st.pyplot(fig)
 
@@ -189,39 +205,40 @@ if model_choice:
 
     with st.expander("🔍 **Impact des variables dans la prédiction en fonction de leur valeur**"):
     
-        st.markdown("Grace au **Dependance plot** on peut visualiser et comprendre comment des valeurs spécifiques d'une variable influencent les prédictions du modèle.")
-   
-    # Case à cocher pour le  graphique
-        if st.checkbox("Dependance Plot **duration**", key='checkbox5'):
-            plt.figure()
-            shap.dependence_plot('duration', shap_values, X_test_copie, interaction_index=None)
-            st.pyplot(plt)
-            st.markdown("• On peut voir à partir de quelle valeur de **duration** l'impact sur la prédiction devient positif")
-        
-    # Case à cocher pour le  graphique
-        if st.checkbox("Dependance Plot **balance**", key='checkbox6'):
-            st.markdown("**balance** est le solde moyen annuel sur le compte courant")
-            plt.figure()
-            shap.dependence_plot('balance', shap_values, X_test_copie, interaction_index=None)
-            st.pyplot(plt)
-            st.markdown("• On peut voir à partir de quelle valeur de **balance** l'impact sur la prédiction devient positif")
-        
-    # Case à cocher pour le  graphique
-        if st.checkbox("Dependance Plot **age**", key='checkbox7'):
-            plt.figure()
-            shap.dependence_plot('age', shap_values, X_test_copie, interaction_index=None)
-            st.pyplot(plt)
-            st.markdown("• On peut voir les **ages** pour lesquels l'impact sur la prédiction est positif et ceux pour lesquels l'impact est négatif")
-        
-    # Case à cocher pour le  graphique
-        if st.checkbox("Dependance Plot **campaign**", key='checkbox8'):
-            st.markdown("**campaign** est le nombre de contacts effectués sur la campagne")
-            plt.figure()
-            shap.dependence_plot('campaign', shap_values, X_test_copie, interaction_index=None)
-            st.pyplot(plt)        
-            st.markdown("• On peut voir que s'il y a plus d'1 contact, **campaign** a un impact négatif sur la prévision")
+        st.markdown("""Grace au <span class="orange-bold">Dependance plot</span> on peut visualiser et comprendre comment des valeurs spécifiques d'une variable influencent les prédictions du modèle.""", unsafe_allow_html=True)
             
+        # Fonction pour afficher le graphique de dépendance SHAP
+        def plot_dependence_plot(selected_var, shap_values, X_test_copie, fig_width=4, fig_height=3):
+            plt.figure(figsize=(fig_width, fig_height), facecolor='none')
+            shap.dependence_plot(selected_var, shap_values, X_test_copie, interaction_index=None, color='#ADD8E6', show=False)
+            plt.gcf().set_facecolor('none')
+            st.pyplot(plt)
 
+        # Liste des variables à afficher dans le multiselect
+        variables = ['duration', 'balance', 'age', 'campaign']
+
+        # Affichage du multiselect
+        selected_variables = st.multiselect("Sélectionnez les variables à afficher :", variables)
+
+        # Affichage des graphiques pour les variables sélectionnées
+        for var in selected_variables:
+            st.markdown(f"""<span style="font-size: 20px; font-weight: bold; color: #E97132; text-decoration: underline;">Distribution des clients par {var}</span>""", unsafe_allow_html=True)
+            if var=='balance':
+                st.markdown("""<span class="orange-bold">balance</span> est le solde moyen annuel sur le compte courant.""", unsafe_allow_html=True)
+            elif var=='campaign':
+                st.markdown("""<span class="orange-bold">campaign</span> est le nombre de contacts effectués sur la campagne.""", unsafe_allow_html=True)
+            
+            plot_dependence_plot(var, shap_values, X_test_copie, fig_width=3, fig_height=2)
+            
+            if var == 'duration':
+                st.markdown("""On peut voir à partir de quelle valeur de <span class="orange-bold">duration</span> l'impact sur la prédiction devient positif.""", unsafe_allow_html=True)
+            elif var=='balance':
+                st.markdown("""On peut voir à partir de quelle valeur de <span class="orange-bold">balance</span> l'impact sur la prédiction devient positif.""", unsafe_allow_html=True)
+            elif var=='age':
+                st.markdown("""On peut voir les <span class="orange-bold">ages</span> pour lesquels l'impact sur la prédiction est positif et ceux pour lesquels l'impact est négatif.""", unsafe_allow_html=True)
+            elif var=='campaign':
+                st.markdown("""On peut voir que s'il y a plus d'1 contact, <span class="orange-bold">campaign</span> a un impact négatif sur la prévision.""", unsafe_allow_html=True)
+            st.markdown("---")    
 
 # ------------------------------------------------------------------------------------------------
 # bouton de basculement de page 

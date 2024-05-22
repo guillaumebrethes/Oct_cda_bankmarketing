@@ -30,7 +30,12 @@ st.markdown("<h3 class='titre-h3'>Nous allons essayer de prédire votre choix...
 st.write("   ")
 st.markdown("""
 <ul>
-Veuillez remplir ce questionnaire en fournissant des informations précises sur votre situation personnelle. Soyez assuré(e) qu'aucune donnée personnelle ne sera sauvegardée. Une fois complété, notre outil d'analyse déterminera si vous êtes susceptible d'être intéressé(e) par notre offre commerciale concernant le dépôt à terme.
+Veuillez remplir ce questionnaire en fournissant des informations précises sur votre situation personnelle. 
+
+
+Soyez assuré(e) qu'aucune donnée personnelle ne sera sauvegardée. 
+
+Une fois complété, notre outil d'analyse déterminera si vous êtes susceptible d'être intéressé(e) par notre offre commerciale concernant le dépôt à terme.
 </ul>
  """,unsafe_allow_html=True)
 

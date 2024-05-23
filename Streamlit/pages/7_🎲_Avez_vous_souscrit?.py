@@ -2,6 +2,7 @@ import streamlit as st  # type: ignore
 import pandas as pd # type: ignore
 import joblib # type: ignore
 from sklearn.preprocessing import StandardScaler # type: ignore
+import time 
 
 
 st.set_page_config(
@@ -80,6 +81,13 @@ def main():
                            options= ["unknown", "failure", "success"])
     
     if st.button("En cliquant ici nous devinons votre choix"):
+        with st.spinner('Lecture en cour...'):
+            time.sleep(2)
+        with st.spinner('Analyse en cour...'):
+            time.sleep(2)
+        with st.spinner('Calcul en cour...'):
+            time.sleep(2)    
+        st.success('Nos modèles sont maintenant capable de prédire votre choix')
         # Créer un dictionnaire avec les valeurs
         client_data = {
             "age": age,

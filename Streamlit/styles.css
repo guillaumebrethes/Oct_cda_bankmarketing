@@ -116,7 +116,7 @@
 }
 /*selectbox liste déroulante*/
 .st-c7.st-c8.st-c9.st-ca.st-av.st-br.st-c6.st-af.st-cb.st-cc.st-b0.st-b1.st-b2.st-b3.st-aw.st-ax.st-ay.st-az.st-cd.st-ao.st-ap.st-bw.st-ce.st-cf.st-cg.st-ch.st-ci {
-    background-color: rgb(247, 199, 172);
+    background-color: rgb(241, 169, 131);
 }
 
 
@@ -133,10 +133,12 @@
 [data-testid="stFullScreenFrame"] {
     /* Vos styles CSS ici */
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Ombre avec un léger flou */
-    background-color: white;
+    background-color: rgb(247, 199, 172); /*vient du fichier laurent*/
+    border-radius: 20px; /*vient du fichier laurent*/
+
 }
 
-/* autres test variables vs variables*/
+/* autres test variables vs variables */
 .variables_autres_tests{
     background-color: #ffffff;
     padding: 8px;

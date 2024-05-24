@@ -80,14 +80,21 @@ def main():
     poutcome = st.selectbox(label= "Quel était votre choix lors de la précédente campagne ? ", 
                            options= ["unknown", "failure", "success"])
     
+    # chargement --------------------------------------------------------------------
+    
     if st.button("En cliquant ici nous devinons votre choix"):
-        with st.spinner('Lecture en cour...'):
+        with st.status("Télécharchement des données...", expanded=True) as status:
+            st.write("Recherche des données...")
             time.sleep(2)
-        with st.spinner('Analyse en cour...'):
+            st.write("Analyse des données...")
             time.sleep(2)
-        with st.spinner('Calcul en cour...'):
-            time.sleep(2)    
-        st.success('Nos modèles sont maintenant capable de prédire votre choix')
+            st.write("Modélisation des données...")
+            time.sleep(2)
+        status.update(label="Nos modèles sont maintenant capable de prédire votre choix!", 
+                      state="complete", 
+                      expanded=False)
+        
+    # ------------------------------------------------------------------------------    
         # Créer un dictionnaire avec les valeurs
         client_data = {
             "age": age,
@@ -192,6 +199,8 @@ def main():
                 """
                 Notre modèle <span class="orange-bold">Random Forest Classifier</span> prévoit que vous <span class="orange-bold">n'auriez pas</span> souscrit au dépôt
                 """,unsafe_allow_html=True)
+            
+        st.balloons()
 
 
 if __name__ == "__main__":

@@ -587,7 +587,7 @@ if graph_choisi_camp == 'Duration en fonction de Deposit' :
                       paper_bgcolor='rgba(0,0,0,0)',# Rendre le graphique transparent
                 	  plot_bgcolor='rgba(0,0,0,0)')  # Rendre le graphique transparent
     
-    st.plotly_chart(figduration)
+    st.plotly_chart(figduration, use_container_width=True)
         
 # Statistique         
     st.markdown("#### 📈 Statistique")
@@ -604,10 +604,9 @@ if graph_choisi_camp == 'Duration en fonction de Deposit' :
         #### 💬 Interprétation 
         Le test nous montre qu'il y a une relation entre les deux variables.
 
-        Le graphique représente l'information de **DURATION en minutes**. Dans notre jeu de données **57%** des appels durent moins de 5 minutes.
-        Le graphique montre que sur ces **57%** il y a **71.6%** qui n'ont pas souscrit un contrat à terme.
-        En revanche nous pouvons constater que sur les autres tranches dont le temps est supérieur les **%** de contrat à terme souscrit est très supérieur.
-""".format(resultats_chi2DD[0], resultats_chi2DD[1]))
+        Le graphique représente l'information de <span class="orange-bold">DURATION en minutes</span>. Dans notre jeu de données, <span class="orange-bold">57%</span> des appels durent moins de 5 minutes.
+        Le graphique montre que sur ces <span class="orange-bold">57%</span>, <span class="orange-bold">71.3%</span> n'ont pas souscrit un contrat à terme.
+        En revanche, nous pouvons constater que, sur les autres tranches dont le temps est supérieur, les <span class="orange-bold">%</span> de contrat à terme souscrit est très supérieur""".format(resultats_chi2DD[0], resultats_chi2DD[1]), unsafe_allow_html=True)
 
                 
 #---------------------------------------
@@ -639,7 +638,7 @@ elif graph_choisi_camp == 'Poutcome en fonction de Deposit' :
                               paper_bgcolor='rgba(0,0,0,0)',# Rendre le graphique transparent
                 	          plot_bgcolor='rgba(0,0,0,0)')  # Rendre le graphique transparent
     
-    st.plotly_chart(figpoutcome)
+    st.plotly_chart(figpoutcome, use_container_width=True)
 
 # Statistique   
     st.markdown("#### 📈 Statistique") 
@@ -656,9 +655,8 @@ elif graph_choisi_camp == 'Poutcome en fonction de Deposit' :
     #### 💬 Interprétation 
     Le test nous montre qu'il y a une relation entre les deux variables.
 
-    Pour cette variable, nous avons **79%** du jeu de données dont nous ne connaissons pas le résultat de la campagne précédente.
-    On peut voir que sur les clients qui avaient souscrit à un dépôt à terme lors d'une campagne précédente **91.2%** souscrivent à nouveau.
-    """.format(resultats_chi2DP[0], resultats_chi2DP[1]))
+    Pour cette variable, nous avons <span class="orange-bold">79%</span> du jeu de données dont nous ne connaissons pas le résultat de la campagne précédente.
+    On peut voir, que sur les clients qui avaient souscrit à un dépôt à terme lors d'une campagne précédente, <span class="orange-bold">91.3%</span> souscrivent à nouveau.""".format(resultats_chi2DP[0], resultats_chi2DP[1]),unsafe_allow_html=True)
 
 #---------------------------------------
 # month en fonction de deposit                  
@@ -691,7 +689,7 @@ elif graph_choisi_camp == 'Month en fonction de Deposit' :
                               paper_bgcolor='rgba(0,0,0,0)',# Rendre le graphique transparent
                 	          plot_bgcolor='rgba(0,0,0,0)')  # Rendre le graphique transparent
     
-    st.plotly_chart(figmonth)
+    st.plotly_chart(figmonth, use_container_width=True)
     
 # Statistique   
     st.markdown("#### 📈 Statistique") 
@@ -708,10 +706,11 @@ elif graph_choisi_camp == 'Month en fonction de Deposit' :
         #### 💬 Interprétation 
         Le test nous montre qu'il y a une relation entre les deux variables.
 
-        Dans la variable, le mois de mai sort du lot, il représente **25%** des appels.
-        Mais ce volume d'appels sur le mois de mai nous montre également que seulement **33%** ont souscrit un contrat à terme.
-        Pour les autres mois, on constate que plus le volume d'appels diminue, plus l'écart entre **Yes** et **NO** se réduit, même au profit du Yes sur certains mois.
-        """.format(resultats_chi2DM[0], resultats_chi2DM[1]))
+        Dans la variable, le mois de mai sort du lot. Il représente <span class="orange-bold">25%</span> des appels.
+        Ce volume d'appels sur le mois de mai nous montre également que seulement <span class="orange-bold">33%</span> des clients ont souscrit un contrat à terme.
+        
+        Pour les autres mois, on constate que plus le volume d'appels diminue, plus l'écart entre <span class="orange-bold">Yes</span> et <span class="orange-bold">NO</span> se réduit, même au profit du <span class="orange-bold">Yes</span> sur certains mois.
+        """.format(resultats_chi2DM[0], resultats_chi2DM[1]),unsafe_allow_html=True)
 
 #---------------------------------------
 # Campaign en fonction de deposit                   
@@ -743,7 +742,7 @@ elif graph_choisi_camp == 'Campaign en fonction de Deposit' :
                               paper_bgcolor='rgba(0,0,0,0)',# Rendre le graphique transparent
                 	          plot_bgcolor='rgba(0,0,0,0)')  # Rendre le graphique transparent
     
-    st.plotly_chart(figcampaign)
+    st.plotly_chart(figcampaign, use_container_width=True)
     
 # Statistique   
     st.markdown("#### 📈 Statistique") 
@@ -759,9 +758,12 @@ elif graph_choisi_camp == 'Campaign en fonction de Deposit' :
     #### 💬 Interprétation 
     Le test nous montre qu'il y a une relation entre les deux variables.
 
-    **92%** de la cible a reçu au maximum 5 appels lors de cette campagne et on constate que **45%** ont souscrit un contrat à terme.
-    La répartition entre le **YES** et le **NO** sur ces **92%** est bien équilibrée, ce qui n'est plus vrai quand le nombre d'appels augmente, et ce, au profit du **NO**.
-    """.format(resultats_chi2DC[0], resultats_chi2DC[1]))
+    <span class="orange-bold">92%</span> de la cible a reçu au maximum 5 appels lors de cette campagne. 
+    
+    On constate que <span class="orange-bold">45%</span> des clients ont souscrit un contrat à terme.
+    La répartition entre le <span class="orange-bold">YES</span> et le <span class="orange-
+    bold">NO</span> sur ces <span class="orange-bold">92%</span> est bien équilibrée, ce qui n'est plus vrai quand le nombre d'appels augmente, et ce, au profit du <span class="orange-bold">NO</span>
+    """.format(resultats_chi2DC[0], resultats_chi2DC[1]),unsafe_allow_html=True)
             
 #--------------------------------------------------------------------------------------------
 # Affichage autres tests

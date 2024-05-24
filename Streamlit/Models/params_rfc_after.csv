@@ -1,0 +1,9 @@
+Parameter,Value
+criterion,log_loss
+max_depth,15
+min_samples_leaf,6
+min_samples_split,8
+n_estimators,120
+class_weight,balanced_subsample
+max_features,sqrt
+random_state,42

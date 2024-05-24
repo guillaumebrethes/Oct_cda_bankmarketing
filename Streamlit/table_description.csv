@@ -1,18 +1,18 @@
-Colonne,Description,Qualitative / Quantitative,Type
-age,Âge du client,Qualitative - catégorielles,int64
-job,Type d'emploi du client,Quantitative - continues,object
-marital,Statut marital du client,Quantitative - continues,object
-education,Niveau d'éducation du client,Quantitative - continues,object
-default,Le client à t'il un défaut sur un crédit,Quantitative - continues,object
-balance,Solde moyen annuel sur le compte,Qualitative - continues,int64
-housing,Le client à t'il un prêt immobilier,Quantitative - continues,object
-loan,Le client à un prêt personnel en cour personnel,Quantitative - continues,object
-contact,Type de communication pour contacter le client,Quantitative - continues,object
-day,Jour du mois pour le dernier contact,Quantitative - continues,int64
-month,Mois de la dernière communication,Quantitative - continues,object
-duration,Durée de la dernière communication en secondes,Quantitative - catégorielles,int64
-campaign,Nombre de contacts effectués lors de cette campagne,Quantitative - continues,int64
-pdays,Nombre de jours écoulés depuis le dernier contact de la dernière campagne,Quantitative - continues,int64
-previous,Nombre de contacts effectués avant cette campagne,Qualitative - catégorielles,int64
-poutcome,Résultat de la dernière campagne de marketing précédente,Quantitative - continues,object
-deposit,Le client à t'il souscrit à un dépôt à terme,Quantitative - continues,object
+Colonne,Description,Type de variable,Type
+age,Âge du client,Quantitative continue,int64
+job,Type d'emploi du client,Qualitative nominale,object
+marital,Statut marital du client,Qualitative nominale,object
+education,Niveau d'éducation du client,Qualitative ordinale,object
+default,Le client a-t'il un défaut sur un crédit,Qualitative binaire,object
+balance,Solde moyen annuel sur le compte,Quantitative continue,int64
+housing,Le client a-t'il un prêt immobilier,Qualitative binaire,object
+loan,Le client a-t'il un prêt personnel en cours,Qualitative binaire,object
+contact,Type de communication pour contacter le client,Qualitative nominale,object
+day,Jour du mois pour le dernier contact,Quantitative discrète,int64
+month,Mois de la dernière communication,Qualitative nominale,object
+duration,Durée de la dernière communication en secondes,Quantitative continue,int64
+campaign,Nombre de contacts effectués lors de cette campagne,Quantitative discrète,int64
+pdays,Nombre de jours écoulés depuis le dernier contact de la dernière campagne,Quantitative discrète,int64
+previous,Nombre de contacts effectués avant cette campagne,Quantitative discrète,int64
+poutcome,Résultat de la dernière campagne marketing précédente,Qualitative nominale,object
+deposit,Le client a-t'il souscrit à un dépôt à terme,Qualitative binaire,object

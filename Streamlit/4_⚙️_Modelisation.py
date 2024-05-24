@@ -12,8 +12,6 @@ from sklearn.metrics import classification_report # type: ignore
 from sklearn.metrics import confusion_matrix # type: ignore
 from sklearn.metrics import roc_curve, roc_auc_score # type: ignore
 
-# Variables 
-df_tableau_diff_analyse = pd.read_csv("Tableau_des_différentes_analyses.csv", sep=";")
 
 # Page
 st.set_page_config(
@@ -34,7 +32,7 @@ st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 
 
 if st.button("◀️\u2003📊 Visualiation - Statistique"):
-    st.switch_page("pages/3_📊_Visualisation_-_Statistique.py")
+    st.switch_page("pages/3_📊_Visualiation_-_Statistique.py")
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.markdown(
     """ 
@@ -81,8 +79,8 @@ gbc_param_grid_df = pd.read_csv('Models/gbc_param_grid.csv')
 rfc_param_grid_df = pd.read_csv('Models/rfc_param_grid.csv')
 
 # --------------------------------------------------------------------------------------------
+
 # PRE PROCESSING
-# --------------------------------------------------------------------------------------------
 
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.markdown("<h3 class='titre-h3'>Pré Processing</h3>", unsafe_allow_html=True)
@@ -92,20 +90,17 @@ with st.expander("Cliquez ici pour en savoir plus sur la Transformation du Data 
     
 # Gestion des Outliers
     if st.checkbox("Gestion des Valeur Extrêmes", key='checkbox1'):
-        st.markdown(
-            """
-            Il n'y a aucune valeur extrême qui semble aberrante dans nos variables qualitatives. Cependant, nous devons traiter les valeurs extrêmes pour éviter les perturbations sur nos modèles de Machine Learning.
-            """)
+        st.markdown("Il n'y a aucune valeurs extrêmes qui semblent abérentes dans nos variables qualitatives. Cependant nous devons traiter les valeurs extrêmes pour éviter les perturbations sur nos modèles de Machine Learning.")
         st.markdown(
             """ 
-            **Nous appliquons la méthode <span class="orange-bold">"IQR"</span> :**  
-            On supprime les valeurs qui se trouvent en dehors de l'intervalle "Inter Quartile Range", c'est à dire :
-            - les valeurs supérieures à [ Q3 + 1.5 x (Q3 - Q1)],
-            - les valeurs inférieures à [Q1 - 1.5 x (Q3 - Q1)],
-            - avec Q1 le premier quartile et Q3 le troisième quartile.
+            **`Nous appliquons la méthode "IQR":`**  
+            on supprime les valeurs qui se trouvent en dehors de l'intervalle "Inter Quartile Range", c'est à dire :
+            - les valeurs supérieures à [ Q3 + 1.5 x (Q3 - Q1)]
+            - les valeurs inférieures à [Q1 - 1.5 x (Q3 - Q1)]  
+            avec Q1 le premier quartile et Q3 le troisième quartile
             """, unsafe_allow_html=True)
         
-        st.write("Nous avons supprimé", round((100 - (dfclean.shape[0] * 100) / df.shape[0]), 2), "*%* des lignes de notre dataframe initial, cependant il nous reste encore :", dfclean.shape[0], "lignes (clients) pour l'étape de modélisation")
+        st.write("Nous avons supprimé", round((100 - (dfclean.shape[0] * 100) / df.shape[0]), 2), "*%* des lignes de notre dataframe initial", "cependant il nous reste encore :", dfclean.shape[0], "lignes (clients) pour l'étape de modélisation.")
         
         def plot_box(df, column, fig_width=600, fig_height=300, color='skyblue', title_suffix=""):
             # Créer le graphique Boxplot avec Plotly
@@ -172,8 +167,8 @@ with st.expander("Cliquez ici pour en savoir plus sur la Transformation du Data 
         st.markdown("<strong class='type-de-variables'>🗂️ Variables Binaires</strong>", unsafe_allow_html=True)
         st.markdown(
             """
-            - Les modalités **`yes`** et **`no`** des variables **`default`**, **`housing`**, **`loan`**, **`deposit`** seront donc remplacées respectivement par **`1`** et **`0`**.
-            - Nous avons arbitrairement remplacé la modalité **`-1`** de **`pdays`**  par **`0`**, pour faciliter la compréhension d'un point de vue métier. En effet, si il n'y a pas eu de contact depuis la précédente campagne marketing, la valeur la plus adaptée semble être **`0`**.
+            - Les modalités **`yes`** et **`no`** des variables **`default`**, **`housing`**, **`loan`**, **`deposit`** seront donc remplacées respectivement par **`1`** et **`0`**
+            - Nous avons arbitrairement remplacé la modalité **`-1`** de **`pdays`**  par **`0`**, pour faciliter la compréhension d'un point de vue métier. En effet, si il n'y a pas eu de contact depuis la précédente campagne marketing, la valeur la plus adaptée semble être **`0`**
             """
             )
         
@@ -197,19 +192,21 @@ with st.expander("Cliquez ici pour en savoir plus sur la Transformation du Data 
     
 
 # Standardisation des données   
+
     if st.checkbox("Standardisation des données", key='checkbox3'):
         lien_standartScaller = "https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html"
         
         st.markdown(
             f"""
-            Nous utilisons la méthode <a href="{lien_standartScaller}" class="orange-bold">StandardScaler()</a>, qui permet de réaliser une mise à l'échelle en soustrayant la moyenne et en divisant par l'écart type, de sorte que les valeurs aient une moyenne de zéro, et un écart type de 1.
+            Nous utilisons <a href="{lien_standartScaller}" class="orange-bold">StandardScaler()</a>, qui nous permet de réaliser une mise à l'échelle en soustrayant la moyenne et en divisant par l'écart type, de sorte que les valeurs aient une moyenne de zéro, et un écart type de 1.
             """, unsafe_allow_html=True)
 
         
 
-#--------------------------------------------------------------------------------------------  
-# MODELISATION
-# -------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------
+  
+  
+#MODELISATION
 
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.markdown("<h3 class='titre-h3'>Sélection et Optimisation des Modèles</h3>", unsafe_allow_html=True)
@@ -220,37 +217,33 @@ st.markdown("<h3 class='titre-h3'>Sélection et Optimisation des Modèles</h3>",
 with st.expander("Cliquez ici pour en savoir plus sur les étapes de la modélisation"):
 
     st.markdown(
-        """
-        <strong class='type-de-variables'>📝 Problématique</strong> 
+        """<strong class='type-de-variables'>📝 Problématique</strong> 
                 
-        Ce projet s'apparente à une tâche de machine learning appelée **`la classification supervisée`**. La classification consiste à prédire si un client <span class="orange-bold"> (la variable à prédire)</span> acceptera <span class="orange-bold"> (classe 1)</span> ou non <span class="orange-bold"> (classe 0)</span> de souscrire à un dépôt bancaire en utilisant les données disponibles sur ce client.
-        """, unsafe_allow_html=True)
+Ce projet s'apparente à une tâche de machine learning appelée **`la classification supervisée`**. La classification consiste à prédire si un client (**la variable à prédire**) acceptera (**classe 1**) ou non (**classe 0**) de souscrire à un dépôt bancaire en utilisant les données disponibles sur ce client.
+""", unsafe_allow_html=True)
 
     st.markdown(
-        """ 
-        <strong class='type-de-variables'>📏 Métrique</strong>
+        """ <strong class='type-de-variables'>📏 Métrique</strong>
 
-        Nous choisissons le **`Recall de la classe 1`** (Rappel) comme métrique clé dans <span class="orange-bold">l'évaluation</span> de nos modèles afin de :
-        ↗️  Maximiser les <span class="orange-bold">Vrais positifs</span>  (identifications correctes de 
-        clients potentiels qui sont très susceptibles de souscrire à l'offre).
-        ↘️  Minimiser les <span class="orange-bold">Faux Négatifs</span> (le nombre de ces clients potentiels que le modèle pourrait manquer).
-        """, unsafe_allow_html=True)
+Nous choisissons le **`Recall de la classe 1`** (Rappel) comme métrique clé dans **l'évaluation** de nos modèles.  
+↗️ Maximiser les **Vrais positifs** (identifications correctes de clients potentiels qui sont très susceptibles de souscrire à l'offre)  
+↘️ Minimiser les **Faux Négatifs** (le nombre de ces clients potentiels que le modèle pourrait manquer)
+""", unsafe_allow_html=True)
 
     lien_GridSearchCV = "https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html"
 
-    st.markdown(
-        f""" 
-        <strong class='type-de-variables'>⚙️ Méthode d'optimisation des hyperparamètres</strong>
-          
-        Nous utilisons la technique de réglages d’hyperparamètres <a href="{lien_GridSearchCV}" class="orange-bold"> GridSearchCV()</a> pour trouver la combinaison optimale des paramètres des modèles.
-        """, unsafe_allow_html=True)
+
 
     st.markdown(
-        """
-        <strong class='type-de-variables'>✔️ Modèles entrainés et optimisés</strong>
-        
+        f""" <strong class='type-de-variables'>⚙️ Méthode d'optimisation des hyperparamètres</strong>
+          
+Nous utilisons <a href="{lien_GridSearchCV}"> GridSearchCV()</a> pour trouver la combinaison optimale des paramètres des modèles.
+""", unsafe_allow_html=True)
+
+    st.markdown("""<strong class='type-de-variables'>
+✔️ Modèles entrainés et optimisés</strong><br>
   1️⃣ Random Forest Classifier<br>
-  2️⃣ Gradient Boosting Classifier<br>
+  2️⃣ Gradiant Boosting Classifier<br>
   3️⃣ Decision Tree Classifier<br>
   4️⃣ SVM Classifier<br>
   5️⃣ Regression<br>
@@ -287,13 +280,8 @@ with st.expander("Cliquez ici pour en savoir plus sur les étapes de la modélis
         df_plotly['percent'] = df_plotly['Recall % class 1'].apply(lambda x: '{}%'.format(round(x, 1)))
         
         # Créer le graphique à barres avec Plotly Express
-        fig = px.bar(df_plotly, 
-                     x='Modèles', 
-                     y='Recall % class 1', 
-                     text='percent', 
-                     color='HyperParam',
-                     barmode='group', 
-                     color_discrete_sequence=['lightcoral', 'lightblue'],
+        fig = px.bar(df_plotly, x='Modèles', y='Recall % class 1', text='percent', color='HyperParam',
+                     barmode='group', color_discrete_sequence=['lightcoral', 'lightblue'],
                      width=600, height=450)
         
         # Mettre à jour les traces
@@ -338,10 +326,8 @@ with st.expander("Cliquez ici pour en savoir plus sur les étapes de la modélis
 
 
 
-# -------------------------------------------------------------------------------------------
-# ANALYSE APPROFONDIE DES TOPS MODELES
-# -------------------------------------------------------------------------------------------
-
+# ----------------------------------------------------------------------
+#ANALYSE APPROFONDIE DES TOPS MODELES
 
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.markdown("<h3 class='titre-h3'>Analyse Approfondie des Top Modèles</h3>", unsafe_allow_html=True)
@@ -363,7 +349,7 @@ def display_model_analysis(model, title, description=False, parameters=False, pe
             lien_GBC = "https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html"
                    
             st.markdown(f"""
-            <a href="{lien_GBC}" class="orange-bold">Le Gradient Boosting Classifier (GBC)</a> est une technique d'apprentissage automatique utilisée dans les problèmes de classification. Il s'agit d'une méthode d'ensemble où plusieurs modèles   d'apprentissage faibles sont combinés pour former un modèle plus puissant.
+            <a href="{lien_GBC}">Le Gradient Boosting Classifier (GBC)</a> est une technique d'apprentissage automatique utilisée dans les problèmes de classification. Il s'agit d'une méthode d'ensemble où plusieurs modèles d'apprentissage faibles sont combinés pour former un modèle plus puissant.
             
             1. **`Initialisation`** : le modèle commence souvent par créer un arbre de décision peu profond, qui estime la classe cible.
             2. **`Calcul de l'erreur`** : Ensuite, le modèle calcule l’erreur entre sa prédiction et la vraie valeur cible.
@@ -440,7 +426,8 @@ def display_model_analysis(model, title, description=False, parameters=False, pe
 
 #Texte enregistré pour les checkbox Présentation des paramètres utilisés
 
-description_hyper_gbc = """- **`criterion`** : Critère de mesure de qualité de la séparation des arbres de décision dans le processus de boosting.
+description_hyper_gbc = """
+- **`criterion`** : Critère de mesure de qualité de la séparation des arbres de décision dans le processus de boosting.
     - **friedman_mse** : Utilise l'erreur quadratique moyenne améliorée de Friedman, qui prend également en compte le gradient de la fonction de perte.
     - **squared_error** : Utilise simplement l'erreur quadratique moyenne, sans tenir compte du gradient. C'est plus rapide à calculer, mais potentiellement moins précis.                    
              
@@ -583,11 +570,16 @@ Elle utilise la validation croisée pour évaluer les performances de chaque com
     
 # ------------------------------------------------------------------------------------------------
 # bouton de basculement de page 
-st.write("   ")
+#CSS pour que les boutons de la page (et surtout modélisation ) soient de la même largeur
+st.markdown("""
+    <style>
+    .stButton button {
+        width: 40%;
+    }
+    </style>
+""", unsafe_allow_html=True)
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
-st.write("   ")
-
-if st.button("▶️\u2003 💡 Interprétation des modèles"):
+if st.button("▶️\u2003 💡Interprétation_des_modèles"):
     st.switch_page("pages/5_💡_Interprétation_des_modèles.py")
     
 

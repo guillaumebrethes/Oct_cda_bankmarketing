@@ -1,0 +1,8 @@
+Parameter,Value
+criterion,squared_error
+max_depth,8
+min_samples_split,92
+n_estimators,50
+max_features,30
+subsample,0.95
+random_state,42

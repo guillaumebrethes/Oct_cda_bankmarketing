@@ -133,7 +133,7 @@
 [data-testid="stFullScreenFrame"] {
     /* Vos styles CSS ici */
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Ombre avec un léger flou */
-    background-color: rgb(247, 199, 172); /*vient du fichier laurent*/
+    background-color: rgb(253, 232, 218); /*vient du fichier laurent*/
     border-radius: 20px; /*vient du fichier laurent*/
 
 }

@@ -28,11 +28,13 @@ st.markdown('<h1 class="custom-title">Interprétation des modèles</h1>', unsafe
 if st.button("◀️\u2003⚙️ Modelisation"):
     st.switch_page("pages/4_⚙️_Modelisation.py")
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
+
+lien_methodeShap = "https://shap.readthedocs.io/en/latest/example_notebooks/overviews/An%20introduction%20to%20explainable%20AI%20with%20Shapley%20values.html"
+
+
 st.markdown(
-    """ 
-    Introduction à ecrire  Estelle
-    """
-    )
+    f""" Pour compléter l'analyse de la performance des modèles, nous allons interpréter la façon dont les modèles prédisent en utilisant la méthode <a href="{lien_methodeShap}" class="orange-bold">SHAP (SHapley Additive exPlanations)</a>. """, unsafe_allow_html=True
+)
 
 # --------------------------------------------------------------------------------------------
 # Importation des jeux d'entrainement et de test sauvegardés  depuis google collab
@@ -79,44 +81,55 @@ Bienvenue dans cette application d'analyse des modèles ! Vous pouvez sélection
 # Sélection du modèle via liste déroulante
 model_choice = st.selectbox(
     label='',
-    options=['Gradiant Boosting Classifier', 'Random Forest Classifier'], 
+    options=['Gradient Boosting Classifier', 'Random Forest Classifier'], 
     index=None, 
     placeholder="Modèle . . .")
 # ------------------------------------------
 
 # Graphique d'importance des variables
 if model_choice:
-    model = gbc_after if model_choice == 'Gradiant Boosting Classifier' else rfc_after
-    shap_values = shap_values_gbc if model_choice == 'Gradiant Boosting Classifier' else shap_values_rfc
+    model = gbc_after if model_choice == 'Gradient Boosting Classifier' else rfc_after
+    shap_values = shap_values_gbc if model_choice == 'Gradient Boosting Classifier' else shap_values_rfc
     expected_value = shap.TreeExplainer(gbc_after).expected_value \
-    if model_choice == 'Gradiant Boosting Classifier'\
+    if model_choice == 'Gradient Boosting Classifier'\
         else shap.TreeExplainer(rfc_after).expected_value[1]
 
-    plt.figure() 
-    shap.summary_plot(shap_values, 
-                      X_test, 
-                      plot_type="bar", 
-                      max_display=10, 
-                      show=False,
-                      color='#ADD8E6')
-
+   # Créez la figure avec un fond transparent
+    fig = plt.figure()
+    fig.patch.set_alpha(0)  # Rendre le fond de la figure transparent
+   
+   # Générer le graphique SHAP de type "bar"
+    shap.summary_plot(shap_values, X_test, plot_type="bar", max_display=10, show=False, color='#ADD8E6')
+   
+   # Rendre le fond des axes transparent
+    ax = plt.gca()
+    ax.patch.set_alpha(0)
+   
+   # Afficher le graphique avec Streamlit en utilisant un fond transparent
     plt.gcf().set_facecolor('none')
     st.pyplot(plt.gcf(), use_container_width=True)
 
     st.markdown(
         """
-        L'axe des X représente la moyenne des valeurs SHAP absolues pour chaque variable, indiquant l'importance moyenne de chaque variable sur la prédiction du modèle. <span class="orange-bold">duration est la variable qui influence le plus la prédiction du modèle</span>
+        L'axe des X représente la moyenne des valeurs SHAP absolues pour chaque variable, indiquant l'importance moyenne de chaque variable sur la prédiction du modèle. **`duration`**  est la variable qui influence le plus la prédiction du modèle.
         """, unsafe_allow_html=True)
 
 # Utilisation d'un extender pour montrer le Graphique d'importance des variables     
     with st.expander("🔍 **Impact des variables dans la décision du modèle**"):
-        plt.figure() 
-        cmap=mcolors.LinearSegmentedColormap.from_list("",["#ADD8E6","#F08080"])
-        shap.summary_plot(shap_values, 
-                          X_test, 
-                          max_display=10, 
-                          show=False,
-                          cmap=cmap)
+        fig = plt.figure()
+        fig.patch.set_alpha(0)  # Rendre le fond de la figure transparent
+        
+        # Définir la colormap personnalisée
+        cmap = mcolors.LinearSegmentedColormap.from_list("", ["#ADD8E6", "#F08080"])
+        
+        # Générer le graphique SHAP
+        shap.summary_plot(shap_values, X_test, max_display=10, show=False, cmap=cmap)
+        
+        # Rendre le fond des axes transparent
+        ax = plt.gca()
+        ax.patch.set_alpha(0)
+        
+        # Afficher le graphique avec Streamlit en utilisant un fond transparent
         plt.gcf().set_facecolor('none')
         st.pyplot(plt.gcf(), use_container_width=True)
          
@@ -124,8 +137,7 @@ if model_choice:
             """
             Dans ce graphique, l'axe des x représente la valeur SHAP et l'axe des y représente les variables explicatives (ici le TOP 10). Chaque point du graphique correspond à une valeur SHAP pour une prédiction et une variable explicative. 
             
-            La couleur rouge signifie une valeur plus élevée de la variable explicative. Le bleu signifie une valeur faible de cette dernière. Nous pouvons avoir une idée générale de la directionnalité de l'impact des variables en fonction de la distribution des points rouges et bleus. 
-            
+            La couleur rouge signifie une valeur plus élevée de la variable explicative. La couleur bleue signifie une valeur faible de cette dernière. Nous pouvons avoir une idée générale de la directionnalité de l'impact des variables en fonction de la distribution des points rouges et bleus.
             
             On peut lire que plus la valeur de <span class="orange-bold">duration</span> est grande (le temps de l'appel long), plus l'impact sur la prédiction de souscription du dépôt à terme est positif  et inversement plus <span class="orange-bold">duration</span> est faible, plus l'impact sur la prédiction est négatif.
             
@@ -172,10 +184,10 @@ if model_choice:
     #Afficher les valeurs shap (top 10 pour cet individu)
         st.markdown("<span class='orange-bold'>Waterfall plot</span> pour cet individu :", unsafe_allow_html=True)
     
-    # Create a figure 
+            # Créez la figure avec un fond transparent
         fig, ax = plt.subplots(facecolor='none')
-
-    # Generate the waterfall plot on the created figure
+        
+        # Générer le graphique waterfall sur la figure créée
         shap.plots.waterfall(shap_values_instance, max_display=10, show=False)
         
     # Modifier les couleurs du graphique
@@ -183,19 +195,23 @@ if model_choice:
         #for i,bar in enumerate(ax.containers[0]):
         for i,bar in enumerate(ax.patches):
             bar.set_color(colors[i])
-            
-    # Obtenir les même couleurs sur les variables
+        
+        # Obtenir les mêmes couleurs sur les variables
         for t in ax.texts:
             t.set_color('#404040')
-                  
-    # Display the plot in Streamlit
+        
+        # Rendre le fond des axes transparent
+        ax.patch.set_alpha(0)
+        
+        # Afficher le graphique avec Streamlit en utilisant un fond transparent
+        fig.patch.set_alpha(0)  # Rendre le fond de la figure transparent
         st.pyplot(fig)
 
    #Explications de lecture du graphique
    
         st.markdown(
         """
-        La structure en cascade illustre comment les contributions additives des variables explicatives, qu'elles soient positives ou négatives, s'accumulent à partir d'une valeur de base (E[f(X)]). 
+        La structure en cascade illustre comment les **`contributions additives des variables explicatives`** , qu'elles soient positives ou négatives, s'accumulent à partir d'une valeur de base (E[f(X)]). 
         
         Cette accumulation met en évidence comment chaque variable explicative construit progressivement la prédiction finale du modèle, notée f(x).
         """
@@ -205,12 +221,14 @@ if model_choice:
 
     with st.expander("🔍 **Impact des variables dans la prédiction en fonction de leur valeur**"):
     
-        st.markdown("""Grace au <span class="orange-bold">Dependance plot</span> on peut visualiser et comprendre comment des valeurs spécifiques d'une variable influencent les prédictions du modèle.""", unsafe_allow_html=True)
+        st.markdown("""Grâce au <span class="orange-bold">Dependance plot</span> on peut visualiser et comprendre comment des valeurs spécifiques d'une variable influencent les prédictions du modèle.""", unsafe_allow_html=True)
             
         # Fonction pour afficher le graphique de dépendance SHAP
         def plot_dependence_plot(selected_var, shap_values, X_test_copie, fig_width=4, fig_height=3):
             plt.figure(figsize=(fig_width, fig_height), facecolor='none')
             shap.dependence_plot(selected_var, shap_values, X_test_copie, interaction_index=None, color='#ADD8E6', show=False)
+            ax = plt.gca() 
+            ax.patch.set_alpha(0)
             plt.gcf().set_facecolor('none')
             st.pyplot(plt)
 
@@ -222,7 +240,7 @@ if model_choice:
 
         # Affichage des graphiques pour les variables sélectionnées
         for var in selected_variables:
-            st.markdown(f"""<span style="font-size: 20px; font-weight: bold; color: #E97132; text-decoration: underline;">Distribution des clients par {var}</span>""", unsafe_allow_html=True)
+            st.markdown(f"""<span style="font-size: 20px; font-weight: bold; color: #E97132; text-decoration: underline;">Graphique de Dépendance SHAP pour la Variable **`{var}`**</span>""", unsafe_allow_html=True)
             if var=='balance':
                 st.markdown("""<span class="orange-bold">balance</span> est le solde moyen annuel sur le compte courant.""", unsafe_allow_html=True)
             elif var=='campaign':
@@ -231,13 +249,13 @@ if model_choice:
             plot_dependence_plot(var, shap_values, X_test_copie, fig_width=3, fig_height=2)
             
             if var == 'duration':
-                st.markdown("""On peut voir à partir de quelle valeur de <span class="orange-bold">duration</span> l'impact sur la prédiction devient positif.""", unsafe_allow_html=True)
+                st.markdown("""On peut voir à partir de quelle valeur de **`duration`** l'impact sur la prédiction devient positif.""", unsafe_allow_html=True)
             elif var=='balance':
-                st.markdown("""On peut voir à partir de quelle valeur de <span class="orange-bold">balance</span> l'impact sur la prédiction devient positif.""", unsafe_allow_html=True)
+                st.markdown("""On peut voir à partir de quelle valeur de **`balance`** l'impact sur la prédiction devient positif.""", unsafe_allow_html=True)
             elif var=='age':
-                st.markdown("""On peut voir les <span class="orange-bold">ages</span> pour lesquels l'impact sur la prédiction est positif et ceux pour lesquels l'impact est négatif.""", unsafe_allow_html=True)
+                st.markdown("""On peut voir les **`âges`** pour lesquels l'impact sur la prédiction est positif et ceux pour lesquels l'impact est négatif.""", unsafe_allow_html=True)
             elif var=='campaign':
-                st.markdown("""On peut voir que s'il y a plus d'1 contact, <span class="orange-bold">campaign</span> a un impact négatif sur la prévision.""", unsafe_allow_html=True)
+                st.markdown("""On peut voir que s'il y a plus d'1 contact, **`campaign`** a un impact négatif sur la prévision.""", unsafe_allow_html=True)
             st.markdown("---")    
 
 # ------------------------------------------------------------------------------------------------

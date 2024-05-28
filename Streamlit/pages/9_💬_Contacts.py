@@ -51,7 +51,7 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     st.header("Estelle MIR-EMARATI")
-    img = resize_image_to_height("https://static.streamlit.io/examples/cat.jpg", fixed_height)
+    img = resize_image_to_height("photos/Estelle.jpeg", fixed_height)
     st.image(img)
 
 with col2:

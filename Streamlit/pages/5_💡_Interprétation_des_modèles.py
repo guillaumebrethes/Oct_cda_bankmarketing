@@ -52,7 +52,8 @@ rfc_after = joblib.load("Models/model_rfc_after")
 # --------------------------------------------------------------------------------------------
 
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
-st.write("### Interprétation des Modèles avec la méthode SHAP ###")
+st.markdown("<h3 class='titre-h3'>Interprétation des Modèles avec la méthode SHAP</h3>", unsafe_allow_html=True)
+
 # st.markdown('<h1 style="font-size: 30px;">Interprétation des Modèles avec la méthode SHAP</h1>', unsafe_allow_html=True)
 
 #---------------------------------------

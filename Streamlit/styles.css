@@ -2,23 +2,25 @@
 
 /* ligne de séparation */
 .my_custom_hr {
-    border-top: 2px solid #C65977;
+    border-top: 1px solid #C65977;
     margin: 0.5rem 0.5rem 0.5rem 0.5rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5)
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin-top: 2rem;
 
 }
 
+/*
 .my_custom_hr::before {
     content: '';
     position: absolute;
     left: 0;
     width: 98%;
-    height: 5px;
-    border-top: 5px solid #C65911;
+    height: 1px;
+    border-top: 3px solid #C65911;
     margin: 0.5rem 0.5rem 0.5rem 0.5rem;
     top: -8px;
 }
-
+*/
 .explain_shap {
     /*background-color: rgb(96, 242, 152); */
 }
@@ -30,17 +32,19 @@
     border-radius: 10px;
     margin: 5px 0;
     text-align: center;
-    color: #FFFFFF;  /* Laurent */
-    text-decoration: underline; /* Laurent */
+    color: #FFFFFF;
+    font-size: 1.5em;  /* Laurent */
+    /* text-decoration: underline; /* Laurent */
 }
 
 /* Sous titre page conclusion*/
 .titre-h3 {
     color: #C65911;
-    text-decoration: underline;
+    /*text-decoration: underline; */
     background-color: transparent;
     border-radius: 10px;
     padding: 10px;
+    font-size: 1.2em;
 }
 
 /* Sous titre page modélisation*/
@@ -77,7 +81,7 @@
 
 /* gestion de la page de gauche */
 .st-emotion-cache-6qob1r {
-    background-color: rgb(220, 197, 182);
+    background-color: rgb(255 224 205 / 37%);
 }
 
 /* gestion des boutons page de gauche */

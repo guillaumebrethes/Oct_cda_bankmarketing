@@ -140,10 +140,12 @@ if model_choice:
             
             La couleur rouge signifie une valeur plus élevée de la variable explicative. Le bleu signifie une valeur faible de cette dernière. Nous pouvons avoir une idée générale de la directionnalité de l'impact des variables en fonction de la distribution des points rouges et bleus. 
             
-            On peut lire que plus la valeur de <span class="orange-bold">duration</span> est grande (le temps de l'appel long), plus l'impact sur la prédiction de souscription du dépôt à terme est positif  et inversement plus <span class="orange-bold">duration</span> est faible, plus l'impact sur la prédiction est négatif.
             
+            On peut lire que plus la valeur de **`duration`** est grande (temps de l'appel long), plus l'impact sur la prédiction de souscription du dépôt à terme est positif  et inversement plus **`duration`** est faible, plus l'impact sur la prédiction est négatif.
             
-            Une valeur plus grande de <span class="orange-bold">housing</span> (le client a un prêt immobilier) a un impact négatif sur la prédiction de la souscription du dépôt et inversement une valeur faible ( le client n’a pas de prêt immobilier) a un effet positif sur la prédiction de la souscription du dépôt.
+            Une valeur importante de **`poutcome_success`** (client avait souscrit à un dépôt à terme auparavant) a un impact positif sur la souscription du dépôt à terme.
+            
+            Une valeur plus grande de **`housing`** (le client a un prêt immobilier) a un impact négatif sur la prédiction de la souscription du dépôt et inversement une valeur faible ( le client n’a pas de prêt immobilier) a un effet positif sur la prédiction de la souscription du dépôt.
             """, unsafe_allow_html=True)
 
 #---------------------------------------
@@ -169,7 +171,7 @@ if model_choice:
             deposit = "**a souscrit au dépôt à terme.**"
         else:
             deposit = "**n'a pas souscrit au dépôt à terme.**"
-        st.markdown(f"<span class='orange-bold'>Décision réelle du client</span> : Cet individu <span class='orange-bold'>{deposit}</span>", unsafe_allow_html=True)
+        st.markdown(f"<span class='orange-bold'>Décision réelle du client</span> : Cet individu <span style='font-weight:bold; color:black;'>{deposit}</span>", unsafe_allow_html=True)
     # ---
     
     # Afficher ((y_pred) ---
@@ -178,37 +180,25 @@ if model_choice:
            deposit_pred = " **souscrira au dépôt à terme.**"
         else:
             deposit_pred = "**ne souscrira pas au dépôt à terme.**"
-        st.markdown(f"<span class='orange-bold'>Prédiction du modèle</span> : Ce modèle prédit que cet individu <span class='orange-bold'>{deposit_pred}</span>", unsafe_allow_html=True)
+        st.markdown(f"<span class='orange-bold'>Prédiction du modèle</span> : Ce modèle prédit que cet individu <span style='font-weight:bold; color:black;'>{deposit_pred}</span>", unsafe_allow_html=True)
     # ---
 
     #Afficher les valeurs shap (top 10 pour cet individu)
         st.markdown("<span class='orange-bold'>Waterfall plot</span> pour cet individu :", unsafe_allow_html=True)
-    
-            # Créez la figure avec un fond transparent
-        fig, ax = plt.subplots(facecolor='none')
+        # Create a figure with transparent background
+        fig, ax = plt.subplots()
+        fig.patch.set_alpha(0.0)
+        ax.patch.set_alpha(0.0)
         
-        # Générer le graphique waterfall sur la figure créée
+        # Generate the waterfall plot on the created figure
         shap.plots.waterfall(shap_values_instance, max_display=10, show=False)
         
-    # Modifier les couleurs du graphique
-        colors=['#ADD8E6' if v<0 else '#F08080' for v in shap_values_instance.values]
-        #for i,bar in enumerate(ax.containers[0]):
-        for i,bar in enumerate(ax.patches):
-            bar.set_color(colors[i])
-        
-        # Obtenir les mêmes couleurs sur les variables
-        for t in ax.texts:
-            t.set_color('#404040')
-        
-        # Rendre le fond des axes transparent
-        ax.patch.set_alpha(0)
-        
-        # Afficher le graphique avec Streamlit en utilisant un fond transparent
-        fig.patch.set_alpha(0)  # Rendre le fond de la figure transparent
+        # Display the plot in Streamlit
         st.pyplot(fig)
-
    #Explications de lecture du graphique
    
+           #Explications de lecture du graphique
+           
         st.markdown(
         """
         La structure en cascade illustre comment les **`contributions additives des variables explicatives`** , qu'elles soient positives ou négatives, s'accumulent à partir d'une valeur de base (E[f(X)]). 

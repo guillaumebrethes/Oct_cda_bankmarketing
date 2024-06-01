@@ -56,8 +56,9 @@ with col1:
 
 with col2:
     st.header("Laurent COCHARD")
-    img = resize_image_to_height("https://static.streamlit.io/examples/dog.jpg", fixed_height)
+    img = resize_image_to_height("photos/Laurent.jpeg", fixed_height)
     st.image(img)
+    st.markdown("lololaclaye35@gmail.com ")
 
 with col3:
     st.header("Guillaume BRETHES")
@@ -67,5 +68,6 @@ with col3:
     st.markdown("GitHub: [https://github.com/guillaumebrethes/Oct_cda_bankmarketing](https://github.com/guillaumebrethes/Oct_cda_bankmarketing)")
 
 
+st.markdown(" ")
 
 st.image("https://datascientest.com/wp-content/uploads/2022/03/logo-2021.png")

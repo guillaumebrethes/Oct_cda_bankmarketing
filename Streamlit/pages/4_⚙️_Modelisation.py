@@ -37,7 +37,7 @@ if st.button("◀️\u2003📊 Visualisation - Statistique"):
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.markdown(
     """ 
-    Nous exposons ici notre travail de modélisation. Nous allons effecter le prétraitement des données, choisir une métrique de performance, entraîner et ajuster des modèles. Pour finir, nous présenterons l'analyse des modèles les plus performants.
+    Nous exposons ici notre travail de modélisation. Nous allons effectuer le prétraitement des données, choisir une métrique de performance, entraîner et ajuster des modèles. Pour finir, nous présenterons l'analyse des modèles les plus performants.
     """
     )
 
@@ -93,7 +93,7 @@ with st.expander("Cliquez ici pour en savoir plus sur la Transformation du Data 
     if st.checkbox("Gestion des Valeur Extrêmes", key='checkbox1'):
         st.markdown(
             """
-            Il n'y a aucune valeur extrême qui semble aberrante dans nos variables qualitatives. Cependant, nous devons traiter les valeurs extrêmes pour éviter les perturbations sur nos modèles de Machine Learning.
+            Il n'y a aucune valeur extrême qui semble aberrante dans nos variables quantitatives. Cependant, nous devons traiter les valeurs extrêmes pour éviter les perturbations sur nos modèles de Machine Learning.
             """)
         st.markdown(
             """ 
@@ -413,7 +413,7 @@ def display_model_analysis(model, title, description=False, parameters=False, pe
         
         
         # Matrice de confusion sous forme de DataFrame (heatmap ne marche pas...)  
-        
+
         conf_matrix = confusion_matrix(y_test, y_pred)
         all_classes = np.array([0, 1])
         df_conf_matrix = pd.DataFrame(conf_matrix, index=[f'Classe {cls}' for cls in all_classes], columns=[f'Prédiction Classe {cls}' for cls in all_classes])

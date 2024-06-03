@@ -53,6 +53,8 @@ with col1:
     st.header("Estelle MIR-EMARATI")
     img = resize_image_to_height("photos/Estelle.jpeg", fixed_height)
     st.image(img)
+    st.markdown("emiremarati@gmail.com ")
+
 
 with col2:
     st.header("Laurent COCHARD")

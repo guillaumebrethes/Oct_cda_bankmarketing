@@ -190,15 +190,7 @@ if model_choice:
         # Générer le graphique waterfall sur la figure créée
         shap.plots.waterfall(shap_values_instance, max_display=10, show=False)
         
-    # Modifier les couleurs du graphique
-        colors=['#ADD8E6' if v<0 else '#F08080' for v in shap_values_instance.values]
-        #for i,bar in enumerate(ax.containers[0]):
-        for i,bar in enumerate(ax.patches):
-            bar.set_color(colors[i])
-        
-        # Obtenir les mêmes couleurs sur les variables
-        for t in ax.texts:
-            t.set_color('#404040')
+   
         
         # Rendre le fond des axes transparent
         ax.patch.set_alpha(0)
@@ -264,8 +256,8 @@ st.write("   ")
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 st.write("   ")
 
-if st.button("▶️\u2003 🎯 Recommandation métier - Conclusion"):
-    st.switch_page("pages/6_🎯_Recommandation_métier_-_Conclusion.py")
+if st.button("▶️\u2003 🎯 Recommandations métier - Conclusion"):
+    st.switch_page("pages/6_🎯_Recommandations_métier_-_Conclusion.py")
     
 
 # ------------------------------------------------------------------------------------------------

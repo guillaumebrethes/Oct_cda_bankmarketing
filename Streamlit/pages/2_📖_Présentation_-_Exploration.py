@@ -132,7 +132,7 @@ st.markdown("L'exploration des données nous a permis d'identifer que nous n'avo
 
 
 with st.expander(label="Afficher le tableau des valeurs non désirées", expanded=False):
-    st.markdown("### Tableau des valeurs non désirés")
+    st.markdown("### Tableau des valeurs non désirées")
     st.write(df_tableau_des_valeurs_non_désirées)
 
 

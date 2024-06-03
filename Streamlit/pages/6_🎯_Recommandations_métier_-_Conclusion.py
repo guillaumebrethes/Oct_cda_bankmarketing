@@ -12,7 +12,7 @@ def local_css(file_name):
 local_css("styles.css")
 # - - - - - - - 
 
-st.markdown('<h1 class="custom-title">Recommandation_métier - Conclusion</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="custom-title">Recommandations métier - Conclusion</h1>', unsafe_allow_html=True)
 
 if st.button("◀️\u2003💡 Interprétation des modèles"):
     st.switch_page("pages/5_💡_Interprétation_des_modèles.py")

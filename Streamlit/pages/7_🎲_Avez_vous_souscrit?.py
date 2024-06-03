@@ -19,8 +19,8 @@ local_css("styles.css")
 
 st.markdown('<h1 class="custom-title">Avez-vous souscrit ?</h1>', unsafe_allow_html=True)
 
-if st.button("◀️\u2003 🎯 Recommandation métier - Conclusion"):
-    st.switch_page("pages/5_💡_Interprétation_des_modèles.py")
+if st.button("◀️\u2003 🎯 Recommandations métier - Conclusion"):
+    st.switch_page("pages/6_🎯_Recommandations_métier_-_Conclusion.py")
 st.markdown('<hr class="my_custom_hr">', unsafe_allow_html=True)
 
 
